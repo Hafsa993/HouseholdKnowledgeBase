@@ -1,4 +1,4 @@
-# household_knwoledge_app
+# household_knowledge_app
 
 A new Flutter project.
 
