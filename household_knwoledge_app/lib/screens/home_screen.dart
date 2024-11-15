@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 16),
             // Pending Tasks
             const Text(
-              'Your pending To-dos',
+              'Your pending Tasks',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             Expanded(
