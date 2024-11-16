@@ -13,10 +13,12 @@ class MenuDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: Color.fromARGB(255, 211, 239, 247),
       child: ListView(
+
         children: [
           const DrawerHeader(
-            decoration: BoxDecoration(color: Colors.blue),
+            decoration: BoxDecoration(color: Color.fromARGB(255, 6, 193, 240)),
             child: Text('Menu', style: TextStyle(color: Colors.white, fontSize: 24)),
           ),
           ListTile(

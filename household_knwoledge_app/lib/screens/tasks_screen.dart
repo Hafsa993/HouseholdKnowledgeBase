@@ -21,8 +21,9 @@ class TasksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tasks Reference'),
+      backgroundColor: Color.fromARGB(255, 211, 239, 247),
+      appBar: AppBar(backgroundColor: Color.fromARGB(255, 6, 193, 240),
+        title: const Text('Task Decriptions'),
       ),
       drawer: const MenuDrawer(),
       body: ListView.builder(

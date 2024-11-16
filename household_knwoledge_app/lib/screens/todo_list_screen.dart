@@ -13,7 +13,8 @@ class ToDoListScreen extends StatelessWidget {
     List<Task> toDoList = taskProvider.toDoList.where((task) => !task.isCompleted).toList();
 
     return Scaffold(
-      appBar: AppBar(
+      backgroundColor: Color.fromARGB(255, 211, 239, 247),
+      appBar: AppBar(backgroundColor: Color.fromARGB(255, 6, 193, 240),
         title: const Text('To-Do List'),
       ),
       drawer: const MenuDrawer(),

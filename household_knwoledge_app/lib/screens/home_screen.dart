@@ -6,17 +6,18 @@ import '../models/user_model.dart';
 import '../widgets/menu_drawer.dart';
 
 class HomeScreen extends StatelessWidget {
-  final User currentUser = User(username: 'JohnDoe');
+  final User currentUser = User(username: 'JohnDoe');// Example user
 
-  HomeScreen({super.key}); // Example user
+  HomeScreen({super.key}); 
 
   @override
   Widget build(BuildContext context) {
     TaskProvider taskProvider = Provider.of<TaskProvider>(context);
-    List<Task> urgentTasks = taskProvider.pendingTasks;
+    List<Task> urgentTasks = taskProvider.pendingTasks(currentUser.username);
 
     return Scaffold(
-      appBar: AppBar(
+      backgroundColor: Color.fromARGB(255, 211, 239, 247),
+      appBar: AppBar(backgroundColor: Color.fromARGB(255, 6, 193, 240),
         title: const Text('Home'),
       ),
       drawer: const MenuDrawer(),
@@ -41,7 +42,7 @@ class HomeScreen extends StatelessWidget {
             ),
             Expanded(
               child: urgentTasks.isEmpty
-                  ? const Center(child: Text('No urgent tasks!'))
+                  ? const Center(child: Text('No pending tasks!'))
                   : ListView.builder(
                       itemCount: urgentTasks.length,
                       itemBuilder: (context, index) {

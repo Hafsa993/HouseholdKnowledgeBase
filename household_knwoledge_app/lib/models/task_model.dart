@@ -8,6 +8,7 @@ class Task {
   bool isAccepted;
   bool isCompleted;
   String acceptedBy; // Username of the user who accepted the task
+  String assignedTo;
 
   Task({
     required this.title,
@@ -19,5 +20,6 @@ class Task {
     this.isAccepted = false,
     this.isCompleted = false,
     this.acceptedBy = '',
+    this.assignedTo = '',
   });
 }
