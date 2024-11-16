@@ -15,7 +15,8 @@ class CalendarScreen extends StatelessWidget {
     List<Task> tasks = taskProvider.toDoList.where((task) => !task.isCompleted).toList();
 
     return Scaffold(
-      appBar: AppBar(
+      backgroundColor: Color.fromARGB(255, 211, 239, 247),
+      appBar: AppBar(backgroundColor: Color.fromARGB(255, 6, 193, 240),
         title: const Text('Calendar'),
       ),
       drawer: const MenuDrawer(),

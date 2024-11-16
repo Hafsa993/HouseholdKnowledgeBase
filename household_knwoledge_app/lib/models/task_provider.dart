@@ -12,6 +12,7 @@ class TaskProvider extends ChangeNotifier {
       difficulty: 'Medium',
       description: 'Clean all surfaces, mop the floor, and take out the trash.',
       rewardPoints: 20,
+      assignedTo: "JohnDoe",
     ),
     Task(
       title: 'Do Laundry',
@@ -20,16 +21,19 @@ class TaskProvider extends ChangeNotifier {
       difficulty: 'Easy',
       description: 'Wash, dry, and fold clothes.',
       rewardPoints: 15,
+      assignedTo: 'JohnDoe',
     ),
     // Add more tasks
   ];
+  
 
-  List<Task> get pendingTasks(String username) {
+  List<Task> pendingTasks(String username) {
     // Return the most urgent, unaccepted Tasks assgned to me
-    DateTime now = DateTime.now();
-    unsortedList = toDoList.where((task) => !task.isAccepted && task.assignedTo == username).toList();
-    sortedList = unsortedList.sort((a, b) => a.deadline.compareTo(b.deadline));
-    return sortedList;
+
+
+    List<Task> unsortedList = toDoList.where((task) => !task.isAccepted && task.assignedTo.compareTo(username) == 0).toList();      
+    unsortedList.sort((a, b) => a.deadline.compareTo(b.deadline));
+    return unsortedList;
   }
 
   List<Task> myTasks(String username) {

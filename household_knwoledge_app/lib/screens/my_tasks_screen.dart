@@ -16,7 +16,8 @@ class MyTasksScreen extends StatelessWidget {
     List<Task> myTasks = taskProvider.myTasks(currentUser.username);
 
     return Scaffold(
-      appBar: AppBar(
+      backgroundColor: Color.fromARGB(255, 211, 239, 247),
+      appBar: AppBar(backgroundColor: Color.fromARGB(255, 6, 193, 240),
         title: const Text('My Tasks'),
       ),
       drawer: const MenuDrawer(),
