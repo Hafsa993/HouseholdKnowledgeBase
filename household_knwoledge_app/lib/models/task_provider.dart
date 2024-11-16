@@ -24,10 +24,12 @@ class TaskProvider extends ChangeNotifier {
     // Add more tasks
   ];
 
-  List<Task> get pendingTasks {
-    // Return the most urgent tasks (e.g., tasks due in the next day)
+  List<Task> get pendingTasks(String username) {
+    // Return the most urgent, unaccepted Tasks assgned to me
     DateTime now = DateTime.now();
-    return toDoList.where((task) => !task.isAccepted && task.deadline.difference(now).inDays <= 1).toList();
+    unsortedList = toDoList.where((task) => !task.isAccepted && task.assignedTo == username).toList();
+    sortedList = unsortedList.sort((a, b) => a.deadline.compareTo(b.deadline));
+    return sortedList;
   }
 
   List<Task> myTasks(String username) {
