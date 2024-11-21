@@ -41,7 +41,7 @@ class MenuDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('Tasks'),
+            title: const Text('Task descriptions'),
             onTap: () {
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => TasksScreen()));
             },
