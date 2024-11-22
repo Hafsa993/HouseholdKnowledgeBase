@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/task_model.dart';
 import '../models/task_provider.dart';
 import '../widgets/menu_drawer.dart';
+import '../widgets/todo_creation.dart';
 
 class ToDoListScreen extends StatelessWidget {
   const ToDoListScreen({super.key});
@@ -32,6 +33,18 @@ class ToDoListScreen extends StatelessWidget {
             ),
           );
         },
+ 
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color.fromARGB(255, 6, 193, 240),
+        onPressed: () => showDialog(context: context, 
+           builder: (BuildContext context) => Dialog(
+              child: ToDoForm(),
+           ),
+        ),
+        tooltip: 'Increment Counter',
+        child: 
+          const Icon(Icons.add),
       ),
     );
   }
