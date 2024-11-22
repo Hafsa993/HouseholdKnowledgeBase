@@ -20,7 +20,7 @@ class OptionsScreen extends StatelessWidget {
   final ValueNotifier<bool> DarkThemeOn = ValueNotifier(false);
 
   // selected Language
-  final ValueNotifier<bool> selectedLanguage = ValueNotifier('English');
+  final ValueNotifier<String> selectedLanguage = ValueNotifier('English');
 
   // Available languages
   final List<String> languages = ['English', 'Italian', 'German', 'French'];
@@ -50,7 +50,7 @@ class OptionsScreen extends StatelessWidget {
       ),
       drawer: const MenuDrawer(),
       body: ListView(
-        padding: const EdgeInsects.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         // children: permissions.keys.map((perm) {
         children: [
           ValueListenableBuilder<bool>(
@@ -71,7 +71,7 @@ class OptionsScreen extends StatelessWidget {
           const Divider(),
     
           // List of Permissions
-          ListTitle(
+          ListTile(
             title: const Text('Camera Permission')
             trailing: ElevatedButton(
               onPressed: () => requestPermission(context, Permission.camera),
@@ -79,7 +79,7 @@ class OptionsScreen extends StatelessWidget {
             ),
           ),
     
-          ListTitle(
+          ListTile(
             title: const Text('Gallery Permission')
             trailing: ElevatedButton(
               onPressed: () => requestPermission(context, Permission.photos),
@@ -87,7 +87,7 @@ class OptionsScreen extends StatelessWidget {
             ),
           ),
     
-          ListTitle(
+          ListTile(
             title: const Text('Geolocation Permission')
             trailing: ElevatedButton(
               onPressed: () => requestPermission(context, Permission.location),
@@ -95,7 +95,7 @@ class OptionsScreen extends StatelessWidget {
             ),
           ),
     
-          ListTitle(
+          ListTile(
             title: const Text('Contacts Permission')
             trailing: ElevatedButton(
               onPressed: () => requestPermission(context, Permission.contacts),
@@ -108,7 +108,7 @@ class OptionsScreen extends StatelessWidget {
           ValueListenableBuilder<String>(
             valueListenable: selectedLanguage,
             builder: (context, value, child) {
-              return ListTitle(
+              return ListTile(
                 title: const Text('Language'),
                 trailing: DropdownButton<String>(
                   value: value,
@@ -131,7 +131,7 @@ class OptionsScreen extends StatelessWidget {
           ValueListenableBuilder<bool>(
             valueListenable: DarkThemeOn,
             builder: (context, value, child) {
-              return SwitchListTitle(
+              return SwitchListTile(
                 title: const Text('Dark Theme'),
                 value: value,
                 onChanged: (newValue) {
@@ -143,7 +143,7 @@ class OptionsScreen extends StatelessWidget {
           const Divider(),
     
           ...permissions.entries.map((entry) {
-            return SwitchListTitle(
+            return SwitchListTile(
               title: Text(entry.key),
               value: entry.value,
               onChanged: (value) {
