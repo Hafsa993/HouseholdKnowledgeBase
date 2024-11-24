@@ -15,6 +15,42 @@ class TaskProvider extends ChangeNotifier {
       assignedTo: "JohnDoe",
     ),
     Task(
+      title: 'Bake cheese tarts',
+      deadline: DateTime.now().add(const Duration(days: 1)),
+      category: 'Cooking',
+      difficulty: 'Easy',
+      description: 'Bake cheese tarts following the recipe in the task descriptions',
+      rewardPoints: 15,
+      assignedTo: 'JohnDoe',
+    ),
+    Task(
+      title: 'Prepare for trouble',
+      deadline: DateTime.now().add(const Duration(days: 1)),
+      category: 'Cooking',
+      difficulty: 'Easy',
+      description: 'Bake cheese tarts following the recipe in the task descriptions',
+      rewardPoints: 15,
+      assignedTo: 'JohnDoe',
+    ),
+    Task(
+      title: 'Take out trash',
+      deadline: DateTime.now().add(const Duration(days: 1)),
+      category: 'Cooking',
+      difficulty: 'Easy',
+      description: 'Bake cheese tarts following the recipe in the task descriptions',
+      rewardPoints: 15,
+      assignedTo: 'JohnDoe',
+    ),
+    Task(
+      title: 'Clean the fish tank',
+      deadline: DateTime.now().add(const Duration(days: 1)),
+      category: 'Cooking',
+      difficulty: 'Easy',
+      description: 'Bake cheese tarts following the recipe in the task descriptions',
+      rewardPoints: 15,
+      assignedTo: 'JohnDoe',
+    ),
+    Task(
       title: 'Do Laundry',
       deadline: DateTime.now().add(const Duration(days: 2)),
       category: 'Household',
@@ -24,15 +60,6 @@ class TaskProvider extends ChangeNotifier {
       assignedTo: 'JohnDoe',
     ),
     // Add more tasks
-    Task(
-      title: 'Bake cheese tarts',
-      deadline: DateTime.now().add(const Duration(days: 1)),
-      category: 'Cooking',
-      difficulty: 'Easy',
-      description: 'Bake cheese tarts following the recipe in the task descriptions',
-      rewardPoints: 15,
-      assignedTo: 'JohnDoe',
-    ),
   ];
   
 

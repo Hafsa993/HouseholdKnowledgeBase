@@ -29,11 +29,32 @@ class CalendarScreen extends StatelessWidget {
               builder: (context) {
                 return AlertDialog(
                   title: Text('Tasks for ${dateOnly(date.toLocal())}'),
-                  content: Column(
+                  /* content: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: tasksForDate.map((task) => Text(task.title)).toList(),
+                    children: tasksForDate.map((task) => Text(task.title)).toList(), 
+                  ), */
+                  insetPadding: EdgeInsets.symmetric(
+                    horizontal: 50.0,
+                    vertical: 200.0,
                   ),
+                  content: Container(
+                    width: double.maxFinite,
+                    child: 
+                    ListView.builder(
+                      itemCount: tasksForDate.length,
+                      itemBuilder: (context, index) {
+                        Task lvtask = tasksForDate[index];
+                        return Card(
+                          child: ListTile(
+                            title: Text(lvtask.title),
+                            subtitle: Text(dateOnly(lvtask.deadline.toLocal())),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
@@ -46,6 +67,7 @@ class CalendarScreen extends StatelessWidget {
           }
         },
         weekendTextStyle: const TextStyle(color: Colors.red),
+        
         thisMonthDayBorderColor: Colors.grey,
         markedDatesMap: _getMarkedDates(tasks),
         firstDayOfWeek: 1,
