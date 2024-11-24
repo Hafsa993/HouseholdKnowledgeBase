@@ -76,6 +76,7 @@ class TaskProvider extends ChangeNotifier {
     return toDoList.where((task) => task.acceptedBy == username && !task.isCompleted).toList();
   }
   List<Task> myCompletedTasks(String username) {
+    return toDoList.where((task) => task.acceptedBy == username && task.isCompleted).toList();
   }
   void acceptTask(Task task, String username) {
     task.isAccepted = true;
