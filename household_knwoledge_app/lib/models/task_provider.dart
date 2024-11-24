@@ -67,7 +67,7 @@ class TaskProvider extends ChangeNotifier {
     // Return the most urgent, unaccepted Tasks assgned to me
 
 
-    List<Task> unsortedList = toDoList.where((task) => !task.isAccepted && task.assignedTo.compareTo(username) == 0).toList();      
+    List<Task> unsortedList = toDoList.where((task) => !task.isAccepted && !task.isDeclined && task.assignedTo.compareTo(username) == 0).toList();      
     unsortedList.sort((a, b) => a.deadline.compareTo(b.deadline));
     return unsortedList;
   }
@@ -84,6 +84,7 @@ class TaskProvider extends ChangeNotifier {
 
   void declineTask(Task task) {
     // For simplicity, we just leave the task as not accepted
+    task.isDeclined = true;
     notifyListeners();
   }
 
