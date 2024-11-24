@@ -24,6 +24,15 @@ class TaskProvider extends ChangeNotifier {
       assignedTo: 'JohnDoe',
     ),
     // Add more tasks
+    Task(
+      title: 'Bake cheese tarts',
+      deadline: DateTime.now().add(const Duration(days: 1)),
+      category: 'Cooking',
+      difficulty: 'Easy',
+      description: 'Bake cheese tarts following the recipe in the task descriptions',
+      rewardPoints: 15,
+      assignedTo: 'JohnDoe',
+    ),
   ];
   
 
