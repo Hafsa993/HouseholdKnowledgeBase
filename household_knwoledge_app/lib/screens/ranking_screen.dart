@@ -4,7 +4,7 @@ import '../widgets/menu_drawer.dart';
 
 class RankingScreen extends StatelessWidget {
 
-  final List<User> currUsers = [ 
+  final List<User> currUsers = <User>[ 
     User(username: 'JohnDoe',points: 100),
     User(username: 'Max',points: 125),
     User(username: 'Alex',points: 75),
@@ -106,4 +106,13 @@ class RankingScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+List<String> sortUsers(users) {
+
+    var userNames = <String>[];
+    for (User user in users){
+      userNames.add(user.username);
+    }
+    return userNames;
 }
