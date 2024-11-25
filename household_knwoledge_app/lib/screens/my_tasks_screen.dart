@@ -39,7 +39,7 @@ class MyTasksScreen extends StatelessWidget {
               "accepted Tasks:",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
             ),
-             SizedBox(height: 8),
+            SizedBox(height: 8),
             Expanded(
               child: ListView.builder(
                 itemCount: pendingTasks.length,
