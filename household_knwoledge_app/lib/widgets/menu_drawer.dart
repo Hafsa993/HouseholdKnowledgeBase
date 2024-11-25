@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/ranking_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/todo_list_screen.dart';
 import '../screens/my_tasks_screen.dart';
@@ -49,6 +50,12 @@ class MenuDrawer extends StatelessWidget {
             title: const Text('Calendar'),
             onTap: () {
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const CalendarScreen()));
+            },
+          ),
+          ListTile(
+            title: const Text('Ranking'),
+            onTap: () {
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) =>  RankingScreen()));
             },
           ),
           ListTile(
