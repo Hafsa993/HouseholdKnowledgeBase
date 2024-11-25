@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import '../widgets/menu_drawer.dart';
-import 'package:permission_handler/permission_handler.dart';
+//import 'package:permission_handler/permission_handler.dart';
 
 // import 'package:provider/provider.dart';
 // import '../providers/theme_provider.dart';
 
 class OptionsScreen extends StatelessWidget {
-  // Mock permissions data
-  final Map<String, bool> permissions = {
-    'Add Tasks': true,
-    'Delete Tasks': false,
-    'Modify Tasks': true,
-    // Add more permissions as needed
-  };
+
+  final ValueNotifier<bool> cameraPermissionEnabled = ValueNotifier(false);
+  final ValueNotifier<bool> galleryPermissionEnabled = ValueNotifier(false);
+  final ValueNotifier<bool> geolocationPermissionEnabled = ValueNotifier(false);
+  final ValueNotifier<bool> contactsPermissionEnabled = ValueNotifier(false);
 
   // Notification
   final ValueNotifier<bool> notificationsEnabled = ValueNotifier(true);
@@ -26,21 +24,18 @@ class OptionsScreen extends StatelessWidget {
   // Available languages
   final List<String> languages = ['English', 'Italian', 'German', 'French'];
 
-  Future<void> requestPermission(BuildContext context, Permission permission) async {
-    final status = await permission.request();
-    if (status.isGranted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${permission.toString()} granted')),
-      );
-    }
-    else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${permission.toString()} denied')),
-      );
-    }
-  }
-  
   OptionsScreen({super.key});
+
+  void togglePermission(BuildContext context, ValueNotifier<bool> permissionState, String permissionName) {
+    permissionState.value = !permissionState.value;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(permissionState.value
+            ? '$permissionName Enabled'
+            : '$permissionName Disabled'),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,39 +66,61 @@ class OptionsScreen extends StatelessWidget {
           ),
           const Divider(),
     
-          // List of Permissions
+          // Camera Permission
           ListTile(
             title: const Text('Camera Permission'),
-            trailing: ElevatedButton(
-              onPressed: () => requestPermission(context, Permission.camera),
-              child: const Text('Request'),
+            trailing: ValueListenableBuilder<bool>(
+              valueListenable: cameraPermissionEnabled,
+              builder: (context, isEnabled, child) {
+                return ElevatedButton(
+                  onPressed: () => togglePermission(context, cameraPermissionEnabled, "Camera Permission"),
+                  child: Text(isEnabled ? 'Disable' : 'Enable'),
+                );
+              },
             ),
           ),
-    
+
+          // Gallery Permission
           ListTile(
             title: const Text('Gallery Permission'),
-            trailing: ElevatedButton(
-              onPressed: () => requestPermission(context, Permission.photos),
-              child: const Text('Request'),
+            trailing: ValueListenableBuilder<bool>(
+              valueListenable: galleryPermissionEnabled,
+              builder: (context, isEnabled, child) {
+                return ElevatedButton(
+                  onPressed: () => togglePermission(context, galleryPermissionEnabled, "Gallery Permission"),
+                  child: Text(isEnabled ? 'Disable' : 'Enable'),
+                );
+              },
             ),
           ),
-    
+
+          // Geolocation Permission
           ListTile(
             title: const Text('Geolocation Permission'),
-            trailing: ElevatedButton(
-              onPressed: () => requestPermission(context, Permission.location),
-              child: const Text('Request'),
+            trailing: ValueListenableBuilder<bool>(
+              valueListenable: geolocationPermissionEnabled,
+              builder: (context, isEnabled, child) {
+                return ElevatedButton(
+                  onPressed: () => togglePermission(context, geolocationPermissionEnabled, "Geolocation Permission"),
+                  child: Text(isEnabled ? 'Disable' : 'Enable'),
+                );
+              },
             ),
           ),
-    
+
+          // Contacts Permission
           ListTile(
             title: const Text('Contacts Permission'),
-            trailing: ElevatedButton(
-              onPressed: () => requestPermission(context, Permission.contacts),
-              child: const Text('Request'),
+            trailing: ValueListenableBuilder<bool>(
+              valueListenable: contactsPermissionEnabled,
+              builder: (context, isEnabled, child) {
+                return ElevatedButton(
+                  onPressed: () => togglePermission(context, contactsPermissionEnabled, "Contacts Permission"),
+                  child: Text(isEnabled ? 'Disable' : 'Enable'),
+                );
+              },
             ),
           ),
-          const Divider(),
     
           // List of Languages
           ValueListenableBuilder<String>(
@@ -141,20 +158,9 @@ class OptionsScreen extends StatelessWidget {
               );
             },
           ),
-          const Divider(),
-    
-          ...permissions.entries.map((entry) {
-            return SwitchListTile(
-              title: Text(entry.key),
-              value: entry.value,
-              onChanged: (value) {
-                // not updating the state for semplicity
-              },
-            );
-          }
-          ).toList(),
         ],
       ),
     );
   }
 }
+
