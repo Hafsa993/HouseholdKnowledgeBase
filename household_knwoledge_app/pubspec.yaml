@@ -33,6 +33,7 @@ dependencies:
   flutter_calendar_carousel: ^2.4.4
   provider: ^6.0.0
   intl: ^0.19.0 # Add this line
+  google_fonts: ^6.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -59,7 +60,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
+  assets:
+    - lib/assets/leaderboard.png
+    - lib/assets/
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

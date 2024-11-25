@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -17,27 +18,115 @@ class HomeScreen extends StatelessWidget {
     List<Task> urgentTasks = taskProvider.pendingTasks(currentUser.username);
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 211, 239, 247),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 6, 193, 240),
-        title: const Text('Home'),
+        title: Row(
+          children: [
+          const Icon(
+                Icons.home,
+                color: Color.fromARGB(255, 0, 0, 0),
+                size: 40,
+              ),
+          SizedBox(width: 10,),
+          const Text('Home'),
+        ],)
+        
       ),
       drawer: const MenuDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const Text(
-              'Top Users',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            SizedBox(
+              width: 400,
+              height: 255,
+              child: Stack(
+                children: [Stack(
+                  children: [Positioned(child: Column(
+                    /*children: [Image.asset("lib/assets/leaderboard.png", fit: BoxFit.scaleDown,),
+                    ], */
+                      children: [ClipRRect(
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: Image.asset("lib/assets/leaderboard.png", fit: BoxFit.scaleDown,),
+                      )],
+                  ))],
+                ),
+                const Positioned(
+                  top: 8,
+                  right: 125,
+                  child: Text(
+                    "Leaderboard",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.white,
+                      shadows: <Shadow>[
+      
+      Shadow(
+        offset: Offset(1.0, 1.0),
+        blurRadius: 2.0,
+        color: Color.fromARGB(124, 111, 163, 227),
+      ),
+    ],
+                    ),
+                  ),
+                ),/* 
+                const Positioned(
+                  top: 120,
+                  left: 10,
+                  child: Text(
+                    "Ends in 2d 23Hours",
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ), */
+                // Rank 1st
+                Positioned(
+                  top: 48,
+                  right: 150,
+                  child: rank(
+                      radius: 30.0,
+                      height: 2,
+                      image: "lib/assets/f.jpeg",
+                      name: "Max",
+                      point: "125"),
+                ),
+                // for rank 2nd
+                Positioned(
+                  top: 85,
+                  left: 45,
+                  child: rank(
+                      radius: 25.0,
+                      height: 2,
+                      image: "lib/assets/f.jpeg",
+                      name: "Sarah",
+                      point: "122"),
+                ),
+                // For 3rd rank
+                Positioned(
+                  top: 115,
+                  right: 48,
+                  child: rank(
+                      radius: 20.0,
+                      height: 2,
+                      image: "lib/assets/f.jpeg",
+                      name: "JohnDoe",
+                      point: "100"),
+                ),
+              ],
+              ),
             ),
+            // Rest of the home screen
             const SizedBox(height: 8),
             const SizedBox(height: 16),
             const Text(
               'Your pending Tasks',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            Expanded(
+             Expanded(
               child: urgentTasks.isEmpty
                   ? const Center(child: Text('No pending tasks!'))
                   : ListView.builder(
@@ -45,14 +134,14 @@ class HomeScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         Task task = urgentTasks[index];
                         return Card(
-  margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-  elevation: 4,
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(12),
-  ),
-  child: Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: Column(
+        margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Task Title
@@ -141,18 +230,73 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ],
-    ),
-  ),
-);
+          ),
+        ),
+      );
                       },
                     ),
-            ),
+            ), 
           ],
         ),
       ),
     );
   }
 
+  // Helper function for rank in the leaderboard
+  Column rank({
+    required double radius,
+    required double height,
+    required String image,
+    required String name,
+    required String point,
+  }) {
+    return Column(
+      children: [
+        CircleAvatar(
+          radius: radius,
+          backgroundImage: AssetImage(image),
+        ),
+        SizedBox(
+          height: height,
+        ),
+        Text(
+          name,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+        ),
+        SizedBox(
+          height: height,
+        ),
+        Container(
+          height: 20,
+          width: 60,
+          decoration: BoxDecoration(
+              color: Colors.black54, borderRadius: BorderRadius.circular(50)),
+          child: Row(
+            children: [
+              const SizedBox(
+                width: 5,
+              ),
+              const Icon(
+                CupertinoIcons.smiley,
+                color: Color.fromARGB(255, 255, 187, 0),
+                size: 16,
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(
+                point,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 10,
+                    color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
   // Helper to show accept dialog
   void _showAcceptDialog(BuildContext context, Task task, TaskProvider taskProvider) {
     showDialog(
