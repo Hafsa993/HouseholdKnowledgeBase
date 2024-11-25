@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/menu_drawer.dart';
 import 'package:permission_handler/permission_handler.dart';
+
 // import 'package:provider/provider.dart';
 // import '../providers/theme_provider.dart';
 
@@ -72,7 +73,7 @@ class OptionsScreen extends StatelessWidget {
     
           // List of Permissions
           ListTile(
-            title: const Text('Camera Permission')
+            title: const Text('Camera Permission'),
             trailing: ElevatedButton(
               onPressed: () => requestPermission(context, Permission.camera),
               child: const Text('Request'),
@@ -80,7 +81,7 @@ class OptionsScreen extends StatelessWidget {
           ),
     
           ListTile(
-            title: const Text('Gallery Permission')
+            title: const Text('Gallery Permission'),
             trailing: ElevatedButton(
               onPressed: () => requestPermission(context, Permission.photos),
               child: const Text('Request'),
@@ -88,7 +89,7 @@ class OptionsScreen extends StatelessWidget {
           ),
     
           ListTile(
-            title: const Text('Geolocation Permission')
+            title: const Text('Geolocation Permission'),
             trailing: ElevatedButton(
               onPressed: () => requestPermission(context, Permission.location),
               child: const Text('Request'),
@@ -96,7 +97,7 @@ class OptionsScreen extends StatelessWidget {
           ),
     
           ListTile(
-            title: const Text('Contacts Permission')
+            title: const Text('Contacts Permission'),
             trailing: ElevatedButton(
               onPressed: () => requestPermission(context, Permission.contacts),
               child: const Text('Request'),
@@ -150,7 +151,8 @@ class OptionsScreen extends StatelessWidget {
                 // not updating the state for semplicity
               },
             );
-          }).toList(),
+          }
+          ).toList(),
         ],
       ),
     );
