@@ -3,8 +3,16 @@ import '../models/user_model.dart';
 import '../widgets/menu_drawer.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart';
+import 'dart:io';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   final User currentUser = User(username: 'JohnDoe', points: 100);
   XFile? _image;
   final ImagePicker _picker = ImagePicker();
@@ -14,7 +22,9 @@ class ProfileScreen extends StatelessWidget {
     try {
       final XFile? image = await _picker.pickImage(source: source);
       if (image != null) {
+        setState(() {
         _image = image;
+        });
       }
     }
     on PlatformException catch (e) {
@@ -37,7 +47,7 @@ class ProfileScreen extends StatelessWidget {
               },
             ),
             TextButton(
-              child: const Text("Cancel"),
+              child: const Text("Logout"),
               onPressed: () {
                 // for semplicity we won't make the logout implementation for now
                 Navigator.of(context).pop();
@@ -50,7 +60,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  ProfileScreen({super.key}); // Example user with points
+// ProfileScreen({super.key}); // Example user with points
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +83,8 @@ class ProfileScreen extends StatelessWidget {
                 radius: 60,
                 backgroundImage: _image == null
                   ? const AssetImage('assets/default_avatar.png')
-                  : FileImage(_image!.path) as ImageProvider,
+                  //: FileImage(_image!.path) as ImageProvider,
+                  : FileImage(File(_image!.path)),
               ),
             ),
             const SizedBox(height: 16),            
@@ -86,13 +97,13 @@ class ProfileScreen extends StatelessWidget {
               'Total Points: ${currentUser.points}',
               style: const TextStyle(fontSize: 24),
             ),
-            const SizedBox(heigh: 32),
+            const SizedBox(height: 32),
             
             // Exit
             ElevatedButton(
               onPressed: () => _showExitConfirm(context),
               style: ElevatedButton.styleFrom(
-                primary: Colors.red,
+                backgroundColor: Colors.red,
               ),
               child: const Text("Exit Account"),
             ),
