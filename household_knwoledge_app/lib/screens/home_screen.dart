@@ -163,9 +163,11 @@ class HomeScreen extends StatelessWidget {
               children: [
                 Text(
                   'Due: ${DateFormat('dd-MM-yyyy HH:mm').format(task.deadline)}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
-                    color: Colors.black54,
+                    color: task.deadline.difference(DateTime.now()).inHours < 24
+                                    ? Colors.red // Red if due in less than 24 hours
+                                    : Colors.black54
                   ),
                 ),
                 const SizedBox(height: 4),
