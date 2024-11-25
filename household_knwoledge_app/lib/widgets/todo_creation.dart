@@ -28,7 +28,7 @@ class _ToDoFormState extends State<ToDoForm> {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Text('Create To-Do'),
+          const Text('Create Task'),
           TextField(
             controller: todoLabelController,
             decoration: InputDecoration(
@@ -66,7 +66,7 @@ class _ToDoFormState extends State<ToDoForm> {
               ),
               ElevatedButton(
                 onPressed: () {
-                    Task newtask = Task(title: todoLabelController.text, deadline: DateTime.parse(todoDueDateController.text), category: "", difficulty: 'extra hard', description: '');
+                    Task newtask = Task(title: todoLabelController.text, deadline: DateTime.parse(todoDueDateController.text), category: "", difficulty: 'extra hard', description: '', assignedTo: 'JohnDoe');
                     TaskProvider taskProvider = Provider.of<TaskProvider>(context, listen: false);
                     taskProvider.addTask(newtask);
                     Navigator.pop(context);
@@ -75,7 +75,6 @@ class _ToDoFormState extends State<ToDoForm> {
               ) 
             ],
           ),
-
         ],
       ),
     );
@@ -87,12 +86,11 @@ class _ToDoFormState extends State<ToDoForm> {
     firstDate: DateTime.now(), 
     lastDate: DateTime.now().add(Duration(days: 22))
   );
-  if (picked != null){
-    setState(() {
-      todoDueDateController.text = picked.toString().split(" ")[0];
-    });
+  picked ??= DateTime.now();
+  setState(() {
+    todoDueDateController.text = picked.toString().split(" ")[0];
+  });
   }
-}
 }
 
 

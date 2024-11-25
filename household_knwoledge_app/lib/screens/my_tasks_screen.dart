@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:household_knwoledge_app/widgets/confirm_task_completion.dart';
+import 'package:household_knwoledge_app/widgets/todo_creator_button.dart';
 import 'package:provider/provider.dart';
 import '../models/task_model.dart';
 import '../models/task_provider.dart';
@@ -18,7 +20,7 @@ class MyTasksScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 211, 239, 247),
       appBar: AppBar(backgroundColor: Color.fromARGB(255, 6, 193, 240),
-        title: const Text('My Tasks'),
+        title: const Text('My To-Dos'),
       ),
       drawer: const MenuDrawer(),
       body: ListView.builder(
@@ -33,9 +35,11 @@ class MyTasksScreen extends StatelessWidget {
                 value: task.isCompleted,
                 onChanged: (value) {
                   if (value == true) {
-                    taskProvider.completeTask(task);
-                    // Add reward points to the user
-                    currentUser.addPoints(task.rewardPoints);
+                    showDialog(context: context, 
+                      builder: (BuildContext context) => Dialog(
+                          child: ConfirmTaskCompleted(task, currentUser),
+                      ),
+                    );
                   }
                 },
               ),
@@ -43,6 +47,7 @@ class MyTasksScreen extends StatelessWidget {
           );
         },
       ),
+      floatingActionButton:  ToDoCreator(),
     );
   }
 }

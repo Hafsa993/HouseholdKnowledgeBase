@@ -28,19 +28,19 @@ class MenuDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('To-Do List'),
-            onTap: () {
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ToDoListScreen()));
-            },
-          ),
-          ListTile(
-            title: const Text('My Tasks'),
+            title: const Text('My To-Dos'),
             onTap: () {
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MyTasksScreen()));
             },
           ),
           ListTile(
-            title: const Text('Tasks'),
+            title: const Text('To-Dos Overview'),
+            onTap: () {
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ToDoListScreen()));
+            },
+          ),
+          ListTile(
+            title: const Text('Task Instructions'),
             onTap: () {
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => TasksScreen()));
             },

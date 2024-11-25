@@ -16,7 +16,7 @@ class ToDoListScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 211, 239, 247),
       appBar: AppBar(backgroundColor: Color.fromARGB(255, 6, 193, 240),
-        title: const Text('To-Do List'),
+        title: const Text('All To-Dos'),
       ),
       drawer: const MenuDrawer(),
       body: ListView.builder(
@@ -34,17 +34,6 @@ class ToDoListScreen extends StatelessWidget {
           );
         },
  
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color.fromARGB(255, 6, 193, 240),
-        onPressed: () => showDialog(context: context, 
-           builder: (BuildContext context) => Dialog(
-              child: ToDoForm(),
-           ),
-        ),
-        tooltip: 'Increment Counter',
-        child: 
-          const Icon(Icons.add),
       ),
     );
   }

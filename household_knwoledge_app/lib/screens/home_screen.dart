@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:household_knwoledge_app/widgets/todo_creation.dart';
+import 'package:household_knwoledge_app/widgets/todo_creator_button.dart';
 import 'package:provider/provider.dart';
 import '../models/task_model.dart';
 import '../models/task_provider.dart';
@@ -37,7 +39,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 16),
             // Pending Tasks
             const Text(
-              'Your pending Tasks',
+              'Open Tasks',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             Expanded(
@@ -79,6 +81,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton:  ToDoCreator(),
     );
   }
 }
