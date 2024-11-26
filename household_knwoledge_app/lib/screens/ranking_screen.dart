@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:household_knwoledge_app/models/task_provider.dart';
+import 'package:household_knwoledge_app/models/user_provider.dart';
+import 'package:provider/provider.dart';
 import '../models/user_model.dart';
 import '../widgets/menu_drawer.dart';
 
 class RankingScreen extends StatelessWidget {
 
-  final List<User> currUsers = <User>[ 
-    User(username: 'JohnDoe',points: 100),
-    User(username: 'Max',points: 125),
-    User(username: 'Alex',points: 75),
-    User(username: 'Anna',points: 90),
-    User(username: 'Marie',points: 100),
-    User(username: 'Sarah',points: 122)
-    ];
+ 
 
    RankingScreen({super.key}); 
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    
+    var currUsers = userProvider.currUsers;
     
     currUsers.sort((a, b) {
       if (b.points == a.points) {

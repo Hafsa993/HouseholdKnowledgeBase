@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:household_knwoledge_app/models/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'models/task_provider.dart';
 import 'screens/home_screen.dart';
 //hi
-void main() {
+void main() async {
+   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => TaskProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider())
         // You can add UserProvider here if needed
       ],
       child: const HouseholdApp(),

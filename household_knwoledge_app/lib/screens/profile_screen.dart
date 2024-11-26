@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:household_knwoledge_app/models/user_provider.dart';
+import 'package:provider/provider.dart';
+import '../models/task_provider.dart';
 import '../models/user_model.dart';
 import '../widgets/menu_drawer.dart';
 import 'package:image_picker/image_picker.dart';
@@ -129,6 +132,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+     final userProvider = Provider.of<UserProvider>(context);
+    
+    User currentUser = userProvider.currUsers[0];
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 211, 239, 247),
       appBar: AppBar(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:household_knwoledge_app/widgets/todo_creator_button.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../models/task_model.dart';
 import '../models/task_provider.dart';
@@ -26,15 +28,23 @@ class ToDoListScreen extends StatelessWidget {
           return Card(
             child: ListTile(
               title: Text(task.title),
-              subtitle: Text('Due: ${task.deadline.toLocal()}'),
+              subtitle: Text('Due: ${DateFormat('dd-MM-yyyy HH:mm').format(task.deadline)}',
+                                style:  TextStyle(
+                                  fontSize: 14,
+                                  color: task.deadline.difference(DateTime.now()).inHours < 24
+                                    ? Colors.red // Red if due in less than 24 hours
+                                    : Colors.black54, // Default color),
+                                                  ),
+                              ),
               trailing: task.isAccepted
-                  ? Text('Accepted by ${task.acceptedBy}')
-                  : const Text('Unassigned', style: TextStyle(color: Colors.red)),
+                  ? Text('Accepted by ${task.assignedTo}', style :TextStyle(color: Colors.green) )
+                  :  Text('Assigned to ${task.assignedTo == ''? "Unassigned" : task.assignedTo}', style: task.assignedTo == ''?  TextStyle(color: Colors.red): null),
             ),
           );
         },
  
       ),
+      floatingActionButton:  ToDoCreator(),
     );
   }
 }
