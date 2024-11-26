@@ -30,7 +30,7 @@ class HomeScreen extends StatelessWidget {
               ),
           SizedBox(width: 10,),
           const Text('Home'),
-        ],)
+        ],),
         
       ),
       drawer: const MenuDrawer(),
