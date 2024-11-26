@@ -6,7 +6,6 @@ import '../models/task_model.dart';
 import '../models/task_provider.dart';
 import '../models/user_model.dart';
 import '../widgets/menu_drawer.dart';
-import 'package:household_knwoledge_app/widgets/todo_creation.dart';
 import 'package:household_knwoledge_app/widgets/todo_creator_button.dart';
 
 class HomeScreen extends StatelessWidget {

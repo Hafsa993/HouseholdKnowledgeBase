@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:household_knwoledge_app/models/task_provider.dart';
 import 'package:household_knwoledge_app/models/user_provider.dart';
 import 'package:provider/provider.dart';
 import '../models/user_model.dart';
@@ -9,7 +8,7 @@ class RankingScreen extends StatelessWidget {
 
  
 
-   RankingScreen({super.key}); 
+   const RankingScreen({super.key}); 
 
   @override
   Widget build(BuildContext context) {
