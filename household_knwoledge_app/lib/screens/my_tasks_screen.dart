@@ -20,7 +20,7 @@ class MyTasksScreen extends StatelessWidget {
 
     // Separate tasks into pending and completed
     List<Task> pendingTasks = taskProvider.myTasks(currentUser.username);
-    List<Task> completedTasks = taskProvider.myCompletedTasks(currentUser.username);;
+    List<Task> completedTasks = taskProvider.myCompletedTasks(currentUser.username);
 
     return Scaffold(
       backgroundColor:  Color.fromARGB(255, 211, 239, 247),
