@@ -15,7 +15,7 @@ class CalendarScreen extends StatelessWidget {
     List<Task> tasks = taskProvider.toDoList.where((task) => !task.isCompleted).toList();
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 211, 239, 247),
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(backgroundColor: Color.fromARGB(255, 6, 193, 240),
         title: const Text('Calendar'),
       ),
@@ -28,11 +28,33 @@ class CalendarScreen extends StatelessWidget {
               context: context,
               builder: (context) {
                 return AlertDialog(
-                  title: Text('Tasks for ${date.toLocal()}'),
-                  content: Column(
+                  title: Text('Tasks for ${dateOnly(date.toLocal())}'),
+                  /* content: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: tasksForDate.map((task) => Text(task.title)).toList(),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: tasksForDate.map((task) => Text(task.title)).toList(), 
+                  ), */
+                  insetPadding: EdgeInsets.symmetric(
+                    horizontal: 50.0,
+                    vertical: 200.0,
                   ),
+                  content: Container(
+                    width: double.maxFinite,
+                    child: 
+                    ListView.builder(
+                      itemCount: tasksForDate.length,
+                      itemBuilder: (context, index) {
+                        Task lvtask = tasksForDate[index];
+                        return Card(
+                          child: ListTile(
+                            title: Text(lvtask.title),
+                            subtitle: Text(dateOnly(lvtask.deadline.toLocal())),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
@@ -45,8 +67,10 @@ class CalendarScreen extends StatelessWidget {
           }
         },
         weekendTextStyle: const TextStyle(color: Colors.red),
+        
         thisMonthDayBorderColor: Colors.grey,
         markedDatesMap: _getMarkedDates(tasks),
+        firstDayOfWeek: 1,
       ),
     );
   }
@@ -66,4 +90,11 @@ class CalendarScreen extends StatelessWidget {
     }
     return markedDateMap;
   }
+}
+
+// converts a date of DateTime type to a String containing only the date
+String dateOnly(DateTime date){
+  //date = DateTime.parse(date);
+  var formattedDate = "${date.day}-${date.month}-${date.year}";
+  return formattedDate;
 }

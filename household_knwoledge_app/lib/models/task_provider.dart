@@ -15,6 +15,42 @@ class TaskProvider extends ChangeNotifier {
       assignedTo: "JohnDoe",
     ),
     Task(
+      title: 'Bake cheese tarts',
+      deadline: DateTime.now().add(const Duration(days: 1)),
+      category: 'Cooking',
+      difficulty: 'Easy',
+      description: 'Bake cheese tarts following the recipe in the task descriptions',
+      rewardPoints: 15,
+      assignedTo: 'JohnDoe',
+    ),
+    Task(
+      title: 'Prepare for trouble',
+      deadline: DateTime.now().add(const Duration(days: 1)),
+      category: 'Cooking',
+      difficulty: 'Easy',
+      description: 'Bake cheese tarts following the recipe in the task descriptions',
+      rewardPoints: 15,
+      assignedTo: 'JohnDoe',
+    ),
+    Task(
+      title: 'Take out trash',
+      deadline: DateTime.now().add(const Duration(days: 1)),
+      category: 'Cooking',
+      difficulty: 'Easy',
+      description: 'Bake cheese tarts following the recipe in the task descriptions',
+      rewardPoints: 15,
+      assignedTo: 'JohnDoe',
+    ),
+    Task(
+      title: 'Clean the fish tank',
+      deadline: DateTime.now().add(const Duration(days: 1)),
+      category: 'Cooking',
+      difficulty: 'Easy',
+      description: 'Bake cheese tarts following the recipe in the task descriptions',
+      rewardPoints: 15,
+      assignedTo: 'JohnDoe',
+    ),
+    Task(
       title: 'Do Laundry',
       deadline: DateTime.now().add(const Duration(days: 2)),
       category: 'Household',
@@ -31,7 +67,7 @@ class TaskProvider extends ChangeNotifier {
     // Return the most urgent, unaccepted Tasks assgned to me
 
 
-    List<Task> unsortedList = toDoList.where((task) => !task.isAccepted && task.assignedTo.compareTo(username) == 0).toList();      
+    List<Task> unsortedList = toDoList.where((task) => !task.isAccepted && !task.isDeclined && task.assignedTo.compareTo(username) == 0).toList();      
     unsortedList.sort((a, b) => a.deadline.compareTo(b.deadline));
     return unsortedList;
   }
@@ -39,7 +75,9 @@ class TaskProvider extends ChangeNotifier {
   List<Task> myTasks(String username) {
     return toDoList.where((task) => task.acceptedBy == username && !task.isCompleted).toList();
   }
-
+  List<Task> myCompletedTasks(String username) {
+    return toDoList.where((task) => task.acceptedBy == username && task.isCompleted).toList();
+  }
   void acceptTask(Task task, String username) {
     task.isAccepted = true;
     task.acceptedBy = username;
@@ -48,6 +86,7 @@ class TaskProvider extends ChangeNotifier {
 
   void declineTask(Task task) {
     // For simplicity, we just leave the task as not accepted
+    task.isDeclined = true;
     notifyListeners();
   }
 
