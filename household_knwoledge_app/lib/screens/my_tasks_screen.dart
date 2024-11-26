@@ -105,7 +105,7 @@ class MyTasksScreen extends StatelessWidget {
 
                             },
                             icon:  Icon(Icons.check),
-                            label:  Text("Completed"),
+                            label:  Text("Complete"),
                           ),
                         ],
                       ),
