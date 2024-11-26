@@ -6,6 +6,8 @@ import '../models/task_model.dart';
 import '../models/task_provider.dart';
 import '../models/user_model.dart';
 import '../widgets/menu_drawer.dart';
+import 'package:household_knwoledge_app/widgets/todo_creation.dart';
+import 'package:household_knwoledge_app/widgets/todo_creator_button.dart';
 
 class HomeScreen extends StatelessWidget {
   final User currentUser = User(username: 'JohnDoe'); // Example user
@@ -123,7 +125,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 8),
             const SizedBox(height: 16),
             const Text(
-              'Your pending Tasks',
+              'Open Tasks',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
              Expanded(
@@ -241,6 +243,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton:  ToDoCreator(),
     );
   }
 

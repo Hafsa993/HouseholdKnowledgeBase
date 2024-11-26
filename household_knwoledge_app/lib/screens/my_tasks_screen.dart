@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
+import 'package:household_knwoledge_app/widgets/confirm_task_completion.dart';
+import 'package:household_knwoledge_app/widgets/todo_creator_button.dart';
 import 'package:provider/provider.dart';
 import '../models/task_model.dart';
 import '../models/task_provider.dart';
@@ -37,7 +39,7 @@ class MyTasksScreen extends StatelessWidget {
               "accepted Tasks:",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
             ),
-             SizedBox(height: 8),
+            SizedBox(height: 8),
             Expanded(
               child: ListView.builder(
                 itemCount: pendingTasks.length,
@@ -155,6 +157,7 @@ class MyTasksScreen extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton:  ToDoCreator(),
     );
   }
 }
