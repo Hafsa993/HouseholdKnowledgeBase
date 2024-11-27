@@ -5,6 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -19,11 +21,88 @@ class _ProfileScreenState extends State<ProfileScreen> {
     points: 100,
     role: 'child',
     preferences: ['Cleaning', 'Cooking'],
-    contributions: {'Cleaning': 50, 'Laundry': 30, 'Cooking': 20},
+    contributions: {'Cleaning': 50, 'Garden': 30, 'Cooking': 20},
   );
 
   XFile? _image;
   final ImagePicker _picker = ImagePicker();
+
+  Future<void> _updatePermissionStatus(String key, bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(key, value);
+  }
+
+  Future<void> _checkAndOpenImageSource(ImageSource source) async {
+    if (source == ImageSource.camera) {
+      var status = await Permission.camera.status;
+      if (!status.isGranted) {
+        _showPermissionDialog(
+          context,
+          'Camera',
+          'cameraPermissionEnabled',
+          Permission.camera,
+          () => _pickImage(source),
+        );
+        return;
+      }
+    } else if (source == ImageSource.gallery) {
+      var status = await Permission.photos.status;
+      if (!status.isGranted) {
+        _showPermissionDialog(
+          context,
+          'Gallery',
+          'galleryPermissionEnabled',
+          Permission.photos,
+          () => _pickImage(source),
+        );
+        return;
+      }
+    }
+    _pickImage(source); // Permission already granted
+  }
+
+  void _showPermissionDialog(
+    BuildContext context,
+    String permissionName,
+    String prefsKey,
+    Permission permission,
+    VoidCallback onPermissionGranted,
+  ) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("$permissionName Permission Required"),
+          content: Text(
+            "To proceed, you need to enable $permissionName permissions. Would you like to enable it now?",
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+                final status = await permission.request();
+                if (status.isGranted) {
+                  await _updatePermissionStatus(prefsKey, true);
+                  onPermissionGranted();
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("$permissionName permission denied."),
+                    ),
+                  );
+                }
+              },
+              child: const Text("Enable"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   // Pick image from Gallery or Camera
   Future<void> _pickImage(ImageSource source) async {
@@ -31,7 +110,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final XFile? image = await _picker.pickImage(source: source);
       if (image != null) {
         setState(() {
-        _image = image;
+          _image = image;
         });
       }
     }
@@ -90,10 +169,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     switch (task) {
       case 'Cleaning':
         return Colors.blue;
-      case 'Laundry':
+      case 'Garden':
         return Colors.green;
       case 'Cooking':
-        return Colors.orange;
+        return Colors.red;
       default:
         return Colors.grey;
     }
@@ -110,14 +189,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                _pickImage(ImageSource.camera);
+                _checkAndOpenImageSource(ImageSource.camera);
               },
               child: const Text("Camera"),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                _pickImage(ImageSource.gallery);
+                _checkAndOpenImageSource(ImageSource.gallery);
               },
               child: const Text("Gallery"),
             ),
