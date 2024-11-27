@@ -24,10 +24,33 @@ class MenuDrawer extends StatelessWidget {
             child: ListView(
               children: [
                 SizedBox(
-                  height: 100,
+                  height: 150,
+                  // enable clicking on the avatar and name, add a log out function? remove the profile option 
                   child: const DrawerHeader(
-                    decoration: BoxDecoration(color: Color.fromARGB(255, 211, 239, 247)),
-                    child: Text('Menu', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 24)),
+                    decoration: BoxDecoration(color: Colors.blue),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          top:10,
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 40,
+                                backgroundImage: AssetImage("lib/assets/f.jpeg"),
+                              ),
+                              SizedBox(width: 20,),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 40,),
+                                  Text('JohnDoe', style: TextStyle(color: Colors.white, fontSize: 24)),
+                                  Text('Child', style: TextStyle(color: Color.fromARGB(255, 213, 213, 213), fontSize: 18))
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
+                      ],),
                   ),
                 ),
                 ListTile(
@@ -84,14 +107,15 @@ class MenuDrawer extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: 
             Align(
               alignment: Alignment.bottomLeft,
               child: ListView(
                 shrinkWrap: true,
                 children: [
-              Divider(indent: 20, color: const Color.fromARGB(255, 83, 115, 140)),
+                  SizedBox(height: 30,),
+              Divider(indent: 20, endIndent: 20, color: const Color.fromARGB(255, 83, 115, 140)),
                   ListTile(
                     leading: const Icon(
                         CupertinoIcons.person_crop_circle,
@@ -116,7 +140,7 @@ class MenuDrawer extends StatelessWidget {
                     },
                   ),
                         ],),
-            ))
+            )),
           
         ],
       ),
