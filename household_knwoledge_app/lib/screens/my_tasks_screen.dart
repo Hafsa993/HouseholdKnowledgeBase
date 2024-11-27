@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:household_knwoledge_app/models/user_provider.dart';
 import 'package:intl/intl.dart';
-import 'package:household_knwoledge_app/widgets/confirm_task_completion.dart';
 import 'package:household_knwoledge_app/widgets/todo_creator_button.dart';
 import 'package:provider/provider.dart';
 import '../models/task_model.dart';
@@ -10,12 +10,14 @@ import '../models/user_model.dart';
 import '../widgets/menu_drawer.dart';
 
 class MyTasksScreen extends StatelessWidget {
-  final User currentUser = User(username: 'JohnDoe');
 
-  MyTasksScreen({super.key}); // Example user
+  const MyTasksScreen({super.key}); // Example user
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    
+    User currentUser = userProvider.currUsers[0];
     TaskProvider taskProvider = Provider.of<TaskProvider>(context);
 
     // Separate tasks into pending and completed
@@ -105,7 +107,7 @@ class MyTasksScreen extends StatelessWidget {
 
                             },
                             icon:  Icon(Icons.check),
-                            label:  Text("Completed"),
+                            label:  Text("Complete"),
                           ),
                         ],
                       ),

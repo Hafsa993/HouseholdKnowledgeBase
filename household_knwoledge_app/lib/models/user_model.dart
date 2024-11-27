@@ -1,7 +1,7 @@
 class User {
   String username;
   int points;
-  String role; // child
+  String role; // e.g., 'child', 'parent'
   List<String> preferences; 
   Map<String, int> contributions; 
 
@@ -29,3 +29,7 @@ class User {
     contributions = newContributions;
   }
 }
+
+// Create user instances outside the class
+
+

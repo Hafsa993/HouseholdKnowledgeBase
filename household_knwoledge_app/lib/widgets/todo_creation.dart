@@ -1,116 +1,391 @@
+// lib/widgets/todo_creation.dart
+
 import 'package:flutter/material.dart';
+import 'package:household_knwoledge_app/models/task_model.dart';
 import 'package:household_knwoledge_app/models/task_provider.dart';
+import 'package:household_knwoledge_app/models/user_model.dart';
+import 'package:household_knwoledge_app/models/user_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:household_knwoledge_app/screens/ranking_screen.dart';
-
-import '../models/task_model.dart';
-
+import 'package:intl/intl.dart';
 class ToDoForm extends StatefulWidget {
-  const ToDoForm({super.key});
+  const ToDoForm({Key? key}) : super(key: key);
+
   @override
   State<ToDoForm> createState() => _ToDoFormState();
 }
+
 class _ToDoFormState extends State<ToDoForm> {
-  final todoLabelController = TextEditingController();
-  final todoDueDateController = TextEditingController();
-  final currentUser = "JohnDoe";
-  var selectedUser = "JohnDoe";
-  final allUsers = RankingScreen().currUsers;
+  // Stepper current step
+  int _currentStep = 0;
+
+  // Form fields
+  String? _selectedCategory;
+  String? _selectedUser;
+  String _taskTitle = '';
+  String _difficulty = 'Easy';
+  String _description = '';
+  int _rewardPoints = 0;
+  DateTime? _selectedDeadline;
+
+  // Controllers
+  final TextEditingController _deadlineController = TextEditingController();
+  final TextEditingController _rewardPointsController = TextEditingController();
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is disposed.
-    todoLabelController.dispose();
+    _deadlineController.dispose();
+    _rewardPointsController.dispose();
     super.dispose();
+  }
+
+  // Categories
+  final List<String> _categories = ['Cooking','Cleaning', 'Laundry', 'Gardening', 'Others'];
+
+  // Difficulties
+  final List<String> _difficulties = ['Easy', 'Medium', 'Hard'];
+
+  // Helper method to select date
+Future<void> _selectDateTime(BuildContext context) async {
+  DateTime initialDate = DateTime.now().add(Duration(days: 1));
+  DateTime firstDate = DateTime.now();
+  DateTime lastDate = DateTime.now().add(Duration(days: 365));
+
+  final DateTime? pickedDate = await showDatePicker(
+    context: context,
+    initialDate: _selectedDeadline ?? initialDate,
+    firstDate: firstDate,
+    lastDate: lastDate,
+  );
+
+  if (pickedDate != null) {
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(_selectedDeadline ?? DateTime.now()),
+    );
+
+    if (pickedTime != null) {
+      setState(() {
+        _selectedDeadline = DateTime(
+          pickedDate.year,
+          pickedDate.month,
+          pickedDate.day,
+          pickedTime.hour,
+          pickedTime.minute,
+        );
+        _deadlineController.text = DateFormat('yyyy-MM-dd HH:mm').format(_selectedDeadline!);
+      });
+    }
+  }
+}
+
+
+  // Method to sort users based on category preferences
+  List<User> _getSortedUsers(UserProvider userProvider) {
+    List<User> users = userProvider.currUsers;
+
+    // Separate users with the selected category in their preferences
+    List<User> preferredUsers = [];
+    List<User> otherUsers = [];
+
+    if (_selectedCategory != null) {
+      for (var user in users) {
+        if (user.preferences.contains(_selectedCategory)) {
+          preferredUsers.add(user);
+        } else {
+          otherUsers.add(user);
+        }
+      }
+    } else {
+      preferredUsers = users;
+      otherUsers = [];
+    }
+
+    // Combine the lists with preferred users first
+    return [...preferredUsers, ...otherUsers];
+  }
+
+  // Method to get color for user based on preference
+  Color _getUserColor(User user) {
+    if (_selectedCategory != null && user.preferences.contains(_selectedCategory)) {
+      return Colors.green; // Preferred users in green
+    } else {
+      return Colors.blueGrey; // Others in blue-grey
+    }
+  }
+  bool isPreferred(User user) {return _selectedCategory != null && user.preferences.contains(_selectedCategory);}
+
+  // Method to validate and move to next step
+  void _continue() {
+    if (_currentStep == 0) {
+      if (_selectedCategory == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Please select a category')),
+        );
+        return;
+      }
+    } else if (_currentStep == 1) {
+      // No validation needed for assigning to user
+    } else if (_currentStep == 2) {
+      // Validate task details
+      if (_taskTitle.trim().isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Please enter the task title')),
+        );
+        return;
+      }
+      if (_selectedDeadline == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Please select a deadline')),
+        );
+        return;
+      }
+      if (_rewardPointsController.text.trim().isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Please enter reward points')),
+        );
+        return;
+      }
+      if (int.tryParse(_rewardPointsController.text.trim()) == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Reward points must be an integer')),
+        );
+        return;
+      }
+
+      // All validations passed, proceed to create task
+      _rewardPoints = int.parse(_rewardPointsController.text.trim());
+
+      // Create Task object
+      Task newTask = Task(
+        title: _taskTitle.trim(),
+        deadline: _selectedDeadline!,
+        category: _selectedCategory!,
+        difficulty: _difficulty,
+        description: _description.trim(),
+        rewardPoints: _rewardPoints,
+        assignedTo: _selectedUser ?? '', // Assigned to selected user or 'No One'
+      );
+      
+//print('Task Created: ${newTask.title}, Assigned To: ${newTask.assignedTo}'); // Debug print
+      
+
+      // Add task via TaskProvider
+      Provider.of<TaskProvider>(context, listen: false).addTask(newTask);
+
+
+
+      // Close the dialog
+      Navigator.of(context).pop();
+    }
+
+    setState(() {
+      if (_currentStep < 2) {
+        _currentStep += 1;
+      }
+    });
+  }
+
+  // Method to go back to previous step
+  void _cancel() {
+    if (_currentStep > 0) {
+      setState(() {
+        _currentStep -= 1;
+      });
+    } else {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Text('Create Task'),
-          TextField( //set label
-            controller: todoLabelController,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Label'
-            )
-          ),
-          TextField( //choose date
-            decoration: InputDecoration(
-              labelText: 'Due by',
-              filled: true,
-              prefixIcon: Icon(Icons.calendar_today),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide.none,
+    final userProvider = Provider.of<UserProvider>(context);
+    List<User> sortedUsers = _getSortedUsers(userProvider);
+
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Stepper(
+          type: StepperType.vertical,
+          currentStep: _currentStep,
+          onStepContinue: _continue,
+          onStepCancel: _cancel,
+          controlsBuilder: (BuildContext context, ControlsDetails details) {
+            return Row(
+              children: <Widget>[
+                ElevatedButton(
+                  onPressed: details.onStepContinue,
+                  child: Text(_currentStep == 2 ? 'Create' : 'Next'),
+                ),
+                SizedBox(width: 8),
+                TextButton(
+                  onPressed: details.onStepCancel,
+                  child: Text(_currentStep == 0 ? 'Close' : 'Back'),
+                ),
+              ],
+            );
+          },
+          steps: [
+            // Step 1: Select Category
+            Step(
+              title: Text('Select Category'),
+              isActive: _currentStep >= 0,
+              state: _currentStep > 0 ? StepState.complete : StepState.editing,
+              content: DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  labelText: 'Category',
+                  border: OutlineInputBorder(),
+                ),
+                value: _selectedCategory,
+                items: _categories.map((String category) {
+                  return DropdownMenuItem<String>(
+                    value: category,
+                    child: Text(category),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedCategory = newValue;
+                    // Reset assigned user if category changes
+                   
+                  });
+                },
+                validator: (value) => value == null ? 'Please select a category' : null,
               ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.blue)
-              )
             ),
-            readOnly: true,
-            onTap: (){
-              _selectDate();
-            },
-            controller: todoDueDateController,
-          ),
-          Text("Assign user:"),
-          DropdownButton( //assign user
-            value: selectedUser,
-            items: sortUsers(allUsers).map( (items) {
-                return DropdownMenuItem(
-                  value: items,
-                  child: Text(items),
-                );
-              }).toList(),
-            onChanged: (String? newValue) { 
-                setState(() {
-                  selectedUser = newValue!;
-                });
-              },
-          ),
-          const SizedBox(height: 15),
-          Row( 
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
+
+            // Step 2: Assign to User
+            Step(
+              title: Text('Assign to User'),
+              isActive: _currentStep >= 1,
+              state: _currentStep > 1 ? StepState.complete : StepState.editing,
+              content: DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  labelText: 'Assign To',
+                  border: OutlineInputBorder(), //borderRadius :const BorderRadius.all(Radius.circular(2.0)),gapPadding:  0.0),
+                ),
+                value: _selectedUser,
+                items: [
+                  DropdownMenuItem<String>(
+                    value: '',
+                    child: Text('No One'),
+                  ),
+                  ...sortedUsers.map((User user) {
+                    return DropdownMenuItem<String>(
+                      value: user.username,
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: _getUserColor(user),
+                            radius: 5,
+                          ),
+                          SizedBox(width: 8),
+                          Text(user.username),
+                          SizedBox(width: 1),
+                          Text(isPreferred(user)?"  prefers this":'',style: TextStyle(color: Color.fromRGBO(52, 240, 15, 1),fontStyle: FontStyle.italic, fontSize: 12 )),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ],
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedUser = newValue;
+                     _selectedUser = newValue;
+        //print('Selected User: $_selectedUser');
+                  });
                 },
-                child: const Text('Close'),
               ),
-              ElevatedButton(
-                onPressed: () {
-                    Task newtask = Task(title: todoLabelController.text, deadline: DateTime.parse(todoDueDateController.text), category: "", difficulty: 'extra hard', description: '', assignedTo: selectedUser, acceptedBy: selectedUser, isAccepted: true);
-                    TaskProvider taskProvider = Provider.of<TaskProvider>(context, listen: false);
-                    taskProvider.addTask(newtask);
-                    Navigator.pop(context);
-                },
-                child: const Text("Create"),
-              ) 
-            ],
-          ),
-        ],
+            ),
+
+            // Step 3: Enter Task Details
+            Step(
+              title: Text('Task Details'),
+              isActive: _currentStep >= 2,
+              state: _currentStep > 2 ? StepState.complete : StepState.editing,
+              content: Column(
+                children: [
+                  // Task Title
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Task Title',
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (value) {
+                      _taskTitle = value;
+                    },
+                  ),
+                  SizedBox(height: 16),
+
+                  // Difficulty
+                      // Difficulty
+                  DropdownButtonFormField<String>(
+                    decoration: InputDecoration(
+                      labelText: 'Difficulty',
+                      border: OutlineInputBorder(),
+                    ),
+                    value: _difficulty,
+                    items: _difficulties.map((String level) {
+                      return DropdownMenuItem<String>(
+                        value: level,
+                        child: Text(level),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _difficulty = newValue!;
+                      });
+                    },
+                  ),
+                 
+                 
+                  SizedBox(height: 16),
+
+                  // Reward Points
+                  TextFormField(
+                    controller: _rewardPointsController,
+                    decoration: InputDecoration(
+                      labelText: 'Reward Points',
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter an integer value',
+                    ),
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      // Additional validation can be added here if needed
+                    },
+                  ),
+                  SizedBox(height: 16),
+
+                  // Deadline
+                  TextFormField(
+                    controller: _deadlineController,
+                    decoration: InputDecoration(
+                      labelText: 'Deadline',
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.calendar_today),
+                    ),
+                    readOnly: true,
+                    onTap: () => _selectDateTime(context),
+                  ),
+                  SizedBox(height: 16),
+
+                  // Description
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Description',
+                      border: OutlineInputBorder(),
+                      alignLabelWithHint: true,
+                    ),
+                    maxLines: 5,
+                    onChanged: (value) {
+                      _description = value;
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
-  Future<void> _selectDate() async {
-  DateTime? picked = await showDatePicker(
-    context: context,
-    initialDate: DateTime.now().add(Duration(days: 1)),
-    firstDate: DateTime.now(), 
-    lastDate: DateTime.now().add(Duration(days: 22))
-  );
-  picked ??= DateTime.now();
-  setState(() {
-    todoDueDateController.text = picked.toString().split(" ")[0];
-  });
-  }
 }
-
-
-
