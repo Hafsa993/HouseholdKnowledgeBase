@@ -21,7 +21,7 @@ class MenuDrawer extends StatelessWidget {
     User currUser = userProvider.getCurrUser();
 
     return Drawer(
-      backgroundColor: Color.fromARGB(255, 211, 239, 247),
+      //backgroundColor: Color.fromARGB(255, 211, 239, 247),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -35,11 +35,12 @@ class MenuDrawer extends StatelessWidget {
                   // This draws the header of the menu containing the profile 
                   child: DrawerHeader(
                     decoration: BoxDecoration(
-                      color: Colors.blue, 
+                      //color: Colors.blue, 
                       gradient: LinearGradient(
                         begin: Alignment.bottomCenter, 
                         end: Alignment.topCenter, 
-                        colors: [Colors.blue, Color.fromARGB(255, 211, 239, 247)],
+                        colors: [Theme.of(context).primaryColorLight, Theme.of(context).scaffoldBackgroundColor]
+                        //colors: [Colors.black12, Colors.white],
                       ),
                     ),
                     child: Stack(
@@ -64,9 +65,9 @@ class MenuDrawer extends StatelessWidget {
                                 onTap: () {
                                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ProfileScreen()));
                                 },
-                                child: Text(currUser.username, style: TextStyle(color: Colors.white, fontSize: 24))
+                                child: Text(currUser.username, style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0), fontSize: 24))
                               ),
-                              Text('${currUser.points} points', style: TextStyle(color: Color.fromARGB(255, 213, 213, 213), fontSize: 18)),
+                              Text('${currUser.points} points', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 18)),
                             ],
                           ),
                         )

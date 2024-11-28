@@ -61,9 +61,9 @@ class RankingScreen extends StatelessWidget {
       }
     }
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 211, 239, 247),
+      //backgroundColor: const Color.fromARGB(255, 211, 239, 247),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 6, 193, 240),
+        //backgroundColor: const Color.fromARGB(255, 6, 193, 240),
         title: const Text('Rankings'),
       ),
       drawer: const MenuDrawer(),

@@ -26,9 +26,9 @@ class MyTasksScreen extends StatelessWidget {
     List<Task> completedTasks = taskProvider.myCompletedTasks(currentUser.username);
 
     return Scaffold(
-      backgroundColor:  Color.fromARGB(255, 211, 239, 247),
+      //backgroundColor:  Color.fromARGB(255, 211, 239, 247),
       appBar: AppBar(
-        backgroundColor:  Color.fromARGB(255, 6, 193, 240),
+        //backgroundColor:  Color.fromARGB(255, 6, 193, 240),
         title:  Text('My ToDos'),
       ),
       drawer:  MenuDrawer(),
@@ -39,8 +39,17 @@ class MyTasksScreen extends StatelessWidget {
             // Tasks To-Do Section
             Container(
               decoration: BoxDecoration(
+                boxShadow: [
+      BoxShadow(
+        color: Colors.grey.withOpacity(0.5),
+        //spreadRadius: 5,
+        blurRadius: 5,
+        offset: Offset(0, 3), // changes position of shadow
+      ),
+    ],
                 borderRadius: BorderRadius.all(Radius.circular(50)),
-                color: const Color.fromARGB(255, 255, 255, 255), 
+                //color: const Color.fromARGB(255, 255, 255, 255), 
+                color: Theme.of(context).primaryColorLight,
                       /*
                       gradient: LinearGradient(
                         begin: Alignment.bottomCenter, 

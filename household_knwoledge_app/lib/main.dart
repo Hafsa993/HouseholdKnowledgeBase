@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:household_knwoledge_app/models/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'models/task_provider.dart';
@@ -28,9 +29,16 @@ class HouseholdApp extends StatelessWidget {
     return MaterialApp(
       title: 'Household App',
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        primarySwatch: Colors.blue,
+        //fontFamily: GoogleFonts.merriweather().toString(),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 102, 163, 255)),
+        brightness: Brightness.light,
 
+        textTheme: TextTheme(
+          titleLarge: GoogleFonts.merriweather(),
+          bodyMedium: GoogleFonts.merriweather(),
+          displayMedium: GoogleFonts.merriweather(),
+          labelMedium: GoogleFonts.merriweather(),
+        ),
       ),
       home: HomeScreen(),
     );

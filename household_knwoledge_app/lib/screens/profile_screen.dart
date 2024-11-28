@@ -130,9 +130,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     
     User currentUser = userProvider.getCurrUser();
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 211, 239, 247),
+      //backgroundColor: const Color.fromARGB(255, 211, 239, 247),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 6, 193, 240),
+        //backgroundColor: const Color.fromARGB(255, 6, 193, 240),
         title: const Text('My Profile'),
       ),
       drawer: const MenuDrawer(),

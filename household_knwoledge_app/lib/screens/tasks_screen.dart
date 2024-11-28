@@ -41,9 +41,9 @@ class _TasksScreenState extends State<TasksScreen> {
     });
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 211, 239, 247),
+      //backgroundColor: Color.fromARGB(255, 211, 239, 247),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 6, 193, 240),
+        //backgroundColor: Color.fromARGB(255, 6, 193, 240),
         title: const Text('Instructions'),
       ),
       drawer: const MenuDrawer(),
@@ -133,7 +133,7 @@ class _TasksScreenState extends State<TasksScreen> {
           ),
           // Add Instruction Button
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(30.0),
             child: ElevatedButton(
               child: Text('Add Instruction'),
               onPressed: () {

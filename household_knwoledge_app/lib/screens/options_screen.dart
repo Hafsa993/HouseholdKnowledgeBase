@@ -40,8 +40,9 @@ class OptionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 211, 239, 247),
-      appBar: AppBar(backgroundColor: const Color.fromARGB(255, 6, 193, 240),
+      //backgroundColor: const Color.fromARGB(255, 211, 239, 247),
+      appBar: AppBar(
+        //backgroundColor: const Color.fromARGB(255, 6, 193, 240),
         title: const Text('Options'),
       ),
       drawer: const MenuDrawer(),

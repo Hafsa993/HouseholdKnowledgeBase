@@ -9,7 +9,8 @@ class ToDoCreator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      backgroundColor: Color.fromARGB(255, 6, 193, 240),
+      backgroundColor: Color.fromARGB(255, 21, 208, 255),
+      //backgroundColor: Theme.of(context).primaryColorLight,
       onPressed: () => showDialog(context: context, 
           builder: (BuildContext context) => Dialog(
             child: ToDoForm(),
@@ -17,7 +18,8 @@ class ToDoCreator extends StatelessWidget {
       ),
       tooltip: 'Create Task',
       child: 
-        const Icon(Icons.add),
+        const Icon(Icons.add, //color: Colors.white,
+        ),
     );
   }
 }      
