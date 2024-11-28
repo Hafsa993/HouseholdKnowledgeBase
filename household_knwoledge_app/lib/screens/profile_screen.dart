@@ -27,6 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   XFile? _image;
   final ImagePicker _picker = ImagePicker();
   late TextEditingController _usernameController;
+  bool isEditing = false;
 
   @override
   void initState() {
@@ -34,12 +35,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // Initialize the profile image with "f.jpeg"
     _image = XFile("assets/f.jpeg");
     _usernameController = TextEditingController(text: currentUser.username);
+    _updateUsername();
   }
 
   @override
   void dispose() {
     _usernameController.dispose();
     super.dispose();
+  }
+
+  Future<void> _updateUsername() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedUsername = prefs.getString('username') ?? currentUser.username;
+    setState(() {
+      currentUser.username = savedUsername;
+      _usernameController.text = savedUsername;
+    });
+  }
+
+  Future<void> _saveUsername() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username', _usernameController.text);
+    setState(() {
+      currentUser.username = _usernameController.text;
+      isEditing = false;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Username updated")),
+    );
   }
 
   Future<void> _updatePermissionStatus(String key, bool value) async {
@@ -104,7 +127,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 if (status.isGranted) {
                   await _updatePermissionStatus(prefsKey, true);
                   onPermissionGranted();
-                } else {
+                } 
+                else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text("$permissionName permission denied."),
@@ -137,16 +161,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  void _saveUsername() {
-    setState(() {
-      currentUser.username = _usernameController.text;
-      isEditing = false;
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Username updated")),
-    );
-  }
-
+  
   // Exit Button
   Future<void> _showExitConfirm(BuildContext context) async {
     showDialog(
@@ -232,8 +247,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  bool isEditing = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -298,9 +311,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         if (isEditing) {
                           _saveUsername();
                         }
-                        setState(() {
-                          isEditing = !isEditing;
-                        });
+                        else {
+                          setState(() {
+                            isEditing = true;
+                          });
+                        }
                       },
                     ),
                   ],
