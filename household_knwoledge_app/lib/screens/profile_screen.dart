@@ -26,6 +26,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   XFile? _image;
   final ImagePicker _picker = ImagePicker();
+  late TextEditingController _usernameController;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the profile image with "f.jpeg"
+    _image = XFile("assets/f.jpeg");
+    _usernameController = TextEditingController(text: currentUser.username);
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    super.dispose();
+  }
 
   Future<void> _updatePermissionStatus(String key, bool value) async {
     final prefs = await SharedPreferences.getInstance();
@@ -45,7 +60,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         );
         return;
       }
-    } else if (source == ImageSource.gallery) {
+    } 
+    else if (source == ImageSource.gallery) {
       var status = await Permission.photos.status;
       if (!status.isGranted) {
         _showPermissionDialog(
@@ -119,6 +135,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         SnackBar(content: Text("Error picking image: $e")),
       );
     }
+  }
+
+  void _saveUsername() {
+    setState(() {
+      currentUser.username = _usernameController.text;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Username updated")),
+    );
   }
 
   // Exit Button
@@ -228,16 +253,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: CircleAvatar(
                     radius: 60,
                     backgroundImage: _image == null
-                        ? const AssetImage('assets/default_avatar.png') as ImageProvider
+                        ? const AssetImage('assets/f.png') as ImageProvider
                         : FileImage(File(_image!.path)),
                   ),
                 ),
                 const SizedBox(height: 16),
 
-                // Username
-                Text(
-                  currentUser.username,
-                  style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                // Editable Username
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 200,
+                      child: TextField(
+                        controller: _usernameController,
+                        textAlign: TextAlign.center,
+                        decoration: const InputDecoration(
+                          border: UnderlineInputBorder(),
+                          hintText: "Enter username",
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.save),
+                      onPressed: _saveUsername,
+                      tooltip: "Save username",
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 8),
 
