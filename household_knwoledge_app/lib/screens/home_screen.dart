@@ -19,6 +19,7 @@ class HomeScreen extends StatelessWidget {
     TaskProvider taskProvider = Provider.of<TaskProvider>(context);
     List<Task> urgentTasks = taskProvider.pendingTasks(currentUser.username);
     List<User> currUsers = Provider.of<UserProvider>(context).currUsers;
+  
     currUsers.sort((a, b) {
       if (b.points == a.points) {
         return a.username.compareTo(b.username); // Tie-breaker: alphabetical order
@@ -250,7 +251,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton:  ToDoCreator(),
+      bottomNavigationBar:  ToDoCreator(),
     );
   }
 

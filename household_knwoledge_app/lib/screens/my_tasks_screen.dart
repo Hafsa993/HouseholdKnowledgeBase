@@ -105,7 +105,8 @@ class MyTasksScreen extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Expanded(
-              child: ListView.builder(
+              child: pendingTasks.isEmpty ? const Center(child: Text('No accepted ToDos available!')) : 
+              ListView.builder(
                 itemCount: pendingTasks.length,
                 itemBuilder: (context, index) {
                   Task task = pendingTasks[index];
@@ -182,12 +183,13 @@ class MyTasksScreen extends StatelessWidget {
 
             // Completed Tasks Section
              Text(
-              "Completed Tasks:",
+              "Completed Tasks in the last 30 days:",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
             ),
              SizedBox(height: 8),
             Expanded(
-              child: ListView.builder(
+              child: completedTasks.isEmpty ? const Center(child: Text('No Tasks completed in the last 30 days')) :
+              ListView.builder(
                 itemCount: completedTasks.length,
                 itemBuilder: (context, index) {
                   Task task = completedTasks[index];
@@ -221,7 +223,7 @@ class MyTasksScreen extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton:  ToDoCreator(),
+      //bottomNavigationBar:  ToDoCreator(),
     );
   }
 }

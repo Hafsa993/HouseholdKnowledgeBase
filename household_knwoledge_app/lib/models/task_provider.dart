@@ -39,7 +39,7 @@ class TaskProvider extends ChangeNotifier {
       difficulty: 'Easy',
       description: 'Bake cheese tarts following the recipe in the task descriptions',
       rewardPoints: 15,
-      assignedTo: 'JohnDoe',
+      assignedTo: 'Sarah',
     ),
     Task(
       title: 'Clean the fish tank',
@@ -57,7 +57,7 @@ class TaskProvider extends ChangeNotifier {
       difficulty: 'Easy',
       description: 'Wash, dry, and fold clothes.',
       rewardPoints: 15,
-      assignedTo: 'JohnDoe',
+      assignedTo: 'Alex',
     ),
     // Add more tasks
   ];
@@ -83,9 +83,13 @@ class TaskProvider extends ChangeNotifier {
     task.acceptedBy = username;
     notifyListeners();
   }
-
+   void takeOverTask(Task task, String username) {
+    task.isAccepted = true;
+    task.acceptedBy = username;
+    task.assignedTo = username;
+    notifyListeners();
+  }
   void declineTask(Task task) {
-    // For simplicity, we just leave the task as not accepted
     task.isDeclined = true;
     notifyListeners();
   }

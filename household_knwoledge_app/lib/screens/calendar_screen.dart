@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:household_knwoledge_app/models/task_model.dart';
+import 'package:household_knwoledge_app/widgets/todo_creator_button.dart';
 import 'package:provider/provider.dart';
 import 'package:household_knwoledge_app/models/task_provider.dart';
 import '../widgets/menu_drawer.dart';
@@ -73,6 +74,7 @@ class CalendarScreen extends StatelessWidget {
         markedDatesMap: _getMarkedDates(tasks),
         firstDayOfWeek: 1,
       ),
+      bottomNavigationBar:  ToDoCreator(),
     );
   }
 
