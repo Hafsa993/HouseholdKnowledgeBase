@@ -290,7 +290,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     const SizedBox(width: 8),
                     IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         isEditing ? Icons.check : Icons.edit,
                         color: isEditing ? Colors.green : Colors.blue,
                       ),
