@@ -38,7 +38,7 @@ class CalendarScreen extends StatelessWidget {
                     horizontal: 50.0,
                     vertical: 200.0,
                   ),
-                  content: Container(
+                  content: SizedBox(
                     width: double.maxFinite,
                     child: 
                     ListView.builder(

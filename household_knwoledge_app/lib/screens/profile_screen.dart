@@ -16,14 +16,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final User currentUser = User(
-    username: 'JohnDoe', 
-    points: 100,
-    role: 'child',
-    preferences: ['Cleaning', 'Cooking'],
-    contributions: {'Cleaning': 50, 'Laundry': 30, 'Cooking': 20},
-  );
-
   XFile? _image;
   final ImagePicker _picker = ImagePicker();
 
@@ -75,7 +67,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 // ProfileScreen({super.key});
 
   // Pie Chart
-  List<PieChartSectionData> _generatePieChartData() {
+  List<PieChartSectionData> _generatePieChartData(BuildContext context) {
+     final userProvider = Provider.of<UserProvider>(context);
+    
+    User currentUser = userProvider.getCurrUser();
     return currentUser.contributions.entries.map((entry) {
       final percentage = entry.value.toDouble();
       return PieChartSectionData(
@@ -133,7 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
      final userProvider = Provider.of<UserProvider>(context);
     
-    User currentUser = userProvider.currUsers[0];
+    User currentUser = userProvider.getCurrUser();
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 211, 239, 247),
       appBar: AppBar(
@@ -210,7 +205,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 200,
                   child: PieChart(
                     PieChartData(
-                      sections: _generatePieChartData(),
+                      sections: _generatePieChartData(context),
                       centerSpaceRadius: 40,
                       sectionsSpace: 4,
                     ),
