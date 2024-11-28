@@ -168,7 +168,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         setState(() {
           _image = image;
         });
-        await _updateProfilePicture(image.path);
+        await _saveProfilePicture(image.path);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Profile picture updated")),
         );
