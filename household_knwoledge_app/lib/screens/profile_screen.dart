@@ -222,7 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ElevatedButton(
                   onPressed: () => _showExitConfirm(context),
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                  child: const Text("Exit Account"),
+                  child: const Text("Exit Account", style: TextStyle(color: Colors.white),),
                 ),
               ],
             ),

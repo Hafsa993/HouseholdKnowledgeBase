@@ -50,6 +50,10 @@ class UserProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+  User getCurrUser() {
+    return _currUsers.firstWhere((user) => user.username == 'JohnDoe');
+  }
+  
 
   // Additional methods as needed...
 }

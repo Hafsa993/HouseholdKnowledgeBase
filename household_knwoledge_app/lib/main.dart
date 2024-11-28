@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:household_knwoledge_app/models/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'models/task_provider.dart';
+import 'models/task_descriptions_model.dart';
+import 'models/task_descriptions_provider.dart';
 import 'screens/home_screen.dart';
 //hi
 void main() async {
@@ -10,7 +12,8 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => TaskProvider()),
-        ChangeNotifierProvider(create: (_) => UserProvider())
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => TaskDescriptorProvider()),
         // You can add UserProvider here if needed
       ],
       child: const HouseholdApp(),

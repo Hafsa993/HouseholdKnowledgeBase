@@ -28,7 +28,7 @@ class MyTasksScreen extends StatelessWidget {
       backgroundColor:  Color.fromARGB(255, 211, 239, 247),
       appBar: AppBar(
         backgroundColor:  Color.fromARGB(255, 6, 193, 240),
-        title:  Text('My Tasks'),
+        title:  Text('My ToDos'),
       ),
       drawer:  MenuDrawer(),
       body: Padding(

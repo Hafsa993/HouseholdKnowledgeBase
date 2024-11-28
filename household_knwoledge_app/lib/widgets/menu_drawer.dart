@@ -8,12 +8,18 @@ import '../screens/tasks_screen.dart';
 import '../screens/calendar_screen.dart';
 import '../screens/profile_screen.dart';
 import '../screens/options_screen.dart';
+import 'package:household_knwoledge_app/models/user_provider.dart';
+import 'package:provider/provider.dart';
+import '../models/user_model.dart';
 
 class MenuDrawer extends StatelessWidget {
   const MenuDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    User currUser = userProvider.getCurrUser();
+
     return Drawer(
       backgroundColor: Color.fromARGB(255, 211, 239, 247),
       child: Column(
@@ -22,35 +28,50 @@ class MenuDrawer extends StatelessWidget {
           Expanded(
             flex: 2,
             child: ListView(
+              padding: const EdgeInsets.symmetric(vertical: 10),
               children: [
                 SizedBox(
-                  height: 150,
-                  // enable clicking on the avatar and name, add a log out function? remove the profile option 
-                  child: const DrawerHeader(
-                    decoration: BoxDecoration(color: Colors.blue),
+                  height: 220,
+                  // This draws the header of the menu containing the profile 
+                  child: DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Colors.blue, 
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter, 
+                        end: Alignment.topCenter, 
+                        colors: [Colors.blue, Color.fromARGB(255, 211, 239, 247)],
+                      ),
+                    ),
                     child: Stack(
                       children: [
                         Positioned(
                           top:10,
-                          child: Row(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CircleAvatar(
-                                radius: 40,
-                                backgroundImage: AssetImage("lib/assets/f.jpeg"),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ProfileScreen()));
+                                },
+                                child: CircleAvatar(
+                                  radius: 40,
+                                  backgroundImage: AssetImage("lib/assets/f.jpeg"),
+                                ),
                               ),
-                              SizedBox(width: 20,),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 40,),
-                                  Text('JohnDoe', style: TextStyle(color: Colors.white, fontSize: 24)),
-                                  Text('Child', style: TextStyle(color: Color.fromARGB(255, 213, 213, 213), fontSize: 18))
-                                ],
+                              SizedBox(height: 10,),
+
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ProfileScreen()));
+                                },
+                                child: Text(currUser.username, style: TextStyle(color: Colors.white, fontSize: 24))
                               ),
+                              Text('${currUser.points} points', style: TextStyle(color: Color.fromARGB(255, 213, 213, 213), fontSize: 18)),
                             ],
                           ),
                         )
-                      ],),
+                      ],
+                    ),
                   ),
                 ),
                 ListTile(
@@ -64,19 +85,31 @@ class MenuDrawer extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  title: const Text('To-Do List'),
+                  leading: const Icon(
+                      Icons.maps_home_work_outlined,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                    ),
+                  title: const Text('House ToDos'),
                   onTap: () {
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ToDoListScreen()));
                   },
                 ),
                 ListTile(
-                  title: const Text('My Tasks'),
+                  leading: const Icon(
+                      Icons.checklist_rounded,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                    ),
+                  title: const Text('My ToDos'),
                   onTap: () {
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MyTasksScreen()));
                   },
                 ),
                 ListTile(
-                  title: const Text('Task descriptions'),
+                  leading: const Icon(
+                      CupertinoIcons.book_circle_fill,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                    ),
+                  title: const Text('Instructions'),
                   onTap: () {
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => TasksScreen()));
                   },
@@ -96,7 +129,7 @@ class MenuDrawer extends StatelessWidget {
                       CupertinoIcons.chart_bar_alt_fill,
                       color: Color.fromARGB(255, 0, 0, 0),
                     ),
-                  title: const Text('Ranking'),
+                  title: const Text('Ranking List'),
                   onTap: () {
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) =>  RankingScreen()));
                   },
@@ -107,7 +140,7 @@ class MenuDrawer extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 1,
             child: 
             Align(
               alignment: Alignment.bottomLeft,
@@ -116,6 +149,7 @@ class MenuDrawer extends StatelessWidget {
                 children: [
                   SizedBox(height: 30,),
               Divider(indent: 20, endIndent: 20, color: const Color.fromARGB(255, 83, 115, 140)),
+                  /* // profile as a menu tab 
                   ListTile(
                     leading: const Icon(
                         CupertinoIcons.person_crop_circle,
@@ -126,7 +160,7 @@ class MenuDrawer extends StatelessWidget {
                     onTap: () {
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ProfileScreen()));
                     },
-                  ),
+                  ), */
                   // align needed?
                   ListTile(
                     leading: const Icon(
@@ -139,7 +173,8 @@ class MenuDrawer extends StatelessWidget {
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => OptionsScreen()));
                     },
                   ),
-                        ],),
+                        
+                    SizedBox(height: 20,)],),
             )),
           
         ],

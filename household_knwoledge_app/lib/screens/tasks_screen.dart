@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:household_knwoledge_app/models/task_descriptions_model.dart';
+import 'package:household_knwoledge_app/models/task_descriptions_provider.dart';
+import 'package:household_knwoledge_app/screens/add_task_description_screen.dart';
+import 'package:household_knwoledge_app/screens/task_description_screen.dart';
 import '../widgets/menu_drawer.dart';
 
 class TasksScreen extends StatefulWidget {
@@ -21,26 +24,33 @@ class _TasksScreenState extends State<TasksScreen> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 211, 239, 247),
       appBar: AppBar(backgroundColor: Color.fromARGB(255, 6, 193, 240),
-        title: const Text('Task Descriptions'),
+        title: const Text('Instructions'),
       ),
       drawer: const MenuDrawer(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          DropdownButton(
-            value: dropdownvalue,
-            items: selectableCategories.map((String items) {
-                return DropdownMenuItem(
-                  value: items,
-                  child: Text(items),
-                );
-              }).toList(),
-            onChanged: (String? newValue) { 
-                setState(() {
-                  dropdownvalue = newValue!;
-                  descriptors = sortList(newValue);
-                });
-              },
+          Row(
+            //crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Filter by category: ', style: TextStyle(fontSize: 16)),
+              SizedBox(width: 10),
+              DropdownButton(
+                value: dropdownvalue,
+                items: selectableCategories.map((String items) {
+                    return DropdownMenuItem(
+                      value: items,
+                      child: Text(items),
+                    );
+                  }).toList(),
+                onChanged: (String? newValue) { 
+                    setState(() {
+                      dropdownvalue = newValue!;
+                      descriptors = sortList(newValue);
+                    });
+                  },
+              ),
+            ],
           ),
           Expanded(child:
             ListView.builder(
@@ -55,26 +65,28 @@ class _TasksScreenState extends State<TasksScreen> {
                     iconColor:  categoryColor(descriptor.category),
                     title: Text(descriptor.title),
                     onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text(descriptor.title),
-                            content: Text(descriptor.instructions),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: const Text('Close'),
-                              ),
-                            ],
-                          );
-                        },
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TaskDescriptionScreen(task: descriptor),
+                        ),
                       );
                     },
                   ),
                 );
               },
             ), 
+          ),
+          ElevatedButton(
+            child: Text('Add Instruction'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddTaskDescriptionScreen(),
+                ),
+              );
+            },
           ),
         ]
       ),
