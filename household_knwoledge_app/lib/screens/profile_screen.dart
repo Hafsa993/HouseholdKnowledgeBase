@@ -33,7 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     // Initialize the profile image with "f.jpeg"
-    _image = XFile("assets/f.jpeg");
+    _image = XFile("lib/assets/f.jpeg");
     _usernameController = TextEditingController(text: currentUser.username);
     _updateUsername();
     _updateProfilePicture();
