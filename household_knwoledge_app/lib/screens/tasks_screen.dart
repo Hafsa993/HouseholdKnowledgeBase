@@ -43,7 +43,7 @@ class _TasksScreenState extends State<TasksScreen> {
     return Scaffold(
       //backgroundColor: Color.fromARGB(255, 211, 239, 247),
       appBar: AppBar(
-        //backgroundColor: Color.fromARGB(255, 6, 193, 240),
+        backgroundColor: const Color.fromARGB(255, 226, 224, 224),
         title: const Text('Instructions'),
       ),
       drawer: const MenuDrawer(),

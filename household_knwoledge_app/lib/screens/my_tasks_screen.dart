@@ -29,6 +29,7 @@ class MyTasksScreen extends StatelessWidget {
       //backgroundColor:  Color.fromARGB(255, 211, 239, 247),
       appBar: AppBar(
         //backgroundColor:  Color.fromARGB(255, 6, 193, 240),
+        backgroundColor: const Color.fromARGB(255, 226, 224, 224),
         title:  Text('My ToDos'),
       ),
       drawer:  MenuDrawer(),
@@ -104,79 +105,94 @@ class MyTasksScreen extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
             ),
             SizedBox(height: 8),
-            Expanded(
-              child: pendingTasks.isEmpty ? const Center(child: Text('No accepted ToDos available!')) : 
-              ListView.builder(
-                itemCount: pendingTasks.length,
-                itemBuilder: (context, index) {
-                  Task task = pendingTasks[index];
-                  return Card(
-                    margin:  EdgeInsets.symmetric(vertical: 8),
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+            Flexible(
+              child: Container(
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1), // Shadow color
+                      blurRadius: 8.0, // Spread of the shadow
+                      offset: const Offset(0, 4), // Offset in the X and Y axis
                     ),
-                    child: Padding(
-                      padding:  EdgeInsets.all(12.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                task.title,
-                                style:  TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                               SizedBox(height: 4),
-                              Text(
-                                'Due: ${DateFormat('dd-MM-yyyy HH:mm').format(task.deadline)}',
-                                style:  TextStyle(
-                                  fontSize: 14,
-                                  color: task.deadline.difference(DateTime.now()).inHours < 24
-                                    ? Colors.red // Red if due in less than 24 hours
-                                    : Colors.black54, // Default color
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                            Text(
-                              'Reward: ${task.rewardPoints}',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.teal,
-                              ),
-                            ),
-                            ],
-                          ),
-                          ElevatedButton.icon(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.grey, // Initial button color
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            onPressed: () {
-                              // Mark task as completed and show reward popup
-                              taskProvider.completeTask(task);
-                              currentUser.addPoints(task.rewardPoints);
-                              // Show popup for completed Task
-                              showCompletionDialog(context, task);
-
-                            },
-                            icon:  Icon(Icons.check),
-                            label:  Text("Complete"),
-                          ),
-                        ],
+                  ],
+                ),
+                child: pendingTasks.isEmpty ? const Center(child: Text('No accepted ToDos')) : 
+                ListView.builder(
+                  itemCount: pendingTasks.length,
+                  itemBuilder: (context, index) {
+                    Task task = pendingTasks[index];
+                    return Card(
+                      margin:  EdgeInsets.symmetric(vertical: 8),
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                    ),
-                  );
-                },
+                      child: Padding(
+                        padding:  EdgeInsets.all(12.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  task.title,
+                                  style:  TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                 SizedBox(height: 4),
+                                Text(
+                                  'Due: ${DateFormat('dd-MM-yyyy HH:mm').format(task.deadline)}',
+                                  style:  TextStyle(
+                                    fontSize: 14,
+                                    color: task.deadline.difference(DateTime.now()).inHours < 24
+                                      ? Colors.red // Red if due in less than 24 hours
+                                      : Colors.black54, // Default color
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                              Text(
+                                'Reward: ${task.rewardPoints}',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.teal,
+                                ),
+                              ),
+                              ],
+                            ),
+                            ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.grey, // Initial button color
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              onPressed: () {
+                                // Mark task as completed and show reward popup
+                                taskProvider.completeTask(task);
+                                currentUser.contributions.update(task.category, (value) => value + task.rewardPoints );
+                                currentUser.addPoints(task.rewardPoints);
+                                // Show popup for completed Task
+                                showCompletionDialog(context, task);
+                                
+                              },
+                              icon:  Icon(Icons.check),
+                              label:  Text("Complete"),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
              SizedBox(height: 16),
@@ -187,37 +203,51 @@ class MyTasksScreen extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
             ),
              SizedBox(height: 8),
-            Expanded(
-              child: completedTasks.isEmpty ? const Center(child: Text('No Tasks completed in the last 30 days')) :
-              ListView.builder(
-                itemCount: completedTasks.length,
-                itemBuilder: (context, index) {
-                  Task task = completedTasks[index];
-                  return Padding(
-                    padding:  EdgeInsets.symmetric(vertical: 4.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          task.title,
-                          style:  TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey, // Completed tasks in grey
-                          ),
-                        ),
-                        Text(
-                          '+ ${task.rewardPoints}',
-                          style:  TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green,
-                          ),
-                        ),
-                      ],
+            Flexible(
+              child: Container(
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1), // Shadow color
+                      blurRadius: 8.0, // Spread of the shadow
+                      offset: const Offset(0, 4), // Offset in the X and Y axis
                     ),
-                  );
-                },
+                  ],
+                ),
+                child: completedTasks.isEmpty ? const Center(child: Text('No Tasks completed in the last 30 days')) :
+                ListView.builder(
+                  itemCount: completedTasks.length,
+                  itemBuilder: (context, index) {
+                    Task task = completedTasks[index];
+                    return Padding(
+                      padding:  EdgeInsets.symmetric(vertical: 4.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            task.title,
+                            style:  TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey, // Completed tasks in grey
+                            ),
+                          ),
+                          Text(
+                            '+ ${task.rewardPoints}',
+                            style:  TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ],

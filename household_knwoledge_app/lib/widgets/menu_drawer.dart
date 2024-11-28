@@ -87,22 +87,22 @@ class MenuDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: const Icon(
-                      Icons.maps_home_work_outlined,
-                      color: Color.fromARGB(255, 0, 0, 0),
-                    ),
-                  title: const Text('House ToDos'),
-                  onTap: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ToDoListScreen()));
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(
                       Icons.checklist_rounded,
                       color: Color.fromARGB(255, 0, 0, 0),
                     ),
                   title: const Text('My ToDos'),
                   onTap: () {
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MyTasksScreen()));
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(
+                      Icons.maps_home_work_outlined,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                    ),
+                  title: const Text('House ToDos'),
+                  onTap: () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ToDoListScreen()));
                   },
                 ),
                 ListTile(

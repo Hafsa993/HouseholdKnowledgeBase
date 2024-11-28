@@ -71,8 +71,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
      final userProvider = Provider.of<UserProvider>(context);
     
     User currentUser = userProvider.getCurrUser();
+     final sum = currentUser.contributions.values.fold<double>(0.0, 
+     (sum, value) => sum + value.toDouble(),);
     return currentUser.contributions.entries.map((entry) {
-      final percentage = entry.value.toDouble();
+      final percentage = (entry.value.toDouble() / sum) * 100.0;
       return PieChartSectionData(
         value: percentage,
         title: '${entry.key} (${percentage.toInt()}%)',
@@ -132,7 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       //backgroundColor: const Color.fromARGB(255, 211, 239, 247),
       appBar: AppBar(
-        //backgroundColor: const Color.fromARGB(255, 6, 193, 240),
+        backgroundColor: const Color.fromARGB(255, 226, 224, 224),
         title: const Text('My Profile'),
       ),
       drawer: const MenuDrawer(),

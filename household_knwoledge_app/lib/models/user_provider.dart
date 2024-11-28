@@ -9,7 +9,7 @@ class UserProvider with ChangeNotifier {
     User(
       username: 'JohnDoe',
       points: 100,
-      role: 'child',
+      role: 'Member',
       preferences: ['Cleaning', 'Cooking'],
       contributions: {'Cleaning': 50, 'Gardening': 30, 'Cooking': 20, "Shopping": 0, "Planning" : 0,"Care" : 0,"Maintenance" : 0,"Other" : 0},
       profilepath: "lib/assets/f.jpeg",

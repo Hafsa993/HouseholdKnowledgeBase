@@ -51,7 +51,7 @@ class ToDoListScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        //backgroundColor: Color.fromARGB(255, 6, 193, 240),
+        backgroundColor: const Color.fromARGB(255, 226, 224, 224),
         title: const Text('House ToDos'),
       ),
       drawer: const MenuDrawer(),
