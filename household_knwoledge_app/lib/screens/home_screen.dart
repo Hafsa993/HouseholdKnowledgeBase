@@ -220,7 +220,7 @@ class HomeScreen extends StatelessWidget {
                       child: const Text('Accept'),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: 6),
                   Flexible(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
