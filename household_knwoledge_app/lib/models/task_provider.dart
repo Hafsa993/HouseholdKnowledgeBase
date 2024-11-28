@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:household_knwoledge_app/models/user_model.dart';
 import 'task_model.dart';
 //hi
 

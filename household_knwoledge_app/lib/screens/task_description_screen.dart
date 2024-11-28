@@ -19,9 +19,8 @@ class TaskDescriptionScreen extends StatelessWidget{
           ],
         ),
       ),
-      body: FittedBox(
-        fit: BoxFit.scaleDown,
-        alignment: Alignment.center,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 40),
         child: Column(
           children: [
             Text('Category: ${task.category}'),
