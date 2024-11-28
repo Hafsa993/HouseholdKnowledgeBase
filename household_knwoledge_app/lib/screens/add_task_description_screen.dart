@@ -106,6 +106,7 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
                 'Select Icon:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
+              
               Wrap(
                 spacing: 10,
                 children: [
