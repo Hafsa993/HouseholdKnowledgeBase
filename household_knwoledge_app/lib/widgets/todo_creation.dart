@@ -272,7 +272,7 @@ print('Task Created: ${newTask.title}, Assigned To: ${newTask.assignedTo}'); // 
                   ...sortedUsers.map((User user) {
                     return DropdownMenuItem<String>(
                       value: user.username,
-                      child: Row(
+                      child: Wrap(
                         children: [
                           CircleAvatar(
                             backgroundColor: _getUserColor(user),
@@ -281,7 +281,7 @@ print('Task Created: ${newTask.title}, Assigned To: ${newTask.assignedTo}'); // 
                           SizedBox(width: 8),
                           Text(user.username),
                           SizedBox(width: 1),
-                          Text(isPreferred(user)?" prefers this category":'',style: TextStyle(color: Color.fromRGBO(52, 240, 15, 1),fontStyle: FontStyle.italic, fontSize: 18 )),
+                          Text(isPreferred(user)?" prefers this category":'',style: TextStyle(color: Colors.green,fontStyle: FontStyle.italic, fontSize: 16 )),
                         ],
                       ),
                     );

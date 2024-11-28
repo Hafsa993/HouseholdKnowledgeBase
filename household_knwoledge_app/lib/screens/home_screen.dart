@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:household_knwoledge_app/models/user_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../models/task_model.dart';
@@ -17,6 +18,13 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     TaskProvider taskProvider = Provider.of<TaskProvider>(context);
     List<Task> urgentTasks = taskProvider.pendingTasks(currentUser.username);
+    List<User> currUsers = Provider.of<UserProvider>(context).currUsers;
+    currUsers.sort((a, b) {
+      if (b.points == a.points) {
+        return a.username.compareTo(b.username); // Tie-breaker: alphabetical order
+      }
+      return b.points.compareTo(a.points); // Primary sorting: points descending
+    });
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -91,9 +99,9 @@ class HomeScreen extends StatelessWidget {
                   child: rank(
                       radius: 30.0,
                       height: 2,
-                      image: "lib/assets/f.jpeg",
-                      name: "Max",
-                      point: "125"),
+                      image: currUsers[0].profilepath,
+                      name: currUsers[0].username,
+                      point: "${currUsers[0].points}"),
                 ),
                 // for rank 2nd
                 Positioned(
@@ -102,9 +110,9 @@ class HomeScreen extends StatelessWidget {
                   child: rank(
                       radius: 25.0,
                       height: 2,
-                      image: "lib/assets/f.jpeg",
-                      name: "Sarah",
-                      point: "122"),
+                      image: currUsers[1].profilepath,
+                      name: currUsers[1].username,
+                      point: "${currUsers[1].points}"),
                 ),
                 // For 3rd rank
                 Positioned(
@@ -113,9 +121,9 @@ class HomeScreen extends StatelessWidget {
                   child: rank(
                       radius: 20.0,
                       height: 2,
-                      image: "lib/assets/f.jpeg",
-                      name: "JohnDoe",
-                      point: "100"),
+                      image: currUsers[2].profilepath,
+                      name: currUsers[2].username,
+                      point: "${currUsers[2].points}"),
                 ),
               ],
               ),

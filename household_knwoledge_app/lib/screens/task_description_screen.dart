@@ -10,21 +10,42 @@ class TaskDescriptionScreen extends StatelessWidget{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: categoryColor(task.category),
-        title:  Row(
-          children: [
-            Icon(task.icon),
-            SizedBox(width: 10),
-            Text(task.title),
-          ],
-        ),
+        //backgroundColor: categoryColor(task.category),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 40),
+        padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
         child: Column(
           children: [
-            Text('Category: ${task.category}'),
-            Text(task.instructions)
+            Expanded(child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                border: Border.all(color: Colors.black),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(children: [
+                Wrap(
+                children: [
+                  Icon(task.icon),
+                  SizedBox(width: 10),
+                  Text(task.title, style: TextStyle(fontSize: 20),),
+                ],
+                ),
+                SizedBox(height: 15,),
+                Row(
+                children: [
+                  Text('Category:', style: TextStyle(fontSize: 16),),
+                  SizedBox(width: 15,),
+                  Chip(
+                    label: Text(task.category, style: TextStyle(fontSize: 16, color: categoryColor(task.category)),), 
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,)
+                ],
+                            ),
+                            Divider(),
+                            Text(task.instructions, style: TextStyle(fontSize: 18),)
+                            ]),
+              )))
+            
           ],
         ),
       ),

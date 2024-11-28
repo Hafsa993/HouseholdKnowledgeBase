@@ -8,6 +8,7 @@ import '../models/task_model.dart';
 import '../models/task_provider.dart';
 import '../models/user_model.dart';
 import '../widgets/menu_drawer.dart';
+import '../screens/profile_screen.dart';
 
 class MyTasksScreen extends StatelessWidget {
 
@@ -17,7 +18,7 @@ class MyTasksScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
     
-    User currentUser = userProvider.currUsers[0];
+    User currentUser = userProvider.getCurrUser();
     TaskProvider taskProvider = Provider.of<TaskProvider>(context);
 
     // Separate tasks into pending and completed
@@ -32,13 +33,65 @@ class MyTasksScreen extends StatelessWidget {
       ),
       drawer:  MenuDrawer(),
       body: Padding(
-        padding:  EdgeInsets.all(16.0),
+        padding:  EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Tasks To-Do Section
-             Text(
-              "accepted Tasks:",
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(50)),
+                color: const Color.fromARGB(255, 255, 255, 255), 
+                      /*
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter, 
+                        end: Alignment.topCenter, 
+                        colors: [Colors.blue, Colors.white],
+                      ),
+                      */
+                    ),
+              height: 100,
+              child: Stack(
+                    children: [
+                      Positioned(
+                        top:10,
+                        left: 10,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ProfileScreen()));
+                              },
+                              child: CircleAvatar(
+                                radius: 40,
+                                backgroundImage: AssetImage("lib/assets/f.jpeg"),
+                              ),
+                            ),
+                            SizedBox(width: 10,),
+              
+                            Column(
+                              children: [
+                                SizedBox(height: 10,),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ProfileScreen()));
+                                  },
+                                  child: Text(currentUser.username, style: TextStyle(color: Colors.black, fontSize: 24))
+                                ),
+                                //SizedBox(height: 5,),
+                                Text('${currentUser.points} points', style: TextStyle(color: Colors.black, fontSize: 18)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+            ),
+            SizedBox(height: 50,),
+            Text(
+              "Accepted Tasks:",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
             ),
             SizedBox(height: 8),

@@ -12,12 +12,13 @@ class UserProvider with ChangeNotifier {
       role: 'child',
       preferences: ['Cleaning', 'Cooking'],
       contributions: {'Cleaning': 50, 'Laundry': 30, 'Cooking': 20},
+      profilepath: "lib/assets/f.jpeg",
     ),
-    User(username: 'Alex', points: 75),
-    User(username: 'Max', points: 125),
+    User(username: 'Sarah', points: 122, profilepath: "lib/assets/f.jpeg",),
+    User(username: 'Max', points: 125, profilepath: "lib/assets/f.jpeg",),
     User(username: 'Anna', points: 90),
     User(username: 'Marie', points: 100),
-    User(username: 'Sarah', points: 122),
+    User(username: 'Alex', points: 75),
   ];
 
   // Getter to access currUsers

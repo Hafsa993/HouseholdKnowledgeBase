@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:household_knwoledge_app/models/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'models/task_provider.dart';
-import 'models/task_descriptions_model.dart';
 import 'models/task_descriptions_provider.dart';
 import 'screens/home_screen.dart';
 //hi
@@ -29,7 +28,9 @@ class HouseholdApp extends StatelessWidget {
     return MaterialApp(
       title: 'Household App',
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
         primarySwatch: Colors.blue,
+
       ),
       home: HomeScreen(),
     );
