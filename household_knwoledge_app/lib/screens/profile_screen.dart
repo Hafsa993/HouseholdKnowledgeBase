@@ -140,6 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _saveUsername() {
     setState(() {
       currentUser.username = _usernameController.text;
+      isEditing = false;
     });
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Username updated")),
@@ -231,6 +232,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  bool isEditing = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -263,21 +266,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      width: 200,
-                      child: TextField(
-                        controller: _usernameController,
-                        textAlign: TextAlign.center,
-                        decoration: const InputDecoration(
-                          border: UnderlineInputBorder(),
-                          hintText: "Enter username",
+                    if (!isEditing)
+                      Text(
+                        currentUser.username,
+                        style: const TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    else
+                      SizedBox(
+                        width: 200,
+                        child: TextField(
+                          controller: _usernameController,
+                          autofocus: true,
+                          textAlign: TextAlign.center,
+                          onSubmitted: (value) => _saveUsername(),
+                          decoration: const InputDecoration(
+                            border: UnderlineInputBorder(),
+                            hintText: "Enter username",
+                          ),
                         ),
                       ),
-                    ),
+                    const SizedBox(width: 8),
                     IconButton(
-                      icon: const Icon(Icons.save),
-                      onPressed: _saveUsername,
-                      tooltip: "Save username",
+                      icon: const Icon(
+                        isEditing ? Icons.check : Icons.edit,
+                        color: isEditing ? Colors.green : Colors.blue,
+                      ),
+                      onPressed: () {
+                        if (isEditing) {
+                          _saveUsername();
+                        }
+                        setState(() {
+                          isEditing = !isEditing;
+                        });
+                      },
                     ),
                   ],
                 ),
