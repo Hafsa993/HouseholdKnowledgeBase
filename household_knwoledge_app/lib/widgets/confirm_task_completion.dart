@@ -17,6 +17,7 @@ class ConfirmTaskCompleted extends StatefulWidget {
 class _ConfirmTaskCompletedState extends State<ConfirmTaskCompleted> {
   @override
   Widget build(BuildContext context) {
+    
     TaskProvider taskProvider = Provider.of<TaskProvider>(context);
 
     return Padding(

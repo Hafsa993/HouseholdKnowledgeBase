@@ -231,26 +231,29 @@ print('Task Created: ${newTask.title}, Assigned To: ${newTask.assignedTo}'); // 
               title: Text('Select Category'),
               isActive: _currentStep >= 0,
               state: _currentStep > 0 ? StepState.complete : StepState.editing,
-              content: DropdownButtonFormField<String>(
-                decoration: InputDecoration(
-                  labelText: 'Category',
-                  border: OutlineInputBorder(),
+              content: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    labelText: 'Category',
+                    border: OutlineInputBorder(),
+                  ),
+                  value: _selectedCategory,
+                  items: _categories.map((String category) {
+                    return DropdownMenuItem<String>(
+                      value: category,
+                      child: Text(category),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedCategory = newValue;
+                      // Reset assigned user if category changes
+                     
+                    });
+                  },
+                  validator: (value) => value == null ? 'Please select a category' : null,
                 ),
-                value: _selectedCategory,
-                items: _categories.map((String category) {
-                  return DropdownMenuItem<String>(
-                    value: category,
-                    child: Text(category),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedCategory = newValue;
-                    // Reset assigned user if category changes
-                   
-                  });
-                },
-                validator: (value) => value == null ? 'Please select a category' : null,
               ),
             ),
 
@@ -259,42 +262,107 @@ print('Task Created: ${newTask.title}, Assigned To: ${newTask.assignedTo}'); // 
               title: Text('Assign to User'),
               isActive: _currentStep >= 1,
               state: _currentStep > 1 ? StepState.complete : StepState.editing,
-              content: DropdownButtonFormField<String>(
-                decoration: InputDecoration(
-                  labelText: 'Assign To',
-                  border: OutlineInputBorder(),
-                ),
-                value: _selectedUser,
-                items: [
-                  DropdownMenuItem<String>(
-                    value: '',
-                    child: Text('No One'),
+              content: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    labelText: 'Assign To',
+                    border: OutlineInputBorder(),
                   ),
-                  ...sortedUsers.map((User user) {
-                    return DropdownMenuItem<String>(
-                      value: user.username,
-                      child: Wrap(
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: _getUserColor(user),
-                            radius: 5,
+                  value: _selectedUser,
+                  items: [
+                  
+                    ...sortedUsers.map((User user) {
+                      return DropdownMenuItem<String>(
+                        value: user.username,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: _getUserColor(user),
+                                radius: 5,
+                              ),
+                              SizedBox(width: 8),
+                              Text(user.username),
+                              if (isPreferred(user))
+                                Text(
+                                  " prefers this category",
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                            ],
                           ),
-                          SizedBox(width: 8),
-                          Text(user.username),
-                          SizedBox(width: 1),
-                          Text(isPreferred(user)?" prefers this category":'',style: TextStyle(color: Colors.green,fontStyle: FontStyle.italic, fontSize: 16 )),
-                        ],
+                        ),
+                      );
+                    }),
+                    
+                     DropdownMenuItem<String>(
+                      value: '',
+                      child : Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Wrap( 
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children : [
+                                CircleAvatar(
+                                  backgroundColor: Colors.blueGrey,
+                                  radius: 5,
+                                ),
+                                SizedBox(width: 8),
+                                Text('No One'),
+                                SizedBox(width: 8),SizedBox(width: 8),
+                        ],),
                       ),
-                    );
-                  }),
-                ],
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedUser = newValue;
-                     _selectedUser = newValue;
-        print('Selected User: $_selectedUser');
-                  });
-                },
+                    ),
+                  ],
+                  // Customize the displayed item when collapsed so that prefer this doesnt peek outside
+                  selectedItemBuilder: (BuildContext context) {
+                    return [
+                      
+                      ...sortedUsers.map((User user) {
+                        return DropdownMenuItem<String>(
+                          value: user.username,
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: _getUserColor(user),
+                                radius: 5,
+                              ),
+                              SizedBox(width: 8),
+                              Text(user.username),
+                            ],
+                          ),
+                        );
+                      }),
+                      DropdownMenuItem<String>(
+                      value: '',
+                      child : Padding(
+                        padding: const EdgeInsets.symmetric(),
+                        child: Wrap( 
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children : [
+                                CircleAvatar(
+                                  backgroundColor: Colors.blueGrey,
+                                  radius: 5,
+                                ),
+                                SizedBox(width: 8),
+                                Text('No One'),
+                        ],),
+                      ),
+                    ),
+                    ];
+                  },
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedUser = newValue!;
+                    });
+                  },
+                ),
               ),
             ),
 
@@ -317,8 +385,7 @@ print('Task Created: ${newTask.title}, Assigned To: ${newTask.assignedTo}'); // 
                   ),
                   SizedBox(height: 16),
 
-                  // Difficulty
-                      // Difficulty
+                  //Difficulty of Task
                   DropdownButtonFormField<String>(
                     decoration: InputDecoration(
                       labelText: 'Difficulty',
@@ -350,9 +417,6 @@ print('Task Created: ${newTask.title}, Assigned To: ${newTask.assignedTo}'); // 
                       hintText: 'Enter an integer value',
                     ),
                     keyboardType: TextInputType.number,
-                    onChanged: (value) {
-                      // Additional validation can be added here if needed
-                    },
                   ),
                   SizedBox(height: 16),
 

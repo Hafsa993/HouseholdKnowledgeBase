@@ -32,7 +32,7 @@ class HouseholdApp extends StatelessWidget {
         //fontFamily: GoogleFonts.merriweather().toString(),
         colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 102, 163, 255),contrastLevel: 1),
         brightness: Brightness.light,
-
+        useMaterial3: true, // Enable Material 3 for a modern design
         textTheme: TextTheme(
           titleLarge: GoogleFonts.merriweather(),
           bodyMedium: GoogleFonts.merriweather(),

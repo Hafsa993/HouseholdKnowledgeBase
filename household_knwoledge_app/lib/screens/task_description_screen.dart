@@ -10,7 +10,7 @@ class TaskDescriptionScreen extends StatelessWidget{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //backgroundColor: categoryColor(task.category),
+        backgroundColor: const Color.fromARGB(255, 226, 224, 224),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
