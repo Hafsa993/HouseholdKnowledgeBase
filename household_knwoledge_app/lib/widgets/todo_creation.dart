@@ -8,7 +8,7 @@ import 'package:household_knwoledge_app/models/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 class ToDoForm extends StatefulWidget {
-  const ToDoForm({Key? key}) : super(key: key);
+  const ToDoForm({super.key});
 
   @override
   State<ToDoForm> createState() => _ToDoFormState();
@@ -166,7 +166,7 @@ Future<void> _selectDateTime(BuildContext context) async {
         assignedTo: _selectedUser ?? '', // Assigned to selected user or 'No One'
       );
       
-//print('Task Created: ${newTask.title}, Assigned To: ${newTask.assignedTo}'); // Debug print
+print('Task Created: ${newTask.title}, Assigned To: ${newTask.assignedTo}'); // Debug print
       
 
       // Add task via TaskProvider
@@ -261,7 +261,7 @@ Future<void> _selectDateTime(BuildContext context) async {
               content: DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   labelText: 'Assign To',
-                  border: OutlineInputBorder(), //borderRadius :const BorderRadius.all(Radius.circular(2.0)),gapPadding:  0.0),
+                  border: OutlineInputBorder(),
                 ),
                 value: _selectedUser,
                 items: [
@@ -281,17 +281,17 @@ Future<void> _selectDateTime(BuildContext context) async {
                           SizedBox(width: 8),
                           Text(user.username),
                           SizedBox(width: 1),
-                          Text(isPreferred(user)?"  prefers this":'',style: TextStyle(color: Color.fromRGBO(52, 240, 15, 1),fontStyle: FontStyle.italic, fontSize: 12 )),
+                          Text(isPreferred(user)?" prefers this category":'',style: TextStyle(color: Color.fromRGBO(52, 240, 15, 1),fontStyle: FontStyle.italic, fontSize: 18 )),
                         ],
                       ),
                     );
-                  }).toList(),
+                  }),
                 ],
                 onChanged: (String? newValue) {
                   setState(() {
                     _selectedUser = newValue;
                      _selectedUser = newValue;
-        //print('Selected User: $_selectedUser');
+        print('Selected User: $_selectedUser');
                   });
                 },
               ),

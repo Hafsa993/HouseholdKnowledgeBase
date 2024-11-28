@@ -4,6 +4,8 @@ import 'package:household_knwoledge_app/models/task_descriptions_provider.dart';
 import 'package:provider/provider.dart';
 
 class AddTaskDescriptorScreen extends StatefulWidget {
+  const AddTaskDescriptorScreen({super.key});
+
   @override
   _AddTaskDescriptorScreenState createState() => _AddTaskDescriptorScreenState();
 }
@@ -21,7 +23,7 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
       final newDescriptor = TaskDescriptor(
         title: _titleController.text,
         instructions: _instructionsController.text,
-        category: _categoryController.text,
+        category: _category!,
         icon: _selectedIcon!,
       );
 
