@@ -36,6 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _image = XFile("assets/f.jpeg");
     _usernameController = TextEditingController(text: currentUser.username);
     _updateUsername();
+    _updateProfilePicture();
   }
 
   @override
@@ -63,6 +64,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Username updated")),
     );
+  }
+
+  Future<void> _updateProfilePicture() async {
+    final prefs = await SharedPreferences.getInstance();
+    final imagePath = prefs.getString('profile_image_path');
+    if (imagePath != null && File(imagePath).existsSync()) {
+      setState(() {
+        _image = XFile(imagePath);
+      });
+    }
+  }
+
+  Future<void> _saveProfilePicture(String imagePath) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('profile_image_path', imagePath);
   }
 
   Future<void> _updatePermissionStatus(String key, bool value) async {
@@ -152,6 +168,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         setState(() {
           _image = image;
         });
+        await _updateProfilePicture(image.path);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Profile picture updated")),
+        );
       }
     }
     on PlatformException catch (e) {
