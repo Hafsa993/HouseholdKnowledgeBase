@@ -8,18 +8,33 @@ class ToDoCreator extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      backgroundColor: Color.fromARGB(255, 21, 208, 255),
-      //backgroundColor: Theme.of(context).primaryColorLight,
-      onPressed: () => showDialog(context: context, 
-          builder: (BuildContext context) => Dialog(
-            child: ToDoForm(),
+    return   Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SizedBox(
+          width: double.infinity,
+          height: 50,
+          child: ElevatedButton(
+            onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext context) => Dialog(
+                child: ToDoForm(),
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 21, 208, 255),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25.0), // Rounded corners
+              ),
+            ),
+            child: const Text(
+              'Add ToDo',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
           ),
-      ),
-      tooltip: 'Create Task',
-      child: 
-        const Icon(Icons.add, //color: Colors.white,
         ),
-    );
+      );
   }
 }      
