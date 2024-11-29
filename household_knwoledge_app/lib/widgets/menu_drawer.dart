@@ -30,46 +30,46 @@ class MenuDrawer extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.symmetric(vertical: 10),
               children: [
-                SizedBox(
-                  height: 220,/*
+                DrawerHeader(
                   decoration: BoxDecoration(
-                      //color: Colors.blue, 
-                      gradient: LinearGradient(
-                        //stops: [1, 0.5],
-                        begin: Alignment.bottomCenter, 
-                        end: Alignment.topCenter, 
-                        colors: [Theme.of(context).scaffoldBackgroundColor, Colors.transparent],
-                        //colors: [Colors.black12, Colors.white],
-                      ),
-                    ),*/
-                  // This draws the header of the menu containing the profile 
-                  child: DrawerHeader(
-                    
+                    //color: Colors.blue, 
+                    gradient: LinearGradient(
+                      //stops: [1, 0.5],
+                      begin: Alignment.bottomCenter, 
+                      end: Alignment.topCenter, 
+                      colors: [Theme.of(context).primaryColorLight, const Color.fromARGB(255, 240, 240, 240)],
+                      //colors: [Colors.black12, Colors.white],
+                    ),
+                  ),
+                  child: Container(
                     child: Stack(
                       children: [
                         Positioned(
-                          top:10,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          top:20,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               GestureDetector(
                                 onTap: () {
                                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ProfileScreen()));
                                 },
                                 child: CircleAvatar(
-                                  radius: 40,
-                                  backgroundImage: AssetImage("lib/assets/f.jpeg"),
+                                  radius: 50,
+                                  backgroundImage: userProvider.getProfileOfCurrUser(),
                                 ),
                               ),
-                              SizedBox(height: 10,),
-
-                              GestureDetector(
+                              SizedBox(width: 10,),
+                              Column(children: [
+                                SizedBox(height: 20,),
+                                GestureDetector(
                                 onTap: () {
                                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ProfileScreen()));
                                 },
                                 child: Text(currUser.username, style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0), fontSize: 24))
                               ),
                               Text('${currUser.points} points', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 18)),
+                              ],)
+                              
                             ],
                           ),
                         )
@@ -137,49 +137,35 @@ class MenuDrawer extends StatelessWidget {
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) =>  RankingScreen()));
                   },
                 ),
-      
-                
+                SizedBox(height: 180,),
+                Divider(indent: 20, endIndent: 20, color: const Color.fromARGB(255, 83, 115, 140)),
+                /* // profile as a menu tab 
+                ListTile(
+                  leading: const Icon(
+                      CupertinoIcons.person_crop_circle,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                      size: 30,
+                    ),
+                  title: const Text('Profile'),
+                  onTap: () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ProfileScreen()));
+                  },
+                ), */
+                // align needed?
+                ListTile(
+                  leading: const Icon(
+                      CupertinoIcons.gear_solid,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                      size: 30,
+                    ),
+                  title: const Text('Options'),
+                  onTap: () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => OptionsScreen()));
+                  },
+                ),
               ],
             ),
           ),
-          Expanded(
-            flex: 1,
-            child: 
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  SizedBox(height: 30,),
-              Divider(indent: 20, endIndent: 20, color: const Color.fromARGB(255, 83, 115, 140)),
-                  /* // profile as a menu tab 
-                  ListTile(
-                    leading: const Icon(
-                        CupertinoIcons.person_crop_circle,
-                        color: Color.fromARGB(255, 0, 0, 0),
-                        size: 30,
-                      ),
-                    title: const Text('Profile'),
-                    onTap: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ProfileScreen()));
-                    },
-                  ), */
-                  // align needed?
-                  ListTile(
-                    leading: const Icon(
-                        CupertinoIcons.gear_solid,
-                        color: Color.fromARGB(255, 0, 0, 0),
-                        size: 30,
-                      ),
-                    title: const Text('Options'),
-                    onTap: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => OptionsScreen()));
-                    },
-                  ),
-                        
-                    SizedBox(height: 20,)],),
-            )),
-          
         ],
       ),
     );

@@ -56,12 +56,50 @@ Future<void> _selectDateTime(BuildContext context) async {
     initialDate: _selectedDeadline ?? initialDate,
     firstDate: firstDate,
     lastDate: lastDate,
+    builder: (context, child) {
+                return Theme(
+                  data: ThemeData.light().copyWith(
+                    colorScheme: ColorScheme.light(
+                      // change the border color
+                      primary: Colors.purple[700]!,
+                      // change the text color
+                      onSurface: Colors.indigo[600]!,
+                    ),
+                    // button colors 
+                    buttonTheme: ButtonThemeData(
+                      colorScheme: ColorScheme.light(
+                        primary: Colors.green,
+                      ),
+                    ),
+                  ),
+                  child: child!,
+                );
+              },
   );
 
   if (pickedDate != null) {
     final TimeOfDay? pickedTime = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(_selectedDeadline ?? DateTime.now()),
+      builder: (context, child) {
+                return Theme(
+                  data: ThemeData.light().copyWith(
+                    colorScheme: ColorScheme.light(
+                      // change the border color
+                      primary: Colors.purple[700]!,
+                      // change the text color
+                      onSurface: Colors.indigo[600]!,
+                    ),
+                    // button colors 
+                    buttonTheme: ButtonThemeData(
+                      colorScheme: ColorScheme.light(
+                        primary: Colors.green,
+                      ),
+                    ),
+                  ),
+                  child: child!,
+                );
+              },
     );
 
     if (pickedTime != null) {

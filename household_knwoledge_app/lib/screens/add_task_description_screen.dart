@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_iconpicker/Models/configuration.dart';
 import 'package:household_knwoledge_app/models/task_descriptions_model.dart';
 import 'package:household_knwoledge_app/models/task_descriptions_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import '../widgets/icon_picker.dart';
 
 class AddTaskDescriptorScreen extends StatefulWidget {
@@ -43,22 +41,6 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
     }
   }
 
-  _pickIcon() async {
-    IconPickerIcon? pickedIcon = await showIconPicker(
-      context,
-      configuration: SinglePickerConfiguration(
-        iconPackModes: [IconPack.allMaterial],
-      ),
-    );
-    //print(pack.toString());
-    if (pickedIcon != null) {
-      _selectedIcon = pickedIcon.data;
-      setState(() {});
-    }
-
-    debugPrint('Picked Icon:  $pickedIcon');
-  }
-
   void _saveTaskDescriptor() {
     if (_formKey.currentState!.validate() && _selectedIcon != null) {
       final newDescriptor = TaskDescriptor(
@@ -83,6 +65,7 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 226, 224, 224),
         title: Text('Add New Instruction'),
       ),
       body: Padding(
@@ -220,7 +203,7 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   padding: const EdgeInsets.all(8),
-                  child: Icon(_selectedIcon, size: 32),
+                  child: getFilling(),
                 ),
               ),
               SizedBox(height: 10),
@@ -246,7 +229,13 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
       ),
     );
   }
-  
+  Widget getFilling() {
+    if (_selectedIcon == null) {
+      return Text('Click here to pick an icon',style: TextStyle(color: Colors.grey),);
+    } else {
+      return Icon(_selectedIcon, size: 32);
+    }
+  }
   /*
   Widget _iconSelection(IconData icon) {
     return GestureDetector(

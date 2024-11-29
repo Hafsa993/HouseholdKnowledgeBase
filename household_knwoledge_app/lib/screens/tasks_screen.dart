@@ -49,6 +49,7 @@ class _TasksScreenState extends State<TasksScreen> {
       drawer: const MenuDrawer(),
       body: Column(
         children: [
+          SizedBox(height: 10,),
           // Search Bar
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -143,22 +144,20 @@ class _TasksScreenState extends State<TasksScreen> {
                   ),
           ),
           // Add Instruction Button
-          Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: ElevatedButton(
-              child: Text('Add Instruction'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddTaskDescriptorScreen(),
-                  ),
-                );
-              },
-            ),
-          ),
         ],
       ),
+      bottomNavigationBar: ElevatedButton.icon(
+        icon: const Icon(Icons.add, size: 16, color: Color.fromARGB(255, 21, 208, 255),),
+            label: Text('Add new instruction'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddTaskDescriptorScreen(),
+                ),
+              );
+            },
+          ),
     );
   }
 

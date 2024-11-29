@@ -21,11 +21,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   // Pick image from Gallery or Camera
   Future<void> _pickImage(ImageSource source) async {
+    User currUser = Provider.of<UserProvider>(context, listen: false).getCurrUser();
     try {
       final XFile? image = await _picker.pickImage(source: source);
       if (image != null) {
         setState(() {
         _image = image;
+        currUser.profilepath = image.path;
         });
       }
     }

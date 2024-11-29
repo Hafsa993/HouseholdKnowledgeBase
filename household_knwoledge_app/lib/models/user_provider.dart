@@ -1,6 +1,9 @@
 // lib/providers/user_provider.dart
 
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:household_knwoledge_app/models/user_model.dart';
 
 class UserProvider with ChangeNotifier {
@@ -55,6 +58,13 @@ class UserProvider with ChangeNotifier {
     return _currUsers.firstWhere((user) => user.username == 'JohnDoe');
   }
   
-
+  ImageProvider<Object> getProfileOfCurrUser() {
+    String p = getCurrUser().profilepath;
+    if ( p == "lib/assets/f.jpeg") {
+      return AssetImage(p);
+    } else {
+      return FileImage(File(p));
+    }
+  }
   // Additional methods as needed...
 }

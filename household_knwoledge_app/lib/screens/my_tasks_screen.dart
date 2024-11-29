@@ -74,7 +74,7 @@ class MyTasksScreen extends StatelessWidget {
                               },
                               child: CircleAvatar(
                                 radius: 40,
-                                backgroundImage: AssetImage("lib/assets/f.jpeg"),
+                                backgroundImage: userProvider.getProfileOfCurrUser(),
                               ),
                             ),
                             SizedBox(width: 10,),

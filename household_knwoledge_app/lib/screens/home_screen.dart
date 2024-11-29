@@ -102,7 +102,8 @@ class HomeScreen extends StatelessWidget {
                       height: 2,
                       image: currUsers[0].profilepath,
                       name: currUsers[0].username,
-                      point: "${currUsers[0].points}"),
+                      point: "${currUsers[0].points}",
+                      context: context),
                 ),
                 // for rank 2nd
                 Positioned(
@@ -113,7 +114,8 @@ class HomeScreen extends StatelessWidget {
                       height: 2,
                       image: currUsers[1].profilepath,
                       name: currUsers[1].username,
-                      point: "${currUsers[1].points}"),
+                      point: "${currUsers[1].points}",
+                      context: context),
                 ),
                 // For 3rd rank
                 Positioned(
@@ -124,7 +126,8 @@ class HomeScreen extends StatelessWidget {
                       height: 2,
                       image: currUsers[2].profilepath,
                       name: currUsers[2].username,
-                      point: "${currUsers[2].points}"),
+                      point: "${currUsers[2].points}",
+                      context: context),
                 ),
               ],
               ),
@@ -262,12 +265,21 @@ class HomeScreen extends StatelessWidget {
     required String image,
     required String name,
     required String point,
+    required BuildContext context,
   }) {
+    ImageProvider<Object> profile;
+
+    String currName = Provider.of<UserProvider>(context).getCurrUser().username;
+    if (name == currName) {
+      profile = Provider.of<UserProvider>(context).getProfileOfCurrUser();
+    } else {
+      profile = AssetImage(image);
+    }
     return Column(
       children: [
         CircleAvatar(
           radius: radius,
-          backgroundImage: AssetImage(image),
+          backgroundImage: profile,
         ),
         SizedBox(
           height: height,

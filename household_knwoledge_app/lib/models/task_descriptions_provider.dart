@@ -35,6 +35,11 @@ class TaskDescriptorProvider with ChangeNotifier{
     print(descriptors.toString());
     notifyListeners();
   }
+  // is this the same object?
+  void removeTaskDescriptor(TaskDescriptor descriptor) {
+    descriptors.remove(descriptor);
+    notifyListeners();
+  }
 
   int getLength() {
     return descriptors.length;
