@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:household_knwoledge_app/models/user_provider.dart';
+import 'package:household_knwoledge_app/screens/todo_show.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../models/task_model.dart';
@@ -129,6 +130,15 @@ class MyTasksScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
+                      child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TodoShowScreen(task: task),
+                                  ),
+                                );
+                              },
                       child: Padding(
                         padding:  EdgeInsets.all(12.0),
                         child: Row(
@@ -188,6 +198,7 @@ class MyTasksScreen extends StatelessWidget {
                             ),
                           ],
                         ),
+                      ),
                       ),
                     );
                   },
