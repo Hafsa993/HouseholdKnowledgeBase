@@ -220,7 +220,7 @@ class HomeScreen extends StatelessWidget {
                       child: const Text('Accept'),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: 6),
                   Flexible(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -384,6 +384,7 @@ class HomeScreen extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
+          actionsAlignment: MainAxisAlignment.center,
           title: const Text("Provide Reasoning"),
           content: Column(
             mainAxisSize: MainAxisSize.min,

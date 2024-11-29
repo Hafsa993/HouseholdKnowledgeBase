@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import '../widgets/menu_drawer.dart';
 
 class TasksScreen extends StatefulWidget {
-  TasksScreen({super.key});
+  const TasksScreen({super.key});
 
   @override
   _TasksScreenState createState() => _TasksScreenState();

@@ -120,7 +120,7 @@ Future<void> _selectDateTime(BuildContext context) async {
     if (_currentStep == 0) {
       if (_selectedCategory == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please select a category')),
+          SnackBar(content: Text('Please select a category'),behavior: SnackBarBehavior.floating, ),
         );
         return;
       }
@@ -130,28 +130,34 @@ Future<void> _selectDateTime(BuildContext context) async {
       // Validate task details
       if (_taskTitle.trim().isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please enter the task title')),
+          SnackBar(content: Text('Please enter the task title') ,behavior: SnackBarBehavior.floating, )// Make it float),
         );
         return;
       }
       if (_selectedDeadline == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please select a deadline')),
+          SnackBar(content: Text('Please select a deadline'), behavior: SnackBarBehavior.floating, )// Make it float),
         );
         return;
       }
       if (_rewardPointsController.text.trim().isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please enter reward points')),
+          SnackBar(content: Text('Please enter reward points') ,behavior: SnackBarBehavior.floating,) // Make it float),
         );
         return;
       }
       if (int.tryParse(_rewardPointsController.text.trim()) == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Reward points must be an integer')),
+          SnackBar(
+            content: Text('Reward points must be an integer'),
+
+            behavior: SnackBarBehavior.floating, // Make it float
+          
+          ),
         );
-        return;
-      }
+      return;
+    }
+
 
       // All validations passed, proceed to create task
       _rewardPoints = int.parse(_rewardPointsController.text.trim());
@@ -167,7 +173,7 @@ Future<void> _selectDateTime(BuildContext context) async {
         assignedTo: _selectedUser ?? '', // Assigned to selected user or 'No One'
       );
       
-print('Task Created: ${newTask.title}, Assigned To: ${newTask.assignedTo}'); // Debug print
+      //print('Task Created: ${newTask.title}, Assigned To: ${newTask.assignedTo}'); // Debug print
       
 
       // Add task via TaskProvider

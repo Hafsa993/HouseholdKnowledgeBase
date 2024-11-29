@@ -16,7 +16,7 @@ class ToDoListScreen extends StatelessWidget {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text("Are you sure you want to take over this ToDo?"),
+             actionsAlignment: MainAxisAlignment.center,title: const Text("Are you sure you want to take over this ToDo?"),
             content: const Text("This is a non-reversible action."),
             actions: [
               TextButton(
@@ -125,14 +125,14 @@ class ToDoListScreen extends StatelessWidget {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: task.isAccepted || task.assignedTo == currentUser.username? Colors.grey :  Colors.green,
+                        backgroundColor: task.isAccepted ? Colors.grey : task.assignedTo == currentUser.username? Colors.red: Colors.teal,//const Color.fromARGB(255, 254, 117, 75) const Color.fromARGB(255, 35, 188, 209),
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8), // Increase padding
                         minimumSize: const Size(70, 40), // Ensure minimum button size
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      onPressed: () => task.isAccepted ? null :  _showAcceptDialog(context, task, taskProvider, currentUser.username) ,
+                      onPressed: () => task.isAccepted || task.assignedTo == currentUser.username ? null :  _showAcceptDialog(context, task, taskProvider, currentUser.username) ,
                       child: task.isAccepted ? Text('ToDo is taken') : ( task.assignedTo == currentUser.username ? Text('task is assigned to you') : Text('take over from ${task.assignedTo}')),
                     ),
                   ),
