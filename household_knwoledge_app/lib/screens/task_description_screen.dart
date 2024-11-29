@@ -66,7 +66,7 @@ class _TaskDescriptionScreenState extends State<TaskDescriptionScreen> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton.icon(
-                label: Text('Delete Task', style: TextStyle(color: Colors.white),),
+                label: Text('Delete Instruction', style: TextStyle(color: Colors.white, fontSize: 20),),
                 icon: const Icon(Icons.delete, color: Colors.white, size: 20,),
                 style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(Colors.red)),
                 onPressed: () async {isDeleted = await showDialog(
@@ -107,11 +107,11 @@ class _TaskDescriptionScreenState extends State<TaskDescriptionScreen> {
     );
   }
 
-   _showDeleteDialog(BuildContext context, TaskDescriptor descriptor, TaskDescriptorProvider taskDescriptorProvider) {
+   /* _showDeleteDialog(BuildContext context, TaskDescriptor descriptor, TaskDescriptorProvider taskDescriptorProvider) {
     //bool val = false;
     
     //print(val);
     //return val;
-  }
+  }*/
 }
 
