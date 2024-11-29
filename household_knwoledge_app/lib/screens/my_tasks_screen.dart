@@ -101,7 +101,7 @@ class MyTasksScreen extends StatelessWidget {
             ),
             SizedBox(height: 50,),
             Text(
-              "Accepted Tasks:",
+              "Accepted ToDos:",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
             ),
             SizedBox(height: 8),
@@ -166,6 +166,15 @@ class MyTasksScreen extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(height: 4),
+                                            Text(
+                                              'Difficulty: ${task.difficulty}',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontStyle: FontStyle.italic,
+                                                color: Colors.black87,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 4),
                               Text(
                                 'Reward: ${task.rewardPoints}',
                                 style: const TextStyle(
@@ -209,7 +218,7 @@ class MyTasksScreen extends StatelessWidget {
 
             // Completed Tasks Section
              Text(
-              "Completed Tasks in the last 30 days:",
+              "Completed ToDos in the last 30 days:",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
             ),
              SizedBox(height: 8),

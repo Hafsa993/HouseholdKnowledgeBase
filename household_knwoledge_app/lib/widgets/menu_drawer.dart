@@ -30,7 +30,7 @@ class MenuDrawer extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.symmetric(vertical: 10),
               children: [
-                DrawerHeader(
+                DrawerHeader( 
                   decoration: BoxDecoration(
                     //color: Colors.blue, 
                     gradient: LinearGradient(
@@ -41,40 +41,35 @@ class MenuDrawer extends StatelessWidget {
                       //colors: [Colors.black12, Colors.white],
                     ),
                   ),
-                  child: Container(
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          top:20,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ProfileScreen()));
-                                },
-                                child: CircleAvatar(
-                                  radius: 50,
-                                  backgroundImage: userProvider.getProfileOfCurrUser(),
-                                ),
+                  child: 
+                  InkWell(
+                      onTap: () {
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ProfileScreen()));
+                      },
+                      child: Stack(
+                    children: [
+                      Positioned(
+                        top:20,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                                radius: 50,
+                                backgroundImage: userProvider.getProfileOfCurrUser(),
                               ),
-                              SizedBox(width: 10,),
-                              Column(children: [
-                                SizedBox(height: 20,),
-                                GestureDetector(
-                                onTap: () {
-                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ProfileScreen()));
-                                },
-                                child: Text(currUser.username, style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0), fontSize: 24))
-                              ),
-                              Text('${currUser.points} points', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 18)),
-                              ],)
-                              
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                            
+                            SizedBox(width: 10,),
+                            Column(children: [
+                            SizedBox(height: 20,),  
+                            Text(currUser.username, style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0), fontSize: 24)),
+                            Text('${currUser.points} points', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 18)),
+                            ],)
+                            
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                   ),
                 ),
                 ListTile(
