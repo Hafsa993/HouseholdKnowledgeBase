@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:household_knwoledge_app/models/user_provider.dart';
+import 'package:household_knwoledge_app/screens/todo_show.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../models/task_model.dart';
@@ -140,117 +141,132 @@ class HomeScreen extends StatelessWidget {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
              Expanded(
-              child: urgentTasks.isEmpty
-                  ? const Center(child: Text('No pending tasks!'))
-                  : ListView.builder(
-                      itemCount: urgentTasks.length,
-                      itemBuilder: (context, index) {
-                        Task task = urgentTasks[index];
-                        return Card(
-        margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Task Title
-        Text(
-          task.title,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-        ),
-        const SizedBox(height: 8),
-        // Task Details
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Due: ${DateFormat('dd-MM-yyyy HH:mm').format(task.deadline)}',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: task.deadline.difference(DateTime.now()).inHours < 24
-                                    ? Colors.red // Red if due in less than 24 hours
-                                    : Colors.black54
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Difficulty: ${task.difficulty}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontStyle: FontStyle.italic,
-                    color: Colors.black87,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Reward: ${task.rewardPoints}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.teal,
-                  ),
-                ),
-              ],
-            ),
-            // Buttons Section
-            Flexible(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Flexible(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.green,
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8), // Increase padding
-                        minimumSize: const Size(70, 40), // Ensure minimum button size
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                child: urgentTasks.isEmpty
+                    ? const Center(child: Text('No pending tasks!'))
+                    : ListView.builder(
+                        itemCount: urgentTasks.length,
+                        itemBuilder: (context, index) {
+                          Task task = urgentTasks[index];
+                          return Card(
+                            margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TodoShowScreen(task: task),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Task Title
+                                    Text(
+                                      task.title,
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    // Task Details
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Due: ${DateFormat('dd-MM-yyyy HH:mm').format(task.deadline)}',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: task.deadline.difference(DateTime.now()).inHours < 24
+                                                    ? Colors.red // Red if due in less than 24 hours
+                                                    : Colors.black54,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              'Difficulty: ${task.difficulty}',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontStyle: FontStyle.italic,
+                                                color: Colors.black87,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              'Reward: ${task.rewardPoints}',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.teal,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        // Buttons Section
+                                        Flexible(
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              Flexible(
+                                                child: ElevatedButton(
+                                                  style: ElevatedButton.styleFrom(
+                                                    foregroundColor: Colors.white,
+                                                    backgroundColor: Colors.green,
+                                                    padding: const EdgeInsets.symmetric(
+                                                        horizontal: 12, vertical: 8), // Increased padding
+                                                    minimumSize: const Size(70, 40), // Ensures minimum button size
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(8),
+                                                    ),
+                                                  ),
+                                                  onPressed: () =>
+                                                      _showAcceptDialog(context, task, taskProvider),
+                                                  child: const Text('Accept'),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 6),
+                                              Flexible(
+                                                child: ElevatedButton(
+                                                  style: ElevatedButton.styleFrom(
+                                                    foregroundColor: Colors.white,
+                                                    backgroundColor: Colors.red,
+                                                    padding: const EdgeInsets.symmetric(
+                                                        horizontal: 12, vertical: 8),
+                                                    minimumSize: const Size(70, 40),
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(8),
+                                                    ),
+                                                  ),
+                                                  onPressed: () =>
+                                                      _showDeclineDialog(context, task, taskProvider),
+                                                  child: const Text('Decline'),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      onPressed: () => _showAcceptDialog(context, task, taskProvider),
-                      child: const Text('Accept'),
-                    ),
-                  ),
-                  const SizedBox(width: 6),
-                  Flexible(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.red,
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        minimumSize: const Size(70, 40), 
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onPressed: () => _showDeclineDialog(context, task, taskProvider),
-                      child: const Text('Decline'),
-                    ),
-                  ),
-                ],
               ),
-            ),
-          ],
-        ),
-      ],
-          ),
-        ),
-      );
-                      },
-                    ),
-            ), 
+
           ],
         ),
       ),
