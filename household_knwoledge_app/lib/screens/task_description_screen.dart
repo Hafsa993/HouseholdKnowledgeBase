@@ -41,61 +41,69 @@ class _TaskDescriptionScreenState extends State<TaskDescriptionScreen> {
                   Text(widget.task.title, style: TextStyle(fontSize: 20),),
                 ],
                 ),
-                SizedBox(height: 15,),
+                SizedBox(height: 35,),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Category:', style: TextStyle(fontSize: 16),),
+                  Flexible(child: Text('Category:', style: TextStyle(fontSize: 25),)),
                   SizedBox(width: 15,),
-                  Chip(
-                    label: Text(widget.task.category, style: TextStyle(fontSize: 16, color: categoryColor(widget.task.category)),), 
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,)
+                  Flexible(
+                    child: Chip(
+                      label: Text(widget.task.category, style: TextStyle( color: categoryColor(widget.task.category)),), 
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,),
+                  )
                 ],
                             ),
+                            SizedBox(height:20,),
                             Divider(),
-                            Text(widget.task.instructions, style: TextStyle(fontSize: 18),)
+                            Container(decoration: BoxDecoration(border: Border.symmetric()),child: Text(widget.task.instructions, style: TextStyle(fontSize: 18),),)
                             ]),
               ))),
           ],
         ),
       ),
       bottomNavigationBar: 
-            ElevatedButton.icon(
-              label: Text('Delete Task', style: TextStyle(color: Colors.white),),
-              icon: const Icon(Icons.delete, color: Colors.white, size: 20,),
-              style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(Colors.red)),
-              onPressed: () async {isDeleted = await showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: const Text("Are you sure you want to delete this instruction?"),
-                    content: const Text("This is a non-reversible action."),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          //val = true;
-                          Navigator.pop(context, true);
-                        },
-                        style: TextButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.red),
-                        child: const Text('Yes, really delete'),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        style: TextButton.styleFrom(
-                            foregroundColor: Colors.white, backgroundColor: Colors.grey),
-                        child: const Text("No, don't delete"),
-                      ),
-                    ],
-                  );
-                },
-              );
-              if (isDeleted == true){
-                Provider.of<TaskDescriptorProvider>(context, listen: false).removeTaskDescriptor(widget.task);
-                Navigator.of(context).pop();
-              }
-              }, 
-              ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton.icon(
+                label: Text('Delete Task', style: TextStyle(color: Colors.white),),
+                icon: const Icon(Icons.delete, color: Colors.white, size: 20,),
+                style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(Colors.red)),
+                onPressed: () async {isDeleted = await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text("Are you sure you want to delete this instruction?"),
+                      content: const Text("This is a non-reversible action."),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            //val = true;
+                            Navigator.pop(context, true);
+                          },
+                          style: TextButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              backgroundColor: Colors.red),
+                          child: const Text('Yes, really delete'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          style: TextButton.styleFrom(
+                              foregroundColor: Colors.white, backgroundColor: Colors.grey),
+                          child: const Text("No, don't delete"),
+                        ),
+                      ],
+                    );
+                  },
+                );
+                if (isDeleted == true){
+                  Provider.of<TaskDescriptorProvider>(context, listen: false).removeTaskDescriptor(widget.task);
+                  Navigator.of(context).pop();
+                }
+                }, 
+                
+                ),
+            ),     
     );
   }
 
