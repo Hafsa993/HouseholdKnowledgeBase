@@ -19,7 +19,7 @@ class TaskDescriptorProvider with ChangeNotifier{
     TaskDescriptor(
       title: 'Gardening', 
       instructions: 'Instructions on gardening...', 
-      category: 'Garden', 
+      category: 'Gardening', 
       icon: Icons.yard),
       
     TaskDescriptor(

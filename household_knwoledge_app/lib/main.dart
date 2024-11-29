@@ -29,16 +29,19 @@ class HouseholdApp extends StatelessWidget {
     return MaterialApp(
       title: 'Household App',
       theme: ThemeData(
-        //fontFamily: GoogleFonts.merriweather().toString(),
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 102, 163, 255),contrastLevel: 1),
-        brightness: Brightness.light,
+        fontFamily: GoogleFonts.robotoSlab().fontFamily,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(255, 102, 163, 255),
+          primary: const Color.fromARGB(255, 41, 141, 255),
+          dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
+          contrastLevel: 1),
         useMaterial3: true, // Enable Material 3 for a modern design
-        textTheme: TextTheme(
+        /*textTheme: TextTheme(
           titleLarge: GoogleFonts.merriweather(),
           bodyMedium: GoogleFonts.merriweather(),
           displayMedium: GoogleFonts.merriweather(),
           labelMedium: GoogleFonts.merriweather(),
-        ),
+        ),*/
       ),
       home: HomeScreen(),
     );

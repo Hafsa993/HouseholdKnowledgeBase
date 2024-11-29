@@ -19,7 +19,7 @@ class TaskDescriptor {
 Color categoryColor(String category){
   switch(category){
     case 'Cooking': return Colors.red;
-    case 'Garden': return Colors.green;
+    case 'Gardening': return Colors.green;
     case 'Shopping': return Colors.amberAccent;
     case 'Planning': return const Color.fromARGB(255, 145, 74, 189);
     case 'Care': return const Color.fromARGB(255, 255, 93, 212);

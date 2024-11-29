@@ -29,7 +29,7 @@ class _TasksScreenState extends State<TasksScreen> {
       });
     });
   }
-
+  
   @override
   Widget build(BuildContext context) {
     // Listen to changes in the provider
@@ -90,7 +90,17 @@ class _TasksScreenState extends State<TasksScreen> {
               items: selectableCategories.map((String items) {
                 return DropdownMenuItem(
                   value: items,
-                  child: Text(items),
+                  child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: getCategoryColor(items),
+                                radius: 5,
+                              ),
+                              SizedBox(width: 8),
+                              Text(items),
+                            ],
+                          ),
                 );
               }).toList(),
               onChanged: (String? newValue) {
@@ -117,6 +127,7 @@ class _TasksScreenState extends State<TasksScreen> {
                           trailing: Icon(descriptor.icon),
                           iconColor: categoryColor(descriptor.category),
                           title: Text(descriptor.title),
+                          subtitle: Text(descriptor.category, style: TextStyle(color: Colors.grey),),
                           onTap: () {
                             Navigator.push(
                               context,
@@ -171,5 +182,13 @@ class _TasksScreenState extends State<TasksScreen> {
     setState(() {
       filteredDescriptors = tempList;
     });
+  }
+}
+
+Color getCategoryColor(String s) {
+  if (s == 'All') {
+    return Colors.black;
+  } else {
+    return categoryColor(s);
   }
 }

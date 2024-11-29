@@ -31,18 +31,20 @@ class MenuDrawer extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 10),
               children: [
                 SizedBox(
-                  height: 220,
-                  // This draws the header of the menu containing the profile 
-                  child: DrawerHeader(
-                    decoration: BoxDecoration(
+                  height: 220,/*
+                  decoration: BoxDecoration(
                       //color: Colors.blue, 
                       gradient: LinearGradient(
+                        //stops: [1, 0.5],
                         begin: Alignment.bottomCenter, 
                         end: Alignment.topCenter, 
-                        colors: [Theme.of(context).primaryColorLight, Theme.of(context).scaffoldBackgroundColor]
+                        colors: [Theme.of(context).scaffoldBackgroundColor, Colors.transparent],
                         //colors: [Colors.black12, Colors.white],
                       ),
-                    ),
+                    ),*/
+                  // This draws the header of the menu containing the profile 
+                  child: DrawerHeader(
+                    
                     child: Stack(
                       children: [
                         Positioned(

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_iconpicker/Models/configuration.dart';
 import 'package:household_knwoledge_app/models/task_descriptions_model.dart';
 import 'package:household_knwoledge_app/models/task_descriptions_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_iconpicker/flutter_iconpicker.dart';
+import '../widgets/icon_picker.dart';
 
 class AddTaskDescriptorScreen extends StatefulWidget {
-  const AddTaskDescriptorScreen({super.key});
+  const AddTaskDescriptorScreen({Key? key}) : super(key: key);
 
   @override
   _AddTaskDescriptorScreenState createState() => _AddTaskDescriptorScreenState();
@@ -17,6 +20,44 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
   final _categoryController = TextEditingController();
   IconData? _selectedIcon;
   String? _category;
+
+  Future<void> _showIconPickerDialog() async {
+    IconData? iconPicked = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Pick an icon',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: IconPicker(),
+        );
+      },
+    );
+
+    if (iconPicked != null) {
+      debugPrint('Icon changed to $iconPicked');
+      setState(() {
+        _selectedIcon = iconPicked;
+      });
+    }
+  }
+
+  _pickIcon() async {
+    IconPickerIcon? pickedIcon = await showIconPicker(
+      context,
+      configuration: SinglePickerConfiguration(
+        iconPackModes: [IconPack.allMaterial],
+      ),
+    );
+    //print(pack.toString());
+    if (pickedIcon != null) {
+      _selectedIcon = pickedIcon.data;
+      setState(() {});
+    }
+
+    debugPrint('Picked Icon:  $pickedIcon');
+  }
 
   void _saveTaskDescriptor() {
     if (_formKey.currentState!.validate() && _selectedIcon != null) {
@@ -50,10 +91,31 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+            children: <Widget>[
+              Text('Enter the title:',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+              SizedBox(height: 5,),
               TextFormField(
                 controller: _titleController,
-                decoration: InputDecoration(labelText: 'Title'),
+                
+                decoration: InputDecoration(
+                  labelText: 'Title', 
+                  hintText: 'Enter the title of the instruction here', 
+                  hintStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: BorderSide(
+                    color: const Color.fromARGB(255, 66, 67, 67),
+                    width: 2,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: const Color.fromARGB(255, 57, 58, 57),
+                    width: 2,
+                  ),
+                ),),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return 'Please enter a title';
@@ -61,17 +123,41 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
                   return null;
                 },
               ),
+              SizedBox(height: 40,),
+              Text('Enter the instruction description:',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+              SizedBox(height: 5,),
               TextFormField(
                 controller: _instructionsController,
-                decoration: InputDecoration(labelText: 'Instructions'),
-                maxLines: 3,
+                decoration: InputDecoration(
+                  alignLabelWithHint: true,
+                  labelText: 'Instructions', 
+                  hintText: 'Enter instruction description here', 
+                  hintStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: BorderSide(
+                    color: const Color.fromARGB(255, 66, 67, 67),
+                    width: 2,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: const Color.fromARGB(255, 57, 58, 57),
+                    width: 2,
+                  ),
+                ),),
+                maxLines: 10,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return 'Please enter instructions';
                   }
                   return null;
                 },
-              ),/*
+              ),
+              SizedBox(height: 40,),
+              /*
               TextFormField(
                 controller: _categoryController,
                 decoration: InputDecoration(labelText: 'Category'),
@@ -82,6 +168,9 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
                   return null;
                 },
               ), */
+              Text('Choose a category:',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+              SizedBox(height: 5,),
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   labelText: 'Category',
@@ -91,7 +180,18 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
                 items: categories.map((String category) {
                   return DropdownMenuItem<String>(
                     value: category,
-                    child: Text(category),
+                    //child: Text(category),
+                    child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: categoryColor(category),
+                                radius: 5,
+                              ),
+                              SizedBox(width: 8),
+                              Text(category),
+                            ],
+                          ),
                   );
                 }).toList(),
                 onChanged: (String? newValue) {
@@ -105,10 +205,26 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
               ),
               SizedBox(height: 16),
               Text(
-                'Select Icon:',
+                'Select an Icon:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              
+              SizedBox(height: 5),
+              GestureDetector(
+                onTap: _showIconPickerDialog,
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.all(8),
+                  child: Icon(_selectedIcon, size: 32),
+                ),
+              ),
+              SizedBox(height: 10),
+              /*
               Wrap(
                 spacing: 10,
                 children: [
@@ -118,10 +234,11 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
                   _iconSelection(Icons.cleaning_services_outlined),
                 ],
               ),
+              */
               SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _saveTaskDescriptor,
-                child: Text('Save Task Descriptor'),
+                child: Text('Save Instruction'),
               ),
             ],
           ),
@@ -129,7 +246,8 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
       ),
     );
   }
-
+  
+  /*
   Widget _iconSelection(IconData icon) {
     return GestureDetector(
       onTap: () {
@@ -150,6 +268,7 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
       ),
     );
   }
+  */
 
   @override
   void dispose() {
@@ -159,80 +278,3 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
     super.dispose();
   }
 }
-
-/* 
-class AddTaskDescriptionScreen extends StatefulWidget{
-  const AddTaskDescriptionScreen({super.key});
-
-  @override
-  State<AddTaskDescriptionScreen> createState() => _AddTaskDescriptionScreenState();
-}
-
-class _AddTaskDescriptionScreenState extends State<AddTaskDescriptionScreen> {
-  String _title = '';
-  String? _category;
-  String _instructions = '';
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 6, 193, 240),
-        title: Text('Add Instruction'),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          TextField(
-            decoration: InputDecoration(
-              hintText: 'Title of the instruction',
-            ),
-            onChanged: (text) {
-              _title = text;
-            }
-          ),
-
-          DropdownButtonFormField<String>(
-                decoration: InputDecoration(
-                  labelText: 'Category',
-                  border: OutlineInputBorder(),
-                ),
-                value: _category,
-                items: categories.map((String category) {
-                  return DropdownMenuItem<String>(
-                    value: category,
-                    child: Text(category),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _category = newValue;
-                    // Reset assigned user if category changes
-                   
-                  });
-                },
-                validator: (value) => value == null ? 'Please select a category' : null,
-              ),
-
-          TextField(
-            decoration: InputDecoration(
-              hintText: 'Type instructions here',
-            ),
-            onChanged: (text) {
-              _instructions = text;
-            }
-          ),
-
-          ElevatedButton(onPressed: () {
-            TaskDescriptor task = TaskDescriptor(title: _title, category: _category!, instructions: _instructions, icon: Icons.abc_outlined);
-            Provider.of<TaskDescriptorProvider>(context, listen: false).addTaskDescriptor(task);
-            print('${Provider.of<TaskDescriptorProvider>(context, listen: false).getLength()}');
-          }, 
-            child: Text('Add new instructions'),
-          ),
-        ],
-      ),
-    );
-  }
-} */
