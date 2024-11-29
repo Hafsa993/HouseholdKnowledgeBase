@@ -153,7 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: CircleAvatar(
                     radius: 60,
                     backgroundImage: _image == null
-                        ? const AssetImage('assets/default_avatar.png') as ImageProvider
+                        ? userProvider.getProfileOfCurrUser()
                         : FileImage(File(_image!.path)),
                   ),
                 ),

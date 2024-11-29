@@ -150,7 +150,7 @@ class _TasksScreenState extends State<TasksScreen> {
         padding: const EdgeInsets.all(16.0),
         child: ElevatedButton.icon(
           icon: const Icon(Icons.add, size: 16, color: Color.fromARGB(255, 21, 208, 255),),
-              label: Text('Add new instruction'),
+              label: Text('Add new instruction', style: TextStyle(fontSize: 20)),
               onPressed: () {
                 Navigator.push(
                   context,

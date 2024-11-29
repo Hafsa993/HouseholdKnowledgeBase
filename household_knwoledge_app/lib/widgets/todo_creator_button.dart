@@ -30,7 +30,7 @@ class ToDoCreator extends StatelessWidget {
               'Add ToDo',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 16,
+                fontSize: 20,
               ),
             ),
           ),
