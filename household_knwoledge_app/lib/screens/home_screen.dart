@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:household_knwoledge_app/models/user_provider.dart';
+import 'package:household_knwoledge_app/screens/ranking_screen.dart';
 import 'package:household_knwoledge_app/screens/todo_show.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -57,10 +58,14 @@ class HomeScreen extends StatelessWidget {
                   children: [Positioned(child: Column(
                     /*children: [Image.asset("lib/assets/leaderboard.png", fit: BoxFit.scaleDown,),
                     ], */
-                      children: [ClipRRect(
+                      children: [InkWell(
+                              onTap: () {
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => RankingScreen()));
+                                },
+                                child: ClipRRect(
                         borderRadius: BorderRadius.circular(15.0),
                         child: Image.asset("lib/assets/leaderboard.png", fit: BoxFit.scaleDown,),
-                      )],
+                      ))],
                   ))],
                 ),
                 const Positioned(

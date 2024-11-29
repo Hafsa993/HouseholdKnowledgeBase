@@ -57,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onPressed: () {
                 // for semplicity we won't make the logout implementation for now
                 Navigator.of(context).pop();
-                Navigator.pushReplacementNamed(context, '/home');
+                //Navigator.pushReplacementNamed(context, '/home');
               },
             ),
           ],
