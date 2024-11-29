@@ -31,8 +31,8 @@ class TaskDescriptorProvider with ChangeNotifier{
 
   void addTaskDescriptor (TaskDescriptor descriptor) async {
     descriptors.add(descriptor);
-    print('added a task with name: ${descriptor.title}');
-    print(descriptors.toString());
+   // print('added a task with name: ${descriptor.title}');
+   // print(descriptors.toString());
     notifyListeners();
   }
   // is this the same object?

@@ -146,18 +146,21 @@ class _TasksScreenState extends State<TasksScreen> {
           // Add Instruction Button
         ],
       ),
-      bottomNavigationBar: ElevatedButton.icon(
-        icon: const Icon(Icons.add, size: 16, color: Color.fromARGB(255, 21, 208, 255),),
-            label: Text('Add new instruction'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddTaskDescriptorScreen(),
-                ),
-              );
-            },
-          ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ElevatedButton.icon(
+          icon: const Icon(Icons.add, size: 16, color: Color.fromARGB(255, 21, 208, 255),),
+              label: Text('Add new instruction'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddTaskDescriptorScreen(),
+                  ),
+                );
+              },
+            ),
+      ),
     );
   }
 
