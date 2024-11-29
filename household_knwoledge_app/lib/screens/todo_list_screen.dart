@@ -16,7 +16,7 @@ class ToDoListScreen extends StatelessWidget {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text("Are you sure you want to take over this ToDo?"),
+             actionsAlignment: MainAxisAlignment.center,title: const Text("Are you sure you want to take over this ToDo?"),
             content: const Text("This is a non-reversible action."),
             actions: [
               TextButton(

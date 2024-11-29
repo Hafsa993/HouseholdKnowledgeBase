@@ -384,6 +384,7 @@ class HomeScreen extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
+          actionsAlignment: MainAxisAlignment.center,
           title: const Text("Provide Reasoning"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
