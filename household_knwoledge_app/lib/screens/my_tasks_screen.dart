@@ -187,7 +187,7 @@ class MyTasksScreen extends StatelessWidget {
                             ),
                             ElevatedButton.icon(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.grey, // Initial button color
+                                backgroundColor: Color.fromARGB(255, 21, 208, 255), // Initial button color
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
