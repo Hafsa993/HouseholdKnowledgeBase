@@ -106,18 +106,22 @@ class _TaskDescriptionScreenState extends State<TaskDescriptionScreen> {
                   Text(widget.task.title, style: TextStyle(fontSize: 20),),
                 ],
                 ),
-                SizedBox(height: 15,),
+                SizedBox(height: 35,),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Category:', style: TextStyle(fontSize: 16),),
+                  Flexible(child: Text('Category:', style: TextStyle(fontSize: 25),)),
                   SizedBox(width: 15,),
-                  Chip(
-                    label: Text(widget.task.category, style: TextStyle(fontSize: 16, color: categoryColor(widget.task.category)),), 
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,)
+                  Flexible(
+                    child: Chip(
+                      label: Text(widget.task.category, style: TextStyle( color: categoryColor(widget.task.category)),), 
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,),
+                  )
                 ],
                             ),
+                            SizedBox(height:20,),
                             Divider(),
-                            Text(widget.task.instructions, style: TextStyle(fontSize: 18),)
+                            Container(decoration: BoxDecoration(border: Border.symmetric()),child: Text(widget.task.instructions, style: TextStyle(fontSize: 18),),)
                             ]),
               ))),
           ],

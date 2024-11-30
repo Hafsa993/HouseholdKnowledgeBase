@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:household_knwoledge_app/models/user_model.dart';
 import 'package:household_knwoledge_app/models/user_provider.dart';
+import 'package:household_knwoledge_app/screens/todo_show.dart';
 import 'package:household_knwoledge_app/widgets/todo_creator_button.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -65,6 +66,15 @@ class ToDoListScreen extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
+        child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TodoShowScreen(task: task),
+                                  ),
+                                );
+                              },
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -144,6 +154,7 @@ class ToDoListScreen extends StatelessWidget {
       ],
           ),
         ),
+      ),
       );
                       },
                     ),

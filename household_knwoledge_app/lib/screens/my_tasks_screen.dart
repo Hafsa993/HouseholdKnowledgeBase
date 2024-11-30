@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:household_knwoledge_app/models/user_provider.dart';
+import 'package:household_knwoledge_app/screens/todo_show.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../models/task_model.dart';
@@ -100,7 +101,7 @@ class MyTasksScreen extends StatelessWidget {
             ),
             SizedBox(height: 50,),
             Text(
-              "Accepted Tasks:",
+              "Accepted ToDos:",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
             ),
             SizedBox(height: 8),
@@ -129,6 +130,15 @@ class MyTasksScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
+                      child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TodoShowScreen(task: task),
+                                  ),
+                                );
+                              },
                       child: Padding(
                         padding:  EdgeInsets.all(12.0),
                         child: Row(
@@ -156,6 +166,15 @@ class MyTasksScreen extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(height: 4),
+                                            Text(
+                                              'Difficulty: ${task.difficulty}',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontStyle: FontStyle.italic,
+                                                color: Colors.black87,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 4),
                               Text(
                                 'Reward: ${task.rewardPoints}',
                                 style: const TextStyle(
@@ -189,6 +208,7 @@ class MyTasksScreen extends StatelessWidget {
                           ],
                         ),
                       ),
+                      ),
                     );
                   },
                 ),
@@ -198,7 +218,7 @@ class MyTasksScreen extends StatelessWidget {
 
             // Completed Tasks Section
              Text(
-              "Completed Tasks in the last 30 days:",
+              "Completed ToDos in the last 30 days:",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
             ),
              SizedBox(height: 8),
