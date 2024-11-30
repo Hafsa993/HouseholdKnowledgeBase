@@ -9,7 +9,7 @@ class ToDoCreator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return   Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.fromLTRB(16.0,8.0,16.0,16.0),
         child: SizedBox(
           width: double.infinity,
           height: 50,

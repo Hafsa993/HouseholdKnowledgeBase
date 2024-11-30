@@ -85,18 +85,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }).toList();
   }
 
-  Color _getTaskColor(String task) {
-    switch (task) {
-      case 'Cleaning':
-        return Colors.blue;
-      case 'Laundry':
-        return Colors.green;
-      case 'Cooking':
-        return Colors.orange;
-      default:
-        return Colors.grey;
-    }
-  }
 
   // Show image picker dialog
   void _showImageDialog(BuildContext context) {

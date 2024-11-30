@@ -101,7 +101,7 @@ class MyTasksScreen extends StatelessWidget {
             ),
             SizedBox(height: 50,),
             Text(
-              "Accepted ToDos:",
+              "Accepted but not completed ToDos:",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
             ),
             SizedBox(height: 8),
@@ -187,7 +187,7 @@ class MyTasksScreen extends StatelessWidget {
                             ),
                             ElevatedButton.icon(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Color.fromARGB(255, 21, 208, 255), // Initial button color
+                                backgroundColor: Color.fromARGB(255, 139, 143, 144), // Initial button color
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
@@ -200,9 +200,8 @@ class MyTasksScreen extends StatelessWidget {
                                 currentUser.addPoints(task.rewardPoints);
                                 // Show popup for completed Task
                                 showCompletionDialog(context, task);
-                                
                               },
-                              icon:  Icon(Icons.check),
+                              icon:  Icon(Icons.check_box_outline_blank),
                               label:  Text("Complete"),
                             ),
                           ],

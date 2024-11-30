@@ -23,7 +23,14 @@ class ToDoListScreen extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   taskProvider.takeOverTask(task, name);
+                 
                   Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                  content: Text('accepted ToDo has been moved to My ToDos'),
+                                  backgroundColor: const Color.fromARGB(255, 3, 125, 3),
+                                  
+                                ));
                 },
                 style: TextButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -135,7 +142,7 @@ class ToDoListScreen extends StatelessWidget {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: task.isAccepted ? Colors.grey : task.assignedTo == currentUser.username? Colors.red: Colors.teal,//const Color.fromARGB(255, 254, 117, 75) const Color.fromARGB(255, 35, 188, 209),
+                        backgroundColor: task.isAccepted ? Colors.grey : task.assignedTo == currentUser.username? const Color.fromARGB(255, 235, 75, 63) : (task.assignedTo == "" ? Color.fromARGB(255, 244, 146, 54) :  Colors.teal),//const Color.fromARGB(255, 254, 117, 75) const Color.fromARGB(255, 35, 188, 209),
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8), // Increase padding
                         minimumSize: const Size(70, 40), // Ensure minimum button size
                         shape: RoundedRectangleBorder(
@@ -143,7 +150,7 @@ class ToDoListScreen extends StatelessWidget {
                         ),
                       ),
                       onPressed: () => task.isAccepted || task.assignedTo == currentUser.username ? null :  _showAcceptDialog(context, task, taskProvider, currentUser.username) ,
-                      child: task.isAccepted ? Text('ToDo is taken') : ( task.assignedTo == currentUser.username ? Text('ToDo is assigned to you') : Text('Take over from ${task.assignedTo}')),
+                      child: task.isAccepted ? Text('ToDo is taken') : ( task.assignedTo == currentUser.username ? Text('ToDo is assigned to you') : task.assignedTo == "" ? Text('Take on unassigned ToDo'): Text('Take over from ${task.assignedTo}')),
                     ),
                   ),
                 ],
