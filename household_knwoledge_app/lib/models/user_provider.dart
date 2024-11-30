@@ -1,7 +1,6 @@
 // lib/providers/user_provider.dart
 
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:household_knwoledge_app/models/user_model.dart';
@@ -17,8 +16,8 @@ class UserProvider with ChangeNotifier {
       contributions: {'Cleaning': 50, 'Gardening': 30, 'Cooking': 20, "Shopping": 0, "Planning" : 0,"Care" : 0,"Maintenance" : 0,"Other" : 0},
       profilepath: "lib/assets/f.jpeg",
     ),
-    User(username: 'Sarah',preferences: ["Gardening","Shopping"], points: 122, profilepath: "lib/assets/f.jpeg",),
-    User(username: 'Max', preferences: ["Shopping","Planning",],points: 125, profilepath: "lib/assets/f.jpeg",),
+    User(username: 'Sarah',preferences: ["Gardening","Shopping"], points: 122, profilepath: "lib/assets/sarah.jpeg",),
+    User(username: 'Max', preferences: ["Shopping","Planning",],points: 125, profilepath: "lib/assets/max.jpeg",),
     User(username: 'Anna', preferences: ["Planning","Care",], points: 90),
     User(username: 'Marie', preferences: ['Cleaning', "Maintenance",], points: 100),
     User(username: 'Alex', preferences: ['Gardening', 'Cooking'], points: 75),

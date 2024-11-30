@@ -25,6 +25,9 @@ class CalendarScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: CalendarCarousel(
+          todayButtonColor: Colors.blue,
+          headerTextStyle: TextStyle(color: Colors.black, fontSize: 20),
+          iconColor: Colors.black,
           onDayPressed: (date, events) {
             List<Task> tasksForDate = tasks.where((task) => isSameDay(task.deadline, date)).toList();
             if (tasksForDate.isNotEmpty) {
@@ -32,7 +35,7 @@ class CalendarScreen extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: Text('Tasks for ${dateOnly(date.toLocal())}'),
+                    title: Text('ToDos for ${dateOnly(date.toLocal())}'),
                     /* content: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,

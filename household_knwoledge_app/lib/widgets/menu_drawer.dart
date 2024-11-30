@@ -37,8 +37,9 @@ class MenuDrawer extends StatelessWidget {
                       //stops: [1, 0.5],
                       begin: Alignment.bottomCenter, 
                       end: Alignment.topCenter, 
-                      colors: [Theme.of(context).primaryColorLight, const Color.fromARGB(255, 240, 240, 240)],
-                      //colors: [Colors.black12, Colors.white],
+                      stops: [0.2, 0.5],
+                      colors: [const Color.fromARGB(255, 230, 236, 243), const Color.fromARGB(255, 240, 240, 240)],
+                      //colors: [Theme.of(context).primaryColorLight, const Color.fromARGB(255, 240, 240, 240)],
                     ),
                   ),
                   child: Container(

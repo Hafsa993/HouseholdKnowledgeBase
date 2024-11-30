@@ -124,6 +124,7 @@ class OptionsScreen extends StatelessWidget {
           ),
     
           // List of Languages
+          /*
           ValueListenableBuilder<String>(
             valueListenable: selectedLanguage,
             builder: (context, value, child) {
@@ -158,7 +159,7 @@ class OptionsScreen extends StatelessWidget {
                 },
               );
             },
-          ),
+          ),*/
         ],
       ),
     );

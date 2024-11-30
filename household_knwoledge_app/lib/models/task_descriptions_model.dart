@@ -48,5 +48,5 @@ final selectableCategories = <String>[
   "Care",
   "Maintenance",
   "Other",
-  "All"
+  "All Categories"
 ];

@@ -31,13 +31,22 @@ class TaskDescriptorProvider with ChangeNotifier{
 
   void addTaskDescriptor (TaskDescriptor descriptor) async {
     descriptors.add(descriptor);
-    print('added a task with name: ${descriptor.title}');
-    print(descriptors.toString());
+    //print('added a task with name: ${descriptor.title}');
+    //print(descriptors.toString());
     notifyListeners();
   }
   // is this the same object?
   void removeTaskDescriptor(TaskDescriptor descriptor) {
     descriptors.remove(descriptor);
+    notifyListeners();
+  }
+
+  void editTaskDescriptor(TaskDescriptor descriptor, String ntitle, String ninstructions, String ncategory, IconData nicon,) {
+    //TaskDescriptor ntask = TaskDescriptor(title: ntitle, instructions: ninstructions, category: ncategory, icon: nicon);
+    descriptor.title = ntitle;
+    descriptor.instructions = ninstructions;
+    descriptor.category = ncategory;
+    descriptor.icon = nicon;
     notifyListeners();
   }
 
