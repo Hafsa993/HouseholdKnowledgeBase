@@ -145,6 +145,8 @@ class IconPicker extends StatelessWidget {
     // all the icons you want to include
   ];
 
+  const IconPicker({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Wrap(
