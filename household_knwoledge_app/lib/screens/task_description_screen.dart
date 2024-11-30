@@ -28,63 +28,6 @@ class _TaskDescriptionScreenState extends State<TaskDescriptionScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 226, 224, 224),
-        actions: [
-          //Edit Button
-          IconButton(
-            icon: const Icon(Icons.edit, color: Colors.blue, size: 30,),
-            color: Colors.blue,
-            onPressed: () {Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChangeTaskDescriptorScreen(task: widget.task),
-                ),
-              ).then((val) {
-                if (val!= null){
-                setState(() {
-                  temptask = val;
-                });
-                }
-              }
-              )
-            ;}
-          ),
-          IconButton(
-            color: Colors.red,
-            icon: const Icon(Icons.delete, color: Colors.red, size: 30,),
-            onPressed: () async {isDeleted = await showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text("Are you sure you want to delete this instruction?"),
-                  content: const Text("This is a non-reversible action."),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        //val = true;
-                        Navigator.pop(context, true);
-                      },
-                      style: TextButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: Colors.red),
-                      child: const Text('Yes, really delete'),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, false),
-                      style: TextButton.styleFrom(
-                          foregroundColor: Colors.white, backgroundColor: Colors.grey),
-                      child: const Text("No, don't delete"),
-                    ),
-                  ],
-                );
-              },
-            );
-            if (isDeleted == true){
-              Provider.of<TaskDescriptorProvider>(context, listen: false).removeTaskDescriptor(widget.task);
-              Navigator.of(context).pop();
-            }
-            },
-          )
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
@@ -127,68 +70,85 @@ class _TaskDescriptionScreenState extends State<TaskDescriptionScreen> {
           ],
         ),
       ),
-      /*
-      bottomNavigationBar: 
-            Row(
-              children: [
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.edit, color: Colors.white, size: 20,),
-                  style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(Colors.red)),
-                  label: Text('Edit Instruction', style: TextStyle(color: Colors.white),),
-                  onPressed: () {Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChangeTaskDescriptorScreen(task: widget.task),
-                      ),
-                    ).then((val) {
-                      if (val!= null){
-                      setState(() {
-                        temptask = val;
-                      });
-                      }
-                    }
-                    )
-                  ;}
-                ),
-                ElevatedButton.icon(
-                  label: Text('Delete Instruction', style: TextStyle(color: Colors.white),),
-                  icon: const Icon(Icons.delete, color: Colors.white, size: 20,),
-                  style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(Colors.red)),
-                  onPressed: () async {isDeleted = await showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text("Are you sure you want to delete this instruction?"),
-                        content: const Text("This is a non-reversible action."),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              //val = true;
-                              Navigator.pop(context, true);
-                            },
-                            style: TextButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                backgroundColor: Colors.red),
-                            child: const Text('Yes, really delete'),
-                          ),
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, false),
-                            style: TextButton.styleFrom(
-                                foregroundColor: Colors.white, backgroundColor: Colors.grey),
-                            child: const Text("No, don't delete"),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                  if (isDeleted == true){
-                    Provider.of<TaskDescriptorProvider>(context, listen: false).removeTaskDescriptor(widget.task);
-                    Navigator.of(context).pop();
-                  }
-                  }, 
-                  ),
-              ],
-            ),*/
+      bottomNavigationBar: BottomAppBar(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Flexible(
+                                      child: ElevatedButton.icon(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => ChangeTaskDescriptorScreen(task: widget.task),
+                                            ),
+                                          ).then((val) {
+                                            if (val != null) {
+                                              setState(() {
+                                                temptask = val;
+                                              });
+                                            }
+                                          });
+                                        },
+                                        icon: const Icon(Icons.edit, color: Colors.white),
+                                        label: const Text('Edit',style : TextStyle(color: Colors.white)),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.blue,
+                                        // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                        ),
+                                      ),
+                                    ),
+                                    Flexible(
+                                      child: ElevatedButton.icon(
+                                        onPressed: () async {
+                                          isDeleted = await showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: const Text("Are you sure you want to delete this instruction?"),
+                                                content: const Text("This is a non-reversible action."),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context, true);
+                                                    },
+                                                    style: TextButton.styleFrom(
+                                                      foregroundColor: Colors.white,
+                                                      backgroundColor: Colors.red,
+                                                    ),
+                                                    child: const Text('Yes, really delete'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () => Navigator.pop(context, false),
+                                                    style: TextButton.styleFrom(
+                                                      foregroundColor: Colors.white,
+                                                      backgroundColor: Colors.grey,
+                                                    ),
+                                                    child: const Text("No, don't delete"),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                          if (isDeleted == true) {
+                                            Provider.of<TaskDescriptorProvider>(context, listen: false).removeTaskDescriptor(widget.task);
+                                            Navigator.of(context).pop();
+                                          }
+                                        },
+                                        icon: const Icon(Icons.delete, color: Colors.white),
+                                        label: const Text('Delete',style : TextStyle(color: Colors.white)),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                          //padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
     );
   }
 }

@@ -8,6 +8,7 @@ import 'package:household_knwoledge_app/models/user_model.dart';
 import 'package:household_knwoledge_app/models/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+
 class ToDoForm extends StatefulWidget {
   const ToDoForm({super.key});
 
@@ -46,77 +47,78 @@ class _ToDoFormState extends State<ToDoForm> {
   final List<String> _difficulties = ['Easy', 'Medium', 'Hard'];
 
   // Helper method to select date
-Future<void> _selectDateTime(BuildContext context) async {
-  DateTime initialDate = DateTime.now().add(Duration(days: 1));
-  DateTime firstDate = DateTime.now();
-  DateTime lastDate = DateTime.now().add(Duration(days: 365));
+  Future<void> _selectDateTime(BuildContext context) async {
+    DateTime initialDate = DateTime.now().add(Duration(days: 1));
+    DateTime firstDate = DateTime.now();
+    DateTime lastDate = DateTime.now().add(Duration(days: 365));
 
-  final DateTime? pickedDate = await showDatePicker(
-    context: context,
-    initialDate: _selectedDeadline ?? initialDate,
-    firstDate: firstDate,
-    lastDate: lastDate,
-    builder: (context, child) {
-                return Theme(
-                  data: ThemeData.light().copyWith(
-                    colorScheme: ColorScheme.light(
-                      // change the border color
-                      primary: Colors.purple[700]!,
-                      // change the text color
-                      onSurface: Colors.indigo[600]!,
-                    ),
-                    // button colors 
-                    buttonTheme: ButtonThemeData(
-                      colorScheme: ColorScheme.light(
-                        primary: Colors.green,
-                      ),
-                    ),
-                  ),
-                  child: child!,
-                );
-              },
-  );
-
-  if (pickedDate != null) {
-    final TimeOfDay? pickedTime = await showTimePicker(
+    final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialTime: TimeOfDay.fromDateTime(_selectedDeadline ?? DateTime.now()),
+      initialDate: _selectedDeadline ?? initialDate,
+      firstDate: firstDate,
+      lastDate: lastDate,
       builder: (context, child) {
-                return Theme(
-                  data: ThemeData.light().copyWith(
-                    colorScheme: ColorScheme.light(
-                      // change the border color
-                      primary: Colors.purple[700]!,
-                      // change the text color
-                      onSurface: Colors.indigo[600]!,
-                    ),
-                    // button colors 
-                    buttonTheme: ButtonThemeData(
-                      colorScheme: ColorScheme.light(
-                        primary: Colors.green,
-                      ),
-                    ),
-                  ),
-                  child: child!,
-                );
-              },
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              // change the border color
+              primary: Colors.purple[700]!,
+              // change the text color
+              onSurface: Colors.indigo[600]!,
+            ),
+            // button colors
+            buttonTheme: ButtonThemeData(
+              colorScheme: ColorScheme.light(
+                primary: Colors.green,
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
 
-    if (pickedTime != null) {
-      setState(() {
-        _selectedDeadline = DateTime(
-          pickedDate.year,
-          pickedDate.month,
-          pickedDate.day,
-          pickedTime.hour,
-          pickedTime.minute,
-        );
-        _deadlineController.text = DateFormat('yyyy-MM-dd HH:mm').format(_selectedDeadline!);
-      });
+    if (pickedDate != null) {
+      final TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime:
+            TimeOfDay.fromDateTime(_selectedDeadline ?? DateTime.now()),
+        builder: (context, child) {
+          return Theme(
+            data: ThemeData.light().copyWith(
+              colorScheme: ColorScheme.light(
+                // change the border color
+                primary: Colors.purple[700]!,
+                // change the text color
+                onSurface: Colors.indigo[600]!,
+              ),
+              // button colors
+              buttonTheme: ButtonThemeData(
+                colorScheme: ColorScheme.light(
+                  primary: Colors.green,
+                ),
+              ),
+            ),
+            child: child!,
+          );
+        },
+      );
+
+      if (pickedTime != null) {
+        setState(() {
+          _selectedDeadline = DateTime(
+            pickedDate.year,
+            pickedDate.month,
+            pickedDate.day,
+            pickedTime.hour,
+            pickedTime.minute,
+          );
+          _deadlineController.text =
+              DateFormat('yyyy-MM-dd HH:mm').format(_selectedDeadline!);
+        });
+      }
     }
   }
-}
-
 
   // Method to sort users based on category preferences
   List<User> _getSortedUsers(UserProvider userProvider) {
@@ -145,57 +147,173 @@ Future<void> _selectDateTime(BuildContext context) async {
 
   // Method to get color for user based on preference
   Color _getUserColor(User user) {
-    if (_selectedCategory != null && user.preferences.contains(_selectedCategory)) {
+    if (_selectedCategory != null &&
+        user.preferences.contains(_selectedCategory)) {
       return Colors.green; // Preferred users in green
     } else {
       return Colors.blueGrey; // Others in blue-grey
     }
   }
-  bool isPreferred(User user) {return _selectedCategory != null && user.preferences.contains(_selectedCategory);}
+
+  bool isPreferred(User user) {
+    return _selectedCategory != null &&
+        user.preferences.contains(_selectedCategory);
+  }
 
   // Method to validate and move to next step
   void _continue() {
+    //gets called upon every step continue
+
     if (_currentStep == 0) {
       if (_selectedCategory == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please select a category'),behavior: SnackBarBehavior.floating, ),
-        );
+
+        //if other snackBar displayed, close it
+        ScaffoldMessenger.of(context).clearSnackBars();
+
+        // if no category has been seletcted, display error snackbar
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Please select a category'),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+
+          // puts snackBar at the top so that its consistent with other "error message" Snackbars here
+
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).size.height - 140,
+              right: 20,
+              left: 20),
+        ));
         return;
       }
-    } else if (_currentStep == 1) {
+      //} else if (_currentStep == 1) {
+
       // No validation needed for assigning to user
     } else if (_currentStep == 2) {
       // Validate task details
+
       if (_taskTitle.trim().isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please enter the task title') ,behavior: SnackBarBehavior.floating, )// Make it float),
-        );
-        return;
-      }
-      if (_selectedDeadline == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please select a deadline'), behavior: SnackBarBehavior.floating, )// Make it float),
-        );
-        return;
-      }
-      if (_rewardPointsController.text.trim().isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please enter reward points') ,behavior: SnackBarBehavior.floating,) // Make it float),
-        );
-        return;
-      }
-      if (int.tryParse(_rewardPointsController.text.trim()) == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Reward points must be an integer'),
+      
+        //if other snackBar displayed, close it
+        ScaffoldMessenger.of(context).clearSnackBars();
+        
+        //if no title has been written
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.red,
+          content: Text('Please enter the task title'),
+          behavior: SnackBarBehavior.floating,
 
-            behavior: SnackBarBehavior.floating, // Make it float
-          
+          // puts snackBar at the top so that its visible
+
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
           ),
-        );
-      return;
-    }
+          margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).size.height - 160,
+              right: 20,
+              left: 20),
+        ));
+        return;
+      }
 
+      if (_rewardPointsController.text.trim().isEmpty) {
+        
+        //if other snackBar displayed, close it
+        ScaffoldMessenger.of(context).clearSnackBars();
+        
+        //if no rewardPoints have been specified
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.red,
+          content: Text('Please enter reward points'),
+          behavior: SnackBarBehavior.floating,
+
+          // puts snackBar at the top so that its visible
+
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).size.height - 160,
+              right: 20,
+              left: 20),
+        ));
+        return;
+      }
+
+      if (int.tryParse(_rewardPointsController.text.trim()) == null) {
+        
+        //if other snackBar displayed, close it
+        ScaffoldMessenger.of(context).clearSnackBars();
+        
+        //if rewardPoints are not Integers
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.red,
+          content: Text('Reward points must be an integer'),
+          behavior: SnackBarBehavior.floating,
+
+          // puts snackBar at the top so that its visible
+
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).size.height - 160,
+              right: 20,
+              left: 20),
+        ));
+        return;
+      }
+
+      if (_selectedDeadline == null) {
+        
+        //if other snackBar displayed, close it
+        ScaffoldMessenger.of(context).clearSnackBars();
+        
+        //if no deadline has been selected
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.red,
+          content: Text('Please select a deadline'),
+          behavior: SnackBarBehavior.floating,
+
+          // puts snackBar at the top so that its visible
+
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).size.height - 160,
+              right: 20,
+              left: 20),
+        ));
+        return;
+      }
+
+      if (_description.trim().isEmpty) {
+        
+        //if other snackBar displayed, close it
+        ScaffoldMessenger.of(context).clearSnackBars();
+        
+        //if no decription has been written
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.red,
+          content: Text('Please enter a description for this task'),
+          behavior: SnackBarBehavior.floating,
+
+          // puts snackBar at the top so that its visible
+
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).size.height - 160,
+              right: 20,
+              left: 20),
+        ));
+        return;
+      }
 
       // All validations passed, proceed to create task
       _rewardPoints = int.parse(_rewardPointsController.text.trim());
@@ -208,16 +326,14 @@ Future<void> _selectDateTime(BuildContext context) async {
         difficulty: _difficulty,
         description: _description.trim(),
         rewardPoints: _rewardPoints,
-        assignedTo: _selectedUser ?? '', // Assigned to selected user or 'No One'
+        assignedTo:
+            _selectedUser ?? '', // Assigned to selected user or 'No One'
       );
-      
+
       //print('Task Created: ${newTask.title}, Assigned To: ${newTask.assignedTo}'); // Debug print
-      
 
       // Add task via TaskProvider
       Provider.of<TaskProvider>(context, listen: false).addTask(newTask);
-
-
 
       // Close the dialog
       Navigator.of(context).pop();
@@ -246,6 +362,7 @@ Future<void> _selectDateTime(BuildContext context) async {
     final userProvider = Provider.of<UserProvider>(context);
     List<User> sortedUsers = _getSortedUsers(userProvider);
 
+    //add ToDo in steps
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -292,11 +409,10 @@ Future<void> _selectDateTime(BuildContext context) async {
                   onChanged: (String? newValue) {
                     setState(() {
                       _selectedCategory = newValue;
-                      // Reset assigned user if category changes
-                     
                     });
                   },
-                  validator: (value) => value == null ? 'Please select a category' : null,
+                  validator: (value) =>
+                      value == null ? 'Please select a category' : null,
                 ),
               ),
             ),
@@ -314,8 +430,8 @@ Future<void> _selectDateTime(BuildContext context) async {
                     border: OutlineInputBorder(),
                   ),
                   value: _selectedUser,
+                  //drop Down menu to select User
                   items: [
-                  
                     ...sortedUsers.map((User user) {
                       return DropdownMenuItem<String>(
                         value: user.username,
@@ -344,29 +460,29 @@ Future<void> _selectDateTime(BuildContext context) async {
                         ),
                       );
                     }),
-                    
-                     DropdownMenuItem<String>(
+                    DropdownMenuItem<String>(
                       value: '',
-                      child : Padding(
+                      child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Wrap( 
+                        child: Wrap(
                           crossAxisAlignment: WrapCrossAlignment.center,
-                          children : [
-                                CircleAvatar(
-                                  backgroundColor: Colors.blueGrey,
-                                  radius: 5,
-                                ),
-                                SizedBox(width: 8),
-                                Text('No One'),
-                                SizedBox(width: 8),SizedBox(width: 8),
-                        ],),
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.blueGrey,
+                              radius: 5,
+                            ),
+                            SizedBox(width: 8),
+                            Text('No One'),
+                            SizedBox(width: 8),
+                            SizedBox(width: 8),
+                          ],
+                        ),
                       ),
                     ),
                   ],
                   // Customize the displayed item when collapsed so that prefer this doesnt peek outside
                   selectedItemBuilder: (BuildContext context) {
                     return [
-                      
                       ...sortedUsers.map((User user) {
                         return DropdownMenuItem<String>(
                           value: user.username,
@@ -384,21 +500,22 @@ Future<void> _selectDateTime(BuildContext context) async {
                         );
                       }),
                       DropdownMenuItem<String>(
-                      value: '',
-                      child : Padding(
-                        padding: const EdgeInsets.symmetric(),
-                        child: Wrap( 
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children : [
-                                CircleAvatar(
-                                  backgroundColor: Colors.blueGrey,
-                                  radius: 5,
-                                ),
-                                SizedBox(width: 8),
-                                Text('No One'),
-                        ],),
+                        value: '',
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(),
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: Colors.blueGrey,
+                                radius: 5,
+                              ),
+                              SizedBox(width: 8),
+                              Text('No One'),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
                     ];
                   },
                   onChanged: (String? newValue) {
@@ -412,20 +529,24 @@ Future<void> _selectDateTime(BuildContext context) async {
 
             // Step 3: Enter Task Details
             Step(
-              title: Text('Task Details'),
+              title: Text('ToDo Details'),
               isActive: _currentStep >= 2,
               state: _currentStep > 2 ? StepState.complete : StepState.editing,
               content: Column(
                 children: [
                   // Task Title
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Task Title',
-                      border: OutlineInputBorder(),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'ToDO Title',
+                        border: OutlineInputBorder(),
+                        hintText: 'Enter a title',
+                      ),
+                      onChanged: (value) {
+                        _taskTitle = value;
+                      },
                     ),
-                    onChanged: (value) {
-                      _taskTitle = value;
-                    },
                   ),
                   SizedBox(height: 16),
 
@@ -448,8 +569,7 @@ Future<void> _selectDateTime(BuildContext context) async {
                       });
                     },
                   ),
-                 
-                 
+
                   SizedBox(height: 16),
 
                   // Reward Points

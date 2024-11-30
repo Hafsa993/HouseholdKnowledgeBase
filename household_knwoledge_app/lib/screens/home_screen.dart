@@ -354,8 +354,17 @@ class HomeScreen extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () {
+
                 taskProvider.acceptTask(task, currentUser.username);
                 Navigator.pop(context);
+
+                //show message
+                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                  content: Text('accepted ToDo has been moved to My ToDos'),
+                                   backgroundColor: const Color.fromARGB(255, 3, 125, 3),
+                                  
+                                ));
               },
               style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
