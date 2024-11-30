@@ -363,7 +363,6 @@ class HomeScreen extends StatelessWidget {
                                   SnackBar(
                                   content: Text('accepted ToDo has been moved to My ToDos'),
                                    backgroundColor: const Color.fromARGB(255, 3, 125, 3),
-                                  
                                 ));
               },
               style: TextButton.styleFrom(
@@ -392,27 +391,25 @@ class HomeScreen extends StatelessWidget {
           title: const Text("Are you sure you want to decline this task?"),
           content: const Text("This is a non-reversible action."),
           actions: [
-            Row(
-              children: [
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                     _showReasoningDialog(context, task, taskProvider);
                   },
                   style: TextButton.styleFrom(
+                    
                       foregroundColor: Colors.white, backgroundColor: Colors.red),
                   child: const Text('Yes, really decline'),
                 ),
                 TextButton(
                   onPressed: () => Navigator.pop(context),
                   style: TextButton.styleFrom(
+                    
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.green),
-                  child: const Text("No, don't decline"),
+                  child: const Text("No, don't"),
                 ),
               ],
-            ),
-          ],
         );
       },
     );

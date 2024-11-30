@@ -28,7 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (source == ImageSource.camera && !permissionsProvider.cameraPermissionEnabled) {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(backgroundColor: Colors.red, content: Text("Camera permission is disabled.")),
+        const SnackBar(backgroundColor: Colors.red, content: Text("Camera permission is disabled, enable in Options")),
       );
       return;
     }
@@ -36,7 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (source == ImageSource.gallery && !permissionsProvider.galleryPermissionEnabled) {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(backgroundColor: Colors.red, content:Text("Gallery permission is disabled.")),
+        const SnackBar(backgroundColor: Colors.red, content:Text("Gallery permission is disabled, enable in Options")),
       );
       return;
     }
@@ -108,7 +108,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   // Show image picker dialog
   void _showImageDialog(BuildContext context) {
-    final permissionsProvider = Provider.of<PermissionsProvider>(context, listen: false);
+    Provider.of<PermissionsProvider>(context, listen: false);
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -128,14 +128,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   _pickImage(ImageSource.gallery);
                 },
                 child: const Text("Gallery"),
-              ),
-            if (!permissionsProvider.cameraPermissionEnabled && !permissionsProvider.galleryPermissionEnabled)
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "No permissions enabled for Camera or Gallery.",
-                  style: TextStyle(color: Colors.red),
-                ),
               ),
           ],
         );
