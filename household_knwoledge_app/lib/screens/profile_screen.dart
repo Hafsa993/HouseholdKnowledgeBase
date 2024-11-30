@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:household_knwoledge_app/models/task_descriptions_model.dart';
 import 'package:household_knwoledge_app/models/user_provider.dart';
 import 'package:provider/provider.dart';
 import '../models/user_model.dart';
 import '../widgets/menu_drawer.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart';
-import 'dart:io';
 import 'package:fl_chart/fl_chart.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -16,7 +16,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  XFile? _image;
   final ImagePicker _picker = ImagePicker();
 
   // Pick image from Gallery or Camera
@@ -26,7 +25,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final XFile? image = await _picker.pickImage(source: source);
       if (image != null) {
         setState(() {
-        _image = image;
         currUser.profilepath = image.path;
         });
       }
@@ -80,9 +78,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return PieChartSectionData(
         value: percentage,
         title: '${entry.key} (${percentage.toInt()}%)',
-        color: _getTaskColor(entry.key),
+        color: categoryColor(entry.key),
         radius: 50,
-        titleStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+        titleStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, ),
       );
     }).toList();
   }
@@ -130,7 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-     final userProvider = Provider.of<UserProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
     
     User currentUser = userProvider.getCurrUser();
     return Scaffold(
@@ -150,49 +148,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 // Profile picture
                 GestureDetector(
                   onTap: () => _showImageDialog(context),
-                  child: CircleAvatar(
-                    radius: 60,
-                    backgroundImage: _image == null
-                        ? userProvider.getProfileOfCurrUser()
-                        : FileImage(File(_image!.path)),
-                  ),
+                  child: Stack(
+                    children: [CircleAvatar(
+                      radius: 60,
+                      backgroundImage: Provider.of<UserProvider>(context, listen: false).getProfileOfCurrUser(),
+                    ),
+                    Positioned(bottom: -3, right: -3, child: Icon(Icons.edit, size: 30, color: Colors.grey[700],))
+                  ],
                 ),
-                const SizedBox(height: 16),
-
+                  
+                ),
+                const SizedBox(height: 8),
+                
                 // Username
                 Text(
                   currentUser.username,
                   style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 8),
+                //const SizedBox(height: 4),
 
+                // Points
+                Text(
+                  'Points: ${currentUser.points}',
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Color.fromARGB(255, 32, 129, 35)),
+                ),
+                const SizedBox(height: 4),
+
+                
                 // Role
                 Text(
                   'Role: ${currentUser.role}',
                   style: const TextStyle(fontSize: 18, color: Colors.grey),
                 ),
-                const SizedBox(height: 16),
-
-                // Points
-                Text(
-                  'Points: ${currentUser.points}',
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 30),
 
                 // Preferences
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Text(
                       'Preferred Tasks:',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 8),
+                    //const SizedBox(height: 8),
                     Wrap(
                       spacing: 8,
                       children: currentUser.preferences
-                          .map((task) => Chip(label: Text(task)))
+                          .map((task) => Chip(label: Text(task, style: TextStyle(color: categoryColor(task)),)))
                           .toList(),
                     ),
                   ],
@@ -204,11 +206,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   'Task Contributions',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 16),
+                //const SizedBox(height: 16),
                 SizedBox(
                   height: 200,
                   child: PieChart(
                     PieChartData(
+                      
                       sections: _generatePieChartData(context),
                       centerSpaceRadius: 40,
                       sectionsSpace: 4,

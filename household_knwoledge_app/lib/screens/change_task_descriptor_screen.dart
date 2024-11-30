@@ -4,20 +4,30 @@ import 'package:household_knwoledge_app/models/task_descriptions_provider.dart';
 import 'package:provider/provider.dart';
 import '../widgets/icon_picker.dart';
 
-class AddTaskDescriptorScreen extends StatefulWidget {
-  const AddTaskDescriptorScreen({super.key});
+class ChangeTaskDescriptorScreen extends StatefulWidget {
+  const ChangeTaskDescriptorScreen({super.key, required this.task});
+  final TaskDescriptor task;
 
   @override
-  _AddTaskDescriptorScreenState createState() => _AddTaskDescriptorScreenState();
+  _ChangeTaskDescriptorScreenState createState() => _ChangeTaskDescriptorScreenState();
 }
 
-class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
+class _ChangeTaskDescriptorScreenState extends State<ChangeTaskDescriptorScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _instructionsController = TextEditingController();
   final _categoryController = TextEditingController();
   IconData? _selectedIcon;
   String? _category;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIcon = widget.task.icon;
+    _titleController.text = widget.task.title;
+    _instructionsController.text = widget.task.instructions;
+    _category = widget.task.category;
+  }
 
   Future<void> _showIconPickerDialog() async {
     IconData? iconPicked = await showDialog(
@@ -41,19 +51,12 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
     }
   }
 
-  void _saveTaskDescriptor() {
+  void _editTaskDescriptor() {
     if (_formKey.currentState!.validate() && _selectedIcon != null) {
-      final newDescriptor = TaskDescriptor(
-        title: _titleController.text,
-        instructions: _instructionsController.text,
-        category: _category!,
-        icon: _selectedIcon!,
-      );
-
       Provider.of<TaskDescriptorProvider>(context, listen: false)
-          .addTaskDescriptor(newDescriptor);
+          .editTaskDescriptor(widget.task, _titleController.text, _instructionsController.text, _category!, _selectedIcon!);
 
-      Navigator.of(context).pop(); // Navigate back after saving
+      Navigator.of(context).pop(widget.task); // Navigate back after saving
     } else if (_selectedIcon == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please select an icon for the task')),
@@ -63,10 +66,11 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 226, 224, 224),
-        title: Text('Add New Instruction'),
+        title: Text('Edit Instruction'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -76,16 +80,16 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Text('Enter the title:',
+                Text('Enter new title:',
                   style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 5,),
                 TextFormField(
+                  //initialValue: widget.task.title,
                   controller: _titleController,
-                  
+        
                   decoration: InputDecoration(
                     labelText: 'Title', 
-                    labelStyle: TextStyle(color: Colors.grey),
-                    hintText: 'Enter the title of the instruction here', 
+                    hintText: 'Enter new title of the instruction here', 
                     hintStyle: TextStyle(color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
@@ -109,16 +113,16 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
                   },
                 ),
                 SizedBox(height: 40,),
-                Text('Enter the instruction description:',
+                Text('Enter new instruction description:',
                   style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 5,),
                 TextFormField(
+                  //initialValue: widget.task.instructions,
                   controller: _instructionsController,
                   decoration: InputDecoration(
                     alignLabelWithHint: true,
                     labelText: 'Instructions', 
-                    labelStyle: TextStyle(color: Colors.grey),
-                    hintText: 'Enter instruction description here', 
+                    hintText: 'Enter new instruction description here', 
                     hintStyle: TextStyle(color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
@@ -134,7 +138,7 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
                       width: 2,
                     ),
                   ),),
-                  maxLines: 10,
+                  maxLines: 11,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return 'Please enter instructions';
@@ -143,21 +147,11 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
                   },
                 ),
                 SizedBox(height: 40,),
-                /*
-                TextFormField(
-                  controller: _categoryController,
-                  decoration: InputDecoration(labelText: 'Category'),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Please enter a category';
-                    }
-                    return null;
-                  },
-                ), */
-                Text('Choose a category:',
+                Text('Choose a new category:',
                   style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 5,),
                 DropdownButtonFormField<String>(
+                  
                   decoration: InputDecoration(
                     labelText: 'Category',
                     border: OutlineInputBorder(),
@@ -184,14 +178,13 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
                     setState(() {
                       _category = newValue;
                       // Reset assigned user if category changes
-                     
                     });
                   },
                   validator: (value) => value == null ? 'Please select a category' : null,
                 ),
                 SizedBox(height: 16),
                 Text(
-                  'Select an Icon:',
+                  'Select a new Icon:',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 5),
@@ -215,20 +208,13 @@ class _AddTaskDescriptorScreenState extends State<AddTaskDescriptorScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: Wrap(
-        alignment: WrapAlignment.center,
-        children: [Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: ElevatedButton.icon(
-            style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(Color.fromARGB(255, 21, 208, 255))),
-                    onPressed: _saveTaskDescriptor,
-                    label: Text('Save Instruction', style: TextStyle(fontSize: 20, color: Colors.white)),
-                    icon: const Icon(Icons.add, size: 20, color: Colors.white,),
-                  ),
-        ),]
-      ),
+      bottomNavigationBar: ElevatedButton(
+                onPressed: _editTaskDescriptor,
+                child: Text('Edit the instruction'),
+              ),
     );
   }
+
   Widget getFilling() {
     if (_selectedIcon == null) {
       return Text('Click here to pick an icon',style: TextStyle(color: Colors.grey),);

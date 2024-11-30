@@ -14,7 +14,7 @@ class TasksScreen extends StatefulWidget {
 }
 
 class _TasksScreenState extends State<TasksScreen> {
-  String dropdownvalue = 'All';
+  String dropdownvalue = 'All Categories';
   String searchQuery = '';
   List<TaskDescriptor> filteredDescriptors = [];
 
@@ -147,19 +147,26 @@ class _TasksScreenState extends State<TasksScreen> {
         ],
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ElevatedButton.icon(
-          icon: const Icon(Icons.add, size: 16, color: Color.fromARGB(255, 21, 208, 255),),
-              label: Text('Add new instruction', style: TextStyle(fontSize: 20)),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddTaskDescriptorScreen(),
-                  ),
-                );
-              },
-            ),
+        padding: const EdgeInsets.all(10.0),
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          children: [Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: ElevatedButton.icon(
+              style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(Color.fromARGB(255, 21, 208, 255))),
+              icon: const Icon(Icons.add, size: 20, color: Colors.white,),
+                  label: Text('Add new instruction', style: TextStyle(fontSize: 20, color: Colors.white,)),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddTaskDescriptorScreen(),
+                      ),
+                    );
+                  },
+                ),
+          ),]
+        ),
       ),
     );
   }
@@ -169,7 +176,7 @@ class _TasksScreenState extends State<TasksScreen> {
     List<TaskDescriptor> tempList = allTasks;
 
     // Filter by category
-    if (category != 'All') {
+    if (category != 'All Categories') {
       tempList = tempList.where((task) => task.category == category).toList();
     }
 
@@ -188,7 +195,7 @@ class _TasksScreenState extends State<TasksScreen> {
 }
 
 Color getCategoryColor(String s) {
-  if (s == 'All') {
+  if (s == 'All Categories') {
     return Colors.black;
   } else {
     return categoryColor(s);

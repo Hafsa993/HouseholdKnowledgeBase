@@ -41,6 +41,15 @@ class TaskDescriptorProvider with ChangeNotifier{
     notifyListeners();
   }
 
+  void editTaskDescriptor(TaskDescriptor descriptor, String ntitle, String ninstructions, String ncategory, IconData nicon,) {
+    //TaskDescriptor ntask = TaskDescriptor(title: ntitle, instructions: ninstructions, category: ncategory, icon: nicon);
+    descriptor.title = ntitle;
+    descriptor.instructions = ninstructions;
+    descriptor.category = ncategory;
+    descriptor.icon = nicon;
+    notifyListeners();
+  }
+
   int getLength() {
     return descriptors.length;
   }

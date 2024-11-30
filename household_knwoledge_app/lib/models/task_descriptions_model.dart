@@ -19,11 +19,11 @@ Color categoryColor(String category){
   switch(category){
     case 'Cooking': return Colors.red;
     case 'Gardening': return Colors.green;
-    case 'Shopping': return Colors.amberAccent;
+    case 'Shopping': return Colors.amber[600]!;
     case 'Planning': return const Color.fromARGB(255, 145, 74, 189);
     case 'Care': return const Color.fromARGB(255, 255, 93, 212);
     case 'Maintenance': return const Color.fromARGB(255, 100, 155, 159);
-    case 'Other': return const Color.fromARGB(255, 108, 108, 108);
+    case 'Other': return const Color.fromARGB(255, 155, 144, 173);
   }
   //default Cleaning
   return Colors.blue;
@@ -48,5 +48,5 @@ final selectableCategories = <String>[
   "Care",
   "Maintenance",
   "Other",
-  "All"
+  "All Categories"
 ];

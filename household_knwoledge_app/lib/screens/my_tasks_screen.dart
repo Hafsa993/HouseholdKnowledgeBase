@@ -90,7 +90,7 @@ class MyTasksScreen extends StatelessWidget {
                                   child: Text(currentUser.username, style: TextStyle(color: Colors.black, fontSize: 24))
                                 ),
                                 //SizedBox(height: 5,),
-                                Text('${currentUser.points} points', style: TextStyle(color: Colors.black, fontSize: 18)),
+                                Text('${currentUser.points} points', style: TextStyle(color: Colors.green, fontSize: 18)),
                               ],
                             ),
                           ],
@@ -109,7 +109,7 @@ class MyTasksScreen extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 226, 223, 231),
                   borderRadius: BorderRadius.circular(12.0),
                   boxShadow: [
                     BoxShadow(
@@ -187,7 +187,7 @@ class MyTasksScreen extends StatelessWidget {
                             ),
                             ElevatedButton.icon(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.grey, // Initial button color
+                                backgroundColor: Color.fromARGB(255, 21, 208, 255), // Initial button color
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
@@ -226,7 +226,7 @@ class MyTasksScreen extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 226, 223, 231),
                   borderRadius: BorderRadius.circular(12.0),
                   boxShadow: [
                     BoxShadow(
@@ -281,7 +281,7 @@ void showCompletionDialog(BuildContext context, Task task) {
     context: context,
     builder: (context) {
       return AlertDialog(
-        backgroundColor:  Color(0xFFECE4F8), // Light lavender background
+        backgroundColor:  Colors.white, // Light lavender background
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),

@@ -143,7 +143,7 @@ class ToDoListScreen extends StatelessWidget {
                         ),
                       ),
                       onPressed: () => task.isAccepted || task.assignedTo == currentUser.username ? null :  _showAcceptDialog(context, task, taskProvider, currentUser.username) ,
-                      child: task.isAccepted ? Text('ToDo is taken') : ( task.assignedTo == currentUser.username ? Text('task is assigned to you') : Text('take over from ${task.assignedTo}')),
+                      child: task.isAccepted ? Text('ToDo is taken') : ( task.assignedTo == currentUser.username ? Text('ToDo is assigned to you') : Text('Take over from ${task.assignedTo}')),
                     ),
                   ),
                 ],
