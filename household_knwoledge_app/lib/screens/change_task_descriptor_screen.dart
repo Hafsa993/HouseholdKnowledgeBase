@@ -208,10 +208,13 @@ class _ChangeTaskDescriptorScreenState extends State<ChangeTaskDescriptorScreen>
           ),
         ),
       ),
-      bottomNavigationBar: ElevatedButton(
-                onPressed: _editTaskDescriptor,
-                child: Text('Edit the instruction'),
-              ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: ElevatedButton(
+                  onPressed: _editTaskDescriptor,
+                  child: Text('Done',style: TextStyle(fontSize: 25),),
+                ),
+      ),
     );
   }
 
