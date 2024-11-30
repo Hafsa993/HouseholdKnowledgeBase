@@ -28,6 +28,7 @@ class _TaskDescriptionScreenState extends State<TaskDescriptionScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 226, 224, 224),
+        /*
         actions: [
           //Edit Button
           IconButton(
@@ -84,10 +85,10 @@ class _TaskDescriptionScreenState extends State<TaskDescriptionScreen> {
             }
             },
           )
-        ],
+        ],*/
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
         child: Column(
           children: [
             Expanded(child: Container(
@@ -127,68 +128,72 @@ class _TaskDescriptionScreenState extends State<TaskDescriptionScreen> {
           ],
         ),
       ),
-      /*
+      
       bottomNavigationBar: 
-            Row(
-              children: [
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.edit, color: Colors.white, size: 20,),
-                  style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(Colors.red)),
-                  label: Text('Edit Instruction', style: TextStyle(color: Colors.white),),
-                  onPressed: () {Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChangeTaskDescriptorScreen(task: widget.task),
-                      ),
-                    ).then((val) {
-                      if (val!= null){
-                      setState(() {
-                        temptask = val;
-                      });
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.edit, color: Colors.white, size: 20,),
+                    style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(Colors.blue)),
+                    label: Text('Edit instruction', style: TextStyle(color: Colors.white, fontSize: 16),),
+                    onPressed: () {Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChangeTaskDescriptorScreen(task: widget.task),
+                        ),
+                      ).then((val) {
+                        if (val!= null){
+                        setState(() {
+                          temptask = val;
+                        });
+                        }
                       }
-                    }
-                    )
-                  ;}
-                ),
-                ElevatedButton.icon(
-                  label: Text('Delete Instruction', style: TextStyle(color: Colors.white),),
-                  icon: const Icon(Icons.delete, color: Colors.white, size: 20,),
-                  style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(Colors.red)),
-                  onPressed: () async {isDeleted = await showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text("Are you sure you want to delete this instruction?"),
-                        content: const Text("This is a non-reversible action."),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              //val = true;
-                              Navigator.pop(context, true);
-                            },
-                            style: TextButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                backgroundColor: Colors.red),
-                            child: const Text('Yes, really delete'),
-                          ),
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, false),
-                            style: TextButton.styleFrom(
-                                foregroundColor: Colors.white, backgroundColor: Colors.grey),
-                            child: const Text("No, don't delete"),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                  if (isDeleted == true){
-                    Provider.of<TaskDescriptorProvider>(context, listen: false).removeTaskDescriptor(widget.task);
-                    Navigator.of(context).pop();
-                  }
-                  }, 
+                      )
+                    ;}
                   ),
-              ],
-            ),*/
+                  ElevatedButton.icon(
+                    label: Text('Delete instruction', style: TextStyle(color: Colors.white, fontSize: 16),),
+                    icon: const Icon(Icons.delete, color: Colors.white, size: 20,),
+                    style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(Colors.red)),
+                    onPressed: () async {isDeleted = await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text("Are you sure you want to delete this instruction?"),
+                          content: const Text("This is a non-reversible action."),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                //val = true;
+                                Navigator.pop(context, true);
+                              },
+                              style: TextButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                  backgroundColor: Colors.red),
+                              child: const Text('Yes, really delete'),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, false),
+                              style: TextButton.styleFrom(
+                                  foregroundColor: Colors.white, backgroundColor: Colors.grey),
+                              child: const Text("No, don't delete"),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                    if (isDeleted == true){
+                      Provider.of<TaskDescriptorProvider>(context, listen: false).removeTaskDescriptor(widget.task);
+                      Navigator.of(context).pop();
+                    }
+                    }, 
+                    ),
+                ],
+              ),
+            ),
     );
   }
 }
