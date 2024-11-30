@@ -6,7 +6,6 @@ import '../models/user_model.dart';
 import '../widgets/menu_drawer.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart';
-import 'dart:io';
 import 'package:fl_chart/fl_chart.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -17,7 +16,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  XFile? _image;
   final ImagePicker _picker = ImagePicker();
 
   // Pick image from Gallery or Camera
@@ -27,7 +25,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final XFile? image = await _picker.pickImage(source: source);
       if (image != null) {
         setState(() {
-        _image = image;
         currUser.profilepath = image.path;
         });
       }

@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../widgets/icon_picker.dart';
 
 class AddTaskDescriptorScreen extends StatefulWidget {
-  const AddTaskDescriptorScreen({Key? key}) : super(key: key);
+  const AddTaskDescriptorScreen({super.key});
 
   @override
   _AddTaskDescriptorScreenState createState() => _AddTaskDescriptorScreenState();

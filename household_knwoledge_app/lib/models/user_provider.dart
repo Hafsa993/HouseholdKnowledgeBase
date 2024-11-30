@@ -1,7 +1,6 @@
 // lib/providers/user_provider.dart
 
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:household_knwoledge_app/models/user_model.dart';
 

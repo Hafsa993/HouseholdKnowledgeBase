@@ -77,69 +77,82 @@ class MenuDrawer extends StatelessWidget {
                   leading: const Icon(
                       Icons.home,
                       color: Color.fromARGB(255, 0, 0, 0),
+                      size: 30,
                     ),
-                  title: const Text('Home'),
+                  title: const Text('Home', style: TextStyle(fontSize: 24,),),
                   onTap: () {
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomeScreen()));
                   },
+                  minVerticalPadding: 20,
                 ),
                 ListTile(
                   leading: const Icon(
                       Icons.checklist_rounded,
                       color: Color.fromARGB(255, 0, 0, 0),
+                      size: 30,
                     ),
-                  title: const Text('My ToDos'),
+                  title: const Text('My ToDos', style: TextStyle(fontSize: 24,),),
                   onTap: () {
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MyTasksScreen()));
                   },
+                  minVerticalPadding: 20,
                 ),
                 ListTile(
                   leading: const Icon(
                       Icons.maps_home_work_outlined,
                       color: Color.fromARGB(255, 0, 0, 0),
+                      size: 30,
                     ),
-                  title: const Text('House ToDos'),
+                  title: const Text('House ToDos', style: TextStyle(fontSize: 24,),),
                   onTap: () {
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ToDoListScreen()));
                   },
+                  minVerticalPadding: 20,
                 ),
                 ListTile(
                   leading: const Icon(
                       CupertinoIcons.book_circle_fill,
                       color: Color.fromARGB(255, 0, 0, 0),
+                      size: 30,
                     ),
-                  title: const Text('Instructions'),
+                  title: const Text('Instructions', style: TextStyle(fontSize: 24,),),
                   onTap: () {
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => TasksScreen()));
                   },
+                  minVerticalPadding: 20,
                 ),
                 ListTile(
                   leading: const Icon(
                       CupertinoIcons.calendar,
                       color: Color.fromARGB(255, 0, 0, 0),
+                      size: 30,
                     ),
-                  title: const Text('Calendar'),
+                  title: const Text('Calendar', style: TextStyle(fontSize: 24,),),
                   onTap: () {
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const CalendarScreen()));
                   },
+                  minVerticalPadding: 20,
                 ),
                 ListTile(
                   leading: const Icon(
                       CupertinoIcons.chart_bar_alt_fill,
                       color: Color.fromARGB(255, 0, 0, 0),
+                      size: 30,
                     ),
-                  title: const Text('Ranking List'),
+                  title: const Text('Ranking List', style: TextStyle(fontSize: 24,),),
                   onTap: () {
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) =>  RankingScreen()));
                   },
+                  minVerticalPadding: 20,
                 ),
-                SizedBox(height: 180,),
+                SizedBox(height: 20,),
                 Divider(indent: 20, endIndent: 20, color: const Color.fromARGB(255, 83, 115, 140)),
                 /* // profile as a menu tab 
                 ListTile(
                   leading: const Icon(
                       CupertinoIcons.person_crop_circle,
                       color: Color.fromARGB(255, 0, 0, 0),
+                      size: 30,
                       size: 30,
                     ),
                   title: const Text('Profile'),
@@ -154,10 +167,11 @@ class MenuDrawer extends StatelessWidget {
                       color: Color.fromARGB(255, 0, 0, 0),
                       size: 30,
                     ),
-                  title: const Text('Options'),
+                  title: const Text('Options', style: TextStyle(fontSize: 24,),),
                   onTap: () {
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => OptionsScreen()));
                   },
+                 // minVerticalPadding: 20,
                 ),
               ],
             ),
