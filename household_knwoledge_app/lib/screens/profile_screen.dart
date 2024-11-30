@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:household_knwoledge_app/models/task_descriptions_model.dart';
-import 'package:household_knwoledge_app/models/user_provider.dart';
+import 'package:household_knwoledge_app/models/permissions_provider.dart';
 import 'package:provider/provider.dart';
+import '../models/task_descriptions_model.dart';
+import '../models/user_provider.dart';
 import '../models/user_model.dart';
 import '../widgets/menu_drawer.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,15 +22,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
   // Pick image from Gallery or Camera
   Future<void> _pickImage(ImageSource source) async {
     User currUser = Provider.of<UserProvider>(context, listen: false).getCurrUser();
+    final permissionsProvider = Provider.of<PermissionsProvider>(context, listen: false);
+
+    // Check if the required permission is enabled
+    if (source == ImageSource.camera && !permissionsProvider.cameraPermissionEnabled) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(backgroundColor: Colors.red, content: Text("Camera permission is disabled.")),
+      );
+      return;
+    }
+
+    if (source == ImageSource.gallery && !permissionsProvider.galleryPermissionEnabled) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(backgroundColor: Colors.red, content:Text("Gallery permission is disabled.")),
+      );
+      return;
+    }
+
     try {
       final XFile? image = await _picker.pickImage(source: source);
       if (image != null) {
         setState(() {
-        currUser.profilepath = image.path;
+          currUser.profilepath = image.path;
         });
       }
-    }
-    on PlatformException catch (e) {
+    } on PlatformException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error picking image: $e")),
       );
@@ -53,9 +72,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             TextButton(
               child: const Text("Logout"),
               onPressed: () {
-                // for semplicity we won't make the logout implementation for now
+                // Implement your logout functionality here
                 Navigator.of(context).pop();
-                //Navigator.pushReplacementNamed(context, '/home');
               },
             ),
           ],
@@ -64,15 +82,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-// ProfileScreen({super.key});
-
   // Pie Chart
   List<PieChartSectionData> _generatePieChartData(BuildContext context) {
-     final userProvider = Provider.of<UserProvider>(context);
-    
+    final userProvider = Provider.of<UserProvider>(context);
     User currentUser = userProvider.getCurrUser();
-     final sum = currentUser.contributions.values.fold<double>(0.0, 
-     (sum, value) => sum + value.toDouble(),);
+    final sum = currentUser.contributions.values.fold<double>(
+      0.0,
+      (sum, value) => sum + value.toDouble(),
+    );
+
     return currentUser.contributions.entries.map((entry) {
       final percentage = (entry.value.toDouble() / sum) * 100.0;
       return PieChartSectionData(
@@ -80,34 +98,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: '${entry.key} (${percentage.toInt()}%)',
         color: categoryColor(entry.key),
         radius: 50,
-        titleStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, ),
+        titleStyle: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+        ),
       );
     }).toList();
   }
 
-
   // Show image picker dialog
   void _showImageDialog(BuildContext context) {
+    final permissionsProvider = Provider.of<PermissionsProvider>(context, listen: false);
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text("Pick an image for your Profile"),
           actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _pickImage(ImageSource.camera);
-              },
-              child: const Text("Camera"),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _pickImage(ImageSource.gallery);
-              },
-              child: const Text("Gallery"),
-            ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.camera);
+                },
+                child: const Text("Camera"),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.gallery);
+                },
+                child: const Text("Gallery"),
+              ),
+            if (!permissionsProvider.cameraPermissionEnabled && !permissionsProvider.galleryPermissionEnabled)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "No permissions enabled for Camera or Gallery.",
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
           ],
         );
       },
@@ -117,10 +146,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-    
     User currentUser = userProvider.getCurrUser();
     return Scaffold(
-      //backgroundColor: const Color.fromARGB(255, 211, 239, 247),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 226, 224, 224),
         title: const Text('My Profile'),
@@ -131,38 +158,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Profile picture
                 GestureDetector(
                   onTap: () => _showImageDialog(context),
                   child: Stack(
-                    children: [CircleAvatar(
-                      radius: 60,
-                      backgroundImage: Provider.of<UserProvider>(context, listen: false).getProfileOfCurrUser(),
-                    ),
-                    Positioned(bottom: -3, right: -3, child: Icon(Icons.edit, size: 30, color: Colors.grey[700],))
-                  ],
-                ),
-                  
+                    children: [
+                      CircleAvatar(
+                        radius: 60,
+                        backgroundImage: Provider.of<UserProvider>(context, listen: false).getProfileOfCurrUser(),
+                      ),
+                      Positioned(
+                        bottom: -3,
+                        right: -3,
+                        child: Icon(
+                          Icons.edit,
+                          size: 30,
+                          color: Colors.grey[700],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 8),
-                
+
                 // Username
                 Text(
                   currentUser.username,
                   style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                 ),
-                //const SizedBox(height: 4),
 
                 // Points
                 Text(
                   'Points: ${currentUser.points}',
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Color.fromARGB(255, 32, 129, 35)),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Color.fromARGB(255, 32, 129, 35),
+                  ),
                 ),
                 const SizedBox(height: 4),
 
-                
                 // Role
                 Text(
                   'Role: ${currentUser.role}',
@@ -178,11 +214,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       'Preferred Tasks:',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    //const SizedBox(height: 8),
                     Wrap(
                       spacing: 8,
                       children: currentUser.preferences
-                          .map((task) => Chip(label: Text(task, style: TextStyle(color: categoryColor(task)),)))
+                          .map(
+                            (task) => Chip(
+                              label: Text(
+                                task,
+                                style: TextStyle(color: categoryColor(task)),
+                              ),
+                            ),
+                          )
                           .toList(),
                     ),
                   ],
@@ -194,12 +236,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   'Task Contributions',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                //const SizedBox(height: 16),
                 SizedBox(
                   height: 200,
                   child: PieChart(
                     PieChartData(
-                      
                       sections: _generatePieChartData(context),
                       centerSpaceRadius: 40,
                       sectionsSpace: 4,
@@ -212,7 +252,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ElevatedButton(
                   onPressed: () => _showExitConfirm(context),
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                  child: const Text("Exit Account", style: TextStyle(color: Colors.white),),
+                  child: const Text(
+                    "Exit Account",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ],
             ),
