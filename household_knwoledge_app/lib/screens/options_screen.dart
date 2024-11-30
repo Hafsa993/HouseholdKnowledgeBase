@@ -1,81 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:household_knwoledge_app/models/permissions_provider.dart';
+import 'package:provider/provider.dart';
 import '../widgets/menu_drawer.dart';
-//import 'package:permission_handler/permission_handler.dart';
-
-// import 'package:provider/provider.dart';
-// import '../providers/theme_provider.dart';
 
 class OptionsScreen extends StatelessWidget {
-
-  final ValueNotifier<bool> cameraPermissionEnabled = ValueNotifier(false);
-  final ValueNotifier<bool> galleryPermissionEnabled = ValueNotifier(false);
-  final ValueNotifier<bool> geolocationPermissionEnabled = ValueNotifier(false);
-  final ValueNotifier<bool> contactsPermissionEnabled = ValueNotifier(false);
-
   // Notification
   final ValueNotifier<bool> notificationsEnabled = ValueNotifier(true);
 
   // Theme
-  final ValueNotifier<bool> DarkThemeOn = ValueNotifier(false);
+  final ValueNotifier<bool> darkThemeOn = ValueNotifier(false);
 
-  // selected Language
+  // Selected Language
   final ValueNotifier<String> selectedLanguage = ValueNotifier('English');
 
-  // Available languages
-  final List<String> languages = ['English', 'Italian', 'German', 'French'];
+  // Available Languages
+  final List<String> languages = ['English'];
 
   OptionsScreen({super.key});
 
-  void togglePermission(BuildContext context, ValueNotifier<bool> permissionState, String permissionName) {
-    permissionState.value = !permissionState.value;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(permissionState.value
-            ? '$permissionName Enabled'
-            : '$permissionName Disabled'),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    final permissionsProvider = Provider.of<PermissionsProvider>(context);
     return Scaffold(
-      //backgroundColor: const Color.fromARGB(255, 211, 239, 247),
       appBar: AppBar(
-       backgroundColor: const Color.fromARGB(255, 226, 224, 224),
+        backgroundColor: const Color.fromARGB(255, 226, 224, 224),
         title: const Text('Options'),
       ),
       drawer: const MenuDrawer(),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
-        // children: permissions.keys.map((perm) {
         children: [
+          // Enable Notifications
           ValueListenableBuilder<bool>(
             valueListenable: notificationsEnabled,
             builder: (context, value, child) {
               return SwitchListTile(
-                // title: Text(perm),
                 title: const Text('Enable Notifications'),
-                // value: permissions[perm]!,
                 value: value,
                 onChanged: (newValue) {
-                  // Handle permission change
                   notificationsEnabled.value = newValue;
                 },
               );
             },
           ),
           const Divider(),
-    
+
           // Camera Permission
           ListTile(
             title: const Text('Camera Permission'),
-            trailing: ValueListenableBuilder<bool>(
-              valueListenable: cameraPermissionEnabled,
-              builder: (context, isEnabled, child) {
-                return ElevatedButton(
-                  onPressed: () => togglePermission(context, cameraPermissionEnabled, "Camera Permission"),
-                  child: Text(isEnabled ? 'Disable' : 'Enable'),
+            trailing: Switch(
+              value: permissionsProvider.cameraPermissionEnabled,
+              onChanged: (newValue) {
+                permissionsProvider.toggleCameraPermission();
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(newValue
+                        ? 'Camera Permission Enabled'
+                        : 'Camera Permission Disabled'),
+                  ),
                 );
               },
             ),
@@ -84,12 +67,17 @@ class OptionsScreen extends StatelessWidget {
           // Gallery Permission
           ListTile(
             title: const Text('Gallery Permission'),
-            trailing: ValueListenableBuilder<bool>(
-              valueListenable: galleryPermissionEnabled,
-              builder: (context, isEnabled, child) {
-                return ElevatedButton(
-                  onPressed: () => togglePermission(context, galleryPermissionEnabled, "Gallery Permission"),
-                  child: Text(isEnabled ? 'Disable' : 'Enable'),
+            trailing: Switch(
+              value: permissionsProvider.galleryPermissionEnabled,
+              onChanged: (newValue) {
+                permissionsProvider.toggleGalleryPermission();
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(newValue
+                        ? 'Gallery Permission Enabled'
+                        : 'Gallery Permission Disabled'),
+                  ),
                 );
               },
             ),
@@ -98,12 +86,17 @@ class OptionsScreen extends StatelessWidget {
           // Geolocation Permission
           ListTile(
             title: const Text('Geolocation Permission'),
-            trailing: ValueListenableBuilder<bool>(
-              valueListenable: geolocationPermissionEnabled,
-              builder: (context, isEnabled, child) {
-                return ElevatedButton(
-                  onPressed: () => togglePermission(context, geolocationPermissionEnabled, "Geolocation Permission"),
-                  child: Text(isEnabled ? 'Disable' : 'Enable'),
+            trailing: Switch(
+              value: permissionsProvider.geolocationPermissionEnabled,
+              onChanged: (newValue) {
+                permissionsProvider.toggleGeolocationPermission();
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(newValue
+                        ? 'Geolocation Permission Enabled'
+                        : 'Geolocation Permission Disabled'),
+                  ),
                 );
               },
             ),
@@ -112,19 +105,25 @@ class OptionsScreen extends StatelessWidget {
           // Contacts Permission
           ListTile(
             title: const Text('Contacts Permission'),
-            trailing: ValueListenableBuilder<bool>(
-              valueListenable: contactsPermissionEnabled,
-              builder: (context, isEnabled, child) {
-                return ElevatedButton(
-                  onPressed: () => togglePermission(context, contactsPermissionEnabled, "Contacts Permission"),
-                  child: Text(isEnabled ? 'Disable' : 'Enable'),
+            trailing: Switch(
+              value: permissionsProvider.contactsPermissionEnabled,
+              onChanged: (newValue) {
+                permissionsProvider.toggleContactsPermission();
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(newValue
+                        ? 'Contacts Permission Enabled'
+                        : 'Contacts Permission Disabled'),
+                  ),
                 );
               },
             ),
           ),
-    
-          // List of Languages
-          /*
+
+          const Divider(),
+
+          // Language Selection (Optional)
           ValueListenableBuilder<String>(
             valueListenable: selectedLanguage,
             builder: (context, value, child) {
@@ -133,36 +132,22 @@ class OptionsScreen extends StatelessWidget {
                 trailing: DropdownButton<String>(
                   value: value,
                   onChanged: (String? newValue) {
-                    selectedLanguage.value = newValue!;
+                    if (newValue != null) {
+                      selectedLanguage.value = newValue;
+                    }
                   },
                   items: languages.map<DropdownMenuItem<String>>((String language) {
                     return DropdownMenuItem<String>(
                       value: language,
-                      child: Text(language)
+                      child: Text(language),
                     );
                   }).toList(),
                 ),
               );
             },
           ),
-          const Divider(),
-    
-          // Dark mode
-          ValueListenableBuilder<bool>(
-            valueListenable: DarkThemeOn,
-            builder: (context, value, child) {
-              return SwitchListTile(
-                title: const Text('Dark Theme'),
-                value: value,
-                onChanged: (newValue) {
-                  DarkThemeOn.value = newValue;
-                },
-              );
-            },
-          ),*/
         ],
       ),
     );
   }
 }
-

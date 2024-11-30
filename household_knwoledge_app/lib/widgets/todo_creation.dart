@@ -176,6 +176,7 @@ class _ToDoFormState extends State<ToDoForm> {
           content: Text('Please select a category'),
           backgroundColor: Colors.red,
           behavior: SnackBarBehavior.floating,
+          padding: EdgeInsets.all(8.0),
 
           // puts snackBar at the top so that its consistent with other "error message" Snackbars here
 
@@ -183,7 +184,7 @@ class _ToDoFormState extends State<ToDoForm> {
             borderRadius: BorderRadius.circular(24),
           ),
           margin: EdgeInsets.only(
-              bottom: MediaQuery.of(context).size.height - 140,
+              bottom: MediaQuery.of(context).size.height - 130,
               right: 20,
               left: 20),
         ));
@@ -212,7 +213,7 @@ class _ToDoFormState extends State<ToDoForm> {
             borderRadius: BorderRadius.circular(24),
           ),
           margin: EdgeInsets.only(
-              bottom: MediaQuery.of(context).size.height - 160,
+              bottom: MediaQuery.of(context).size.height - 130,
               right: 20,
               left: 20),
         ));
@@ -236,7 +237,7 @@ class _ToDoFormState extends State<ToDoForm> {
             borderRadius: BorderRadius.circular(24),
           ),
           margin: EdgeInsets.only(
-              bottom: MediaQuery.of(context).size.height - 160,
+              bottom: MediaQuery.of(context).size.height - 130,
               right: 20,
               left: 20),
         ));
@@ -260,7 +261,7 @@ class _ToDoFormState extends State<ToDoForm> {
             borderRadius: BorderRadius.circular(24),
           ),
           margin: EdgeInsets.only(
-              bottom: MediaQuery.of(context).size.height - 160,
+              bottom: MediaQuery.of(context).size.height - 130,
               right: 20,
               left: 20),
         ));
@@ -284,7 +285,7 @@ class _ToDoFormState extends State<ToDoForm> {
             borderRadius: BorderRadius.circular(24),
           ),
           margin: EdgeInsets.only(
-              bottom: MediaQuery.of(context).size.height - 160,
+              bottom: MediaQuery.of(context).size.height - 130,
               right: 20,
               left: 20),
         ));
@@ -308,7 +309,7 @@ class _ToDoFormState extends State<ToDoForm> {
             borderRadius: BorderRadius.circular(24),
           ),
           margin: EdgeInsets.only(
-              bottom: MediaQuery.of(context).size.height - 160,
+              bottom: MediaQuery.of(context).size.height - 130,
               right: 20,
               left: 20),
         ));
