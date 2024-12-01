@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:household_knwoledge_app/models/permissions_provider.dart';
+import 'package:provider/provider.dart';
+import '../models/task_descriptions_model.dart';
+import '../models/user_provider.dart';
 import '../models/user_model.dart';
 import '../widgets/menu_drawer.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart';
-import 'dart:io';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -16,172 +17,44 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final User currentUser = User(
-    username: 'JohnDoe', 
-    points: 100,
-    role: 'child',
-    preferences: ['Cleaning', 'Cooking'],
-    contributions: {'Cleaning': 50, 'Garden': 30, 'Cooking': 20},
-  );
-
-  XFile? _image;
   final ImagePicker _picker = ImagePicker();
-  late TextEditingController _usernameController;
-  bool isEditing = false;
-
-  @override
-  void initState() {
-    super.initState();
-    // Initialize the profile image with "f.jpeg"
-    _image = XFile("lib/assets/f.jpeg");
-    _usernameController = TextEditingController(text: currentUser.username);
-    _updateUsername();
-    _updateProfilePicture();
-  }
-
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _updateUsername() async {
-    final prefs = await SharedPreferences.getInstance();
-    final savedUsername = prefs.getString('username') ?? currentUser.username;
-    setState(() {
-      currentUser.username = savedUsername;
-      _usernameController.text = savedUsername;
-    });
-  }
-
-  Future<void> _saveUsername() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('username', _usernameController.text);
-    setState(() {
-      currentUser.username = _usernameController.text;
-      isEditing = false;
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Username updated")),
-    );
-  }
-
-  Future<void> _updateProfilePicture() async {
-    final prefs = await SharedPreferences.getInstance();
-    final imagePath = prefs.getString('profile_image_path');
-    if (imagePath != null && File(imagePath).existsSync()) {
-      setState(() {
-        _image = XFile(imagePath);
-      });
-    }
-  }
-
-  Future<void> _saveProfilePicture(String imagePath) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('profile_image_path', imagePath);
-  }
-
-  Future<void> _updatePermissionStatus(String key, bool value) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(key, value);
-  }
-
-  Future<void> _checkAndOpenImageSource(ImageSource source) async {
-    if (source == ImageSource.camera) {
-      var status = await Permission.camera.status;
-      if (!status.isGranted) {
-        _showPermissionDialog(
-          context,
-          'Camera',
-          'cameraPermissionEnabled',
-          Permission.camera,
-          () => _pickImage(source),
-        );
-        return;
-      }
-    } 
-    else if (source == ImageSource.gallery) {
-      var status = await Permission.photos.status;
-      if (!status.isGranted) {
-        _showPermissionDialog(
-          context,
-          'Gallery',
-          'galleryPermissionEnabled',
-          Permission.photos,
-          () => _pickImage(source),
-        );
-        return;
-      }
-    }
-    _pickImage(source); // Permission already granted
-  }
-
-  void _showPermissionDialog(
-    BuildContext context,
-    String permissionName,
-    String prefsKey,
-    Permission permission,
-    VoidCallback onPermissionGranted,
-  ) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("$permissionName Permission Required"),
-          content: Text(
-            "To proceed, you need to enable $permissionName permissions. Would you like to enable it now?",
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text("Cancel"),
-            ),
-            TextButton(
-              onPressed: () async {
-                Navigator.of(context).pop();
-                final status = await permission.request();
-                if (status.isGranted) {
-                  await _updatePermissionStatus(prefsKey, true);
-                  onPermissionGranted();
-                } 
-                else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("$permissionName permission denied."),
-                    ),
-                  );
-                }
-              },
-              child: const Text("Enable"),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   // Pick image from Gallery or Camera
   Future<void> _pickImage(ImageSource source) async {
+    User currUser = Provider.of<UserProvider>(context, listen: false).getCurrUser();
+    final permissionsProvider = Provider.of<PermissionsProvider>(context, listen: false);
+
+    // Check if the required permission is enabled
+    if (source == ImageSource.camera && !permissionsProvider.cameraPermissionEnabled) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(backgroundColor: Colors.red, content: Text("Camera permission is disabled, enable in Options")),
+      );
+      return;
+    }
+
+    if (source == ImageSource.gallery && !permissionsProvider.galleryPermissionEnabled) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(backgroundColor: Colors.red, content:Text("Gallery permission is disabled, enable in Options")),
+      );
+      return;
+    }
+
     try {
       final XFile? image = await _picker.pickImage(source: source);
       if (image != null) {
         setState(() {
-          _image = image;
+          currUser.profilepath = image.path;
         });
-        await _saveProfilePicture(image.path);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Profile picture updated")),
-        );
       }
-    }
-    on PlatformException catch (e) {
+    } on PlatformException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error picking image: $e")),
       );
     }
   }
 
-  
   // Exit Button
   Future<void> _showExitConfirm(BuildContext context) async {
     showDialog(
@@ -199,9 +72,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             TextButton(
               child: const Text("Logout"),
               onPressed: () {
-                // for semplicity we won't make the logout implementation for now
+                // logout doesnt happen, just do nothing
                 Navigator.of(context).pop();
-                Navigator.pushReplacementNamed(context, '/home');
               },
             ),
           ],
@@ -210,57 +82,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-// ProfileScreen({super.key});
-
   // Pie Chart
-  List<PieChartSectionData> _generatePieChartData() {
+  List<PieChartSectionData> _generatePieChartData(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    User currentUser = userProvider.getCurrUser();
+    final sum = currentUser.contributions.values.fold<double>(
+      0.0,
+      (sum, value) => sum + value.toDouble(),
+    );
+
     return currentUser.contributions.entries.map((entry) {
-      final percentage = entry.value.toDouble();
+      final percentage = (entry.value.toDouble() / sum) * 100.0;
       return PieChartSectionData(
         value: percentage,
         title: '${entry.key} (${percentage.toInt()}%)',
-        color: _getTaskColor(entry.key),
+        color: categoryColor(entry.key),
         radius: 50,
-        titleStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+        titleStyle: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+        ),
       );
     }).toList();
   }
 
-  Color _getTaskColor(String task) {
-    switch (task) {
-      case 'Cleaning':
-        return Colors.blue;
-      case 'Garden':
-        return Colors.green;
-      case 'Cooking':
-        return Colors.red;
-      default:
-        return Colors.grey;
-    }
-  }
-
   // Show image picker dialog
   void _showImageDialog(BuildContext context) {
+    Provider.of<PermissionsProvider>(context, listen: false);
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text("Pick an image for your Profile"),
           actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _checkAndOpenImageSource(ImageSource.camera);
-              },
-              child: const Text("Camera"),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _checkAndOpenImageSource(ImageSource.gallery);
-              },
-              child: const Text("Gallery"),
-            ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.camera);
+                },
+                child: const Text("Camera"),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.gallery);
+                },
+                child: const Text("Gallery"),
+              ),
           ],
         );
       },
@@ -269,10 +137,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    User currentUser = userProvider.getCurrUser();
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 211, 239, 247),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 6, 193, 240),
+        backgroundColor: const Color.fromARGB(255, 226, 224, 224),
         title: const Text('My Profile'),
       ),
       drawer: const MenuDrawer(),
@@ -281,94 +150,73 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Profile picture
                 GestureDetector(
                   onTap: () => _showImageDialog(context),
-                  child: CircleAvatar(
-                    radius: 60,
-                    backgroundImage: _image == null
-                        ? const AssetImage('assets/f.png') as ImageProvider
-                        : FileImage(File(_image!.path)),
+                  child: Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 60,
+                        backgroundImage: Provider.of<UserProvider>(context, listen: false).getProfileOfCurrUser(),
+                      ),
+                      Positioned(
+                        bottom: -3,
+                        right: -3,
+                        child: Icon(
+                          Icons.edit,
+                          size: 30,
+                          color: Colors.grey[700],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 16),
-
-                // Editable Username
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (!isEditing)
-                      Text(
-                        currentUser.username,
-                        style: const TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    else
-                      SizedBox(
-                        width: 200,
-                        child: TextField(
-                          controller: _usernameController,
-                          autofocus: true,
-                          textAlign: TextAlign.center,
-                          onSubmitted: (value) => _saveUsername(),
-                          decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            hintText: "Enter username",
-                          ),
-                        ),
-                      ),
-                    const SizedBox(width: 8),
-                    IconButton(
-                      icon: Icon(
-                        isEditing ? Icons.check : Icons.edit,
-                        color: isEditing ? Colors.green : Colors.blue,
-                      ),
-                      onPressed: () {
-                        if (isEditing) {
-                          _saveUsername();
-                        }
-                        else {
-                          setState(() {
-                            isEditing = true;
-                          });
-                        }
-                      },
-                    ),
-                  ],
-                ),
                 const SizedBox(height: 8),
+
+                // Username
+                Text(
+                  currentUser.username,
+                  style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                ),
+
+                // Points
+                Text(
+                  'Points: ${currentUser.points}',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Color.fromARGB(255, 32, 129, 35),
+                  ),
+                ),
+                const SizedBox(height: 4),
 
                 // Role
                 Text(
                   'Role: ${currentUser.role}',
                   style: const TextStyle(fontSize: 18, color: Colors.grey),
                 ),
-                const SizedBox(height: 16),
-
-                // Points
-                Text(
-                  'Points: ${currentUser.points}',
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 30),
 
                 // Preferences
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Text(
                       'Preferred Tasks:',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 8),
                     Wrap(
                       spacing: 8,
                       children: currentUser.preferences
-                          .map((task) => Chip(label: Text(task)))
+                          .map(
+                            (task) => Chip(
+                              label: Text(
+                                task,
+                                style: TextStyle(color: categoryColor(task)),
+                              ),
+                            ),
+                          )
                           .toList(),
                     ),
                   ],
@@ -380,12 +228,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   'Task Contributions',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 16),
                 SizedBox(
                   height: 200,
                   child: PieChart(
                     PieChartData(
-                      sections: _generatePieChartData(),
+                      sections: _generatePieChartData(context),
                       centerSpaceRadius: 40,
                       sectionsSpace: 4,
                     ),
@@ -397,7 +244,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ElevatedButton(
                   onPressed: () => _showExitConfirm(context),
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                  child: const Text("Exit Account"),
+                  child: const Text(
+                    "Exit Account",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ],
             ),
@@ -406,4 +256,3 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-}
