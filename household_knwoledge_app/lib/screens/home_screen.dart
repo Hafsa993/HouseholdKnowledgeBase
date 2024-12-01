@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:household_knwoledge_app/models/user_provider.dart';
+import 'package:household_knwoledge_app/screens/ranking_screen.dart';
+import 'package:household_knwoledge_app/screens/todo_show.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../models/task_model.dart';
 import '../models/task_provider.dart';
 import '../models/user_model.dart';
 import '../widgets/menu_drawer.dart';
-import 'package:household_knwoledge_app/widgets/todo_creation.dart';
 import 'package:household_knwoledge_app/widgets/todo_creator_button.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -18,11 +20,19 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     TaskProvider taskProvider = Provider.of<TaskProvider>(context);
     List<Task> urgentTasks = taskProvider.pendingTasks(currentUser.username);
+    List<User> currUsers = Provider.of<UserProvider>(context).currUsers;
+  
+    currUsers.sort((a, b) {
+      if (b.points == a.points) {
+        return a.username.compareTo(b.username); // Tie-breaker: alphabetical order
+      }
+      return b.points.compareTo(a.points); // Primary sorting: points descending
+    });
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      //backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 6, 193, 240),
+        backgroundColor: const Color.fromARGB(255, 226, 224, 224),
         title: Row(
           children: [
           const Icon(
@@ -48,10 +58,14 @@ class HomeScreen extends StatelessWidget {
                   children: [Positioned(child: Column(
                     /*children: [Image.asset("lib/assets/leaderboard.png", fit: BoxFit.scaleDown,),
                     ], */
-                      children: [ClipRRect(
+                      children: [InkWell(
+                              onTap: () {
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => RankingScreen()));
+                                },
+                                child: ClipRRect(
                         borderRadius: BorderRadius.circular(15.0),
                         child: Image.asset("lib/assets/leaderboard.png", fit: BoxFit.scaleDown,),
-                      )],
+                      ))],
                   ))],
                 ),
                 const Positioned(
@@ -92,9 +106,10 @@ class HomeScreen extends StatelessWidget {
                   child: rank(
                       radius: 30.0,
                       height: 2,
-                      image: "lib/assets/f.jpeg",
-                      name: "Max",
-                      point: "125"),
+                      image: currUsers[0].profilepath,
+                      name: currUsers[0].username,
+                      point: "${currUsers[0].points}",
+                      context: context),
                 ),
                 // for rank 2nd
                 Positioned(
@@ -103,9 +118,10 @@ class HomeScreen extends StatelessWidget {
                   child: rank(
                       radius: 25.0,
                       height: 2,
-                      image: "lib/assets/f.jpeg",
-                      name: "Sarah",
-                      point: "122"),
+                      image: currUsers[1].profilepath,
+                      name: currUsers[1].username,
+                      point: "${currUsers[1].points}",
+                      context: context),
                 ),
                 // For 3rd rank
                 Positioned(
@@ -114,9 +130,10 @@ class HomeScreen extends StatelessWidget {
                   child: rank(
                       radius: 20.0,
                       height: 2,
-                      image: "lib/assets/f.jpeg",
-                      name: "JohnDoe",
-                      point: "100"),
+                      image: currUsers[2].profilepath,
+                      name: currUsers[2].username,
+                      point: "${currUsers[2].points}",
+                      context: context),
                 ),
               ],
               ),
@@ -129,121 +146,136 @@ class HomeScreen extends StatelessWidget {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
              Expanded(
-              child: urgentTasks.isEmpty
-                  ? const Center(child: Text('No pending tasks!'))
-                  : ListView.builder(
-                      itemCount: urgentTasks.length,
-                      itemBuilder: (context, index) {
-                        Task task = urgentTasks[index];
-                        return Card(
-        margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Task Title
-        Text(
-          task.title,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-        ),
-        const SizedBox(height: 8),
-        // Task Details
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Due: ${DateFormat('dd-MM-yyyy HH:mm').format(task.deadline)}',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: task.deadline.difference(DateTime.now()).inHours < 24
-                                    ? Colors.red // Red if due in less than 24 hours
-                                    : Colors.black54
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Difficulty: ${task.difficulty}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontStyle: FontStyle.italic,
-                    color: Colors.black87,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Reward: ${task.rewardPoints}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.teal,
-                  ),
-                ),
-              ],
-            ),
-            // Buttons Section
-            Flexible(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Flexible(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.green,
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8), // Increase padding
-                        minimumSize: const Size(70, 40), // Ensure minimum button size
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                child: urgentTasks.isEmpty
+                    ? const Center(child: Text('No pending tasks!'))
+                    : ListView.builder(
+                        itemCount: urgentTasks.length,
+                        itemBuilder: (context, index) {
+                          Task task = urgentTasks[index];
+                          return Card(
+                            margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TodoShowScreen(task: task),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Task Title
+                                    Text(
+                                      task.title,
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    // Task Details
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Due: ${DateFormat('dd-MM-yyyy HH:mm').format(task.deadline)}',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: task.deadline.difference(DateTime.now()).inHours < 24
+                                                    ? Colors.red // Red if due in less than 24 hours
+                                                    : Colors.black54,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              'Difficulty: ${task.difficulty}',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontStyle: FontStyle.italic,
+                                                color: Colors.black87,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              'Reward: ${task.rewardPoints}',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.teal,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        // Buttons Section
+                                        Flexible(
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              Flexible(
+                                                child: ElevatedButton(
+                                                  style: ElevatedButton.styleFrom(
+                                                    foregroundColor: Colors.white,
+                                                    backgroundColor: Colors.green,
+                                                    padding: const EdgeInsets.symmetric(
+                                                        horizontal: 12, vertical: 8), // Increased padding
+                                                    minimumSize: const Size(70, 40), // Ensures minimum button size
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(8),
+                                                    ),
+                                                  ),
+                                                  onPressed: () =>
+                                                      _showAcceptDialog(context, task, taskProvider),
+                                                  child: const Text('Accept'),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 6),
+                                              Flexible(
+                                                child: ElevatedButton(
+                                                  style: ElevatedButton.styleFrom(
+                                                    foregroundColor: Colors.white,
+                                                    backgroundColor: Colors.red,
+                                                    padding: const EdgeInsets.symmetric(
+                                                        horizontal: 12, vertical: 8),
+                                                    minimumSize: const Size(70, 40),
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(8),
+                                                    ),
+                                                  ),
+                                                  onPressed: () =>
+                                                      _showDeclineDialog(context, task, taskProvider),
+                                                  child: const Text('Decline'),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      onPressed: () => _showAcceptDialog(context, task, taskProvider),
-                      child: const Text('Accept'),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Flexible(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.red,
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        minimumSize: const Size(70, 40), 
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onPressed: () => _showDeclineDialog(context, task, taskProvider),
-                      child: const Text('Decline'),
-                    ),
-                  ),
-                ],
               ),
-            ),
-          ],
-        ),
-      ],
-          ),
-        ),
-      );
-                      },
-                    ),
-            ), 
+
           ],
         ),
       ),
-      floatingActionButton:  ToDoCreator(),
+      bottomNavigationBar:  ToDoCreator(),
     );
   }
 
@@ -254,12 +286,21 @@ class HomeScreen extends StatelessWidget {
     required String image,
     required String name,
     required String point,
+    required BuildContext context,
   }) {
+    ImageProvider<Object> profile;
+
+    String currName = Provider.of<UserProvider>(context).getCurrUser().username;
+    if (name == currName) {
+      profile = Provider.of<UserProvider>(context).getProfileOfCurrUser();
+    } else {
+      profile = AssetImage(image);
+    }
     return Column(
       children: [
         CircleAvatar(
           radius: radius,
-          backgroundImage: AssetImage(image),
+          backgroundImage: profile,
         ),
         SizedBox(
           height: height,
@@ -313,8 +354,16 @@ class HomeScreen extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () {
+
                 taskProvider.acceptTask(task, currentUser.username);
                 Navigator.pop(context);
+
+                //show message
+                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                  content: Text('accepted ToDo has been moved to My ToDos'),
+                                   backgroundColor: const Color.fromARGB(255, 3, 125, 3),
+                                ));
               },
               style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
@@ -342,27 +391,25 @@ class HomeScreen extends StatelessWidget {
           title: const Text("Are you sure you want to decline this task?"),
           content: const Text("This is a non-reversible action."),
           actions: [
-            Row(
-              children: [
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                     _showReasoningDialog(context, task, taskProvider);
                   },
                   style: TextButton.styleFrom(
+                    
                       foregroundColor: Colors.white, backgroundColor: Colors.red),
                   child: const Text('Yes, really decline'),
                 ),
                 TextButton(
                   onPressed: () => Navigator.pop(context),
                   style: TextButton.styleFrom(
+                    
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.green),
-                  child: const Text("No, don't decline"),
+                  child: const Text("No, don't"),
                 ),
               ],
-            ),
-          ],
         );
       },
     );
@@ -376,6 +423,7 @@ class HomeScreen extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
+          actionsAlignment: MainAxisAlignment.center,
           title: const Text("Provide Reasoning"),
           content: Column(
             mainAxisSize: MainAxisSize.min,

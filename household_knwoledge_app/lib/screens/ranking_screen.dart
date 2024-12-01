@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:household_knwoledge_app/models/user_provider.dart';
+import 'package:provider/provider.dart';
 import '../models/user_model.dart';
 import '../widgets/menu_drawer.dart';
 
 class RankingScreen extends StatelessWidget {
 
-  final List<User> currUsers = <User>[ 
-    User(username: 'JohnDoe',points: 100),
-    User(username: 'Max',points: 125),
-    User(username: 'Alex',points: 75),
-    User(username: 'Anna',points: 90),
-    User(username: 'Marie',points: 100),
-    User(username: 'Sarah',points: 122)
-    ];
+ 
 
-   RankingScreen({super.key}); 
+  const RankingScreen({super.key}); 
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    
+    var currUsers = userProvider.currUsers;
     
     currUsers.sort((a, b) {
       if (b.points == a.points) {
@@ -63,9 +61,10 @@ class RankingScreen extends StatelessWidget {
       }
     }
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 211, 239, 247),
+      //backgroundColor: const Color.fromARGB(255, 211, 239, 247),$
+      //backgroundColor: const Color.fromARGB(255, 226, 224, 224),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 6, 193, 240),
+        backgroundColor: const Color.fromARGB(255, 226, 224, 224),
         title: const Text('Rankings'),
       ),
       drawer: const MenuDrawer(),
@@ -79,8 +78,10 @@ class RankingScreen extends StatelessWidget {
           Color medalColor = rankMedalColors[rank]!;
 
           return Card(
-            color: currUser.username == "JohnDoe"? Color.fromARGB(255, 212, 212, 213): Color.fromARGB(255, 255, 255, 255),
+            color: currUser.username == "JohnDoe"? Color.fromARGB(255, 170, 229, 240): Color.fromARGB(255, 255, 255, 255),
+            elevation: 6,
             child: ListTile(
+              minTileHeight: 80,
               leading: CircleAvatar(
                 backgroundColor: medalColor,
                 child: Text(
@@ -88,19 +89,23 @@ class RankingScreen extends StatelessWidget {
                   style: TextStyle(
                     color: medalColor == Colors.transparent ? Colors.black : Colors.white,
                     fontWeight: FontWeight.bold,
+                    fontSize: 20,
                   ),
                 ),
               ),
-              title: Text(currUser.username,style:TextStyle(fontWeight: FontWeight.bold),),
+              title: Text(currUser.username,style:TextStyle(fontWeight: FontWeight.bold, fontSize: 20,),),
               subtitle: currUser.username == "JohnDoe"? Text("You",style: TextStyle(color: Colors.red),): null,
-              trailing: Text(
+              trailing: 
+                Text(
                 '${currUser.points} pts',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Color.fromARGB(255, 3, 158, 8),
+                  fontSize: 16,
                 ),
               ),
             ),
+            
           );
         },
       ),

@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -15,21 +14,16 @@ class TaskDescriptor {
     this.icon = Icons.favorite
   });
 }
-
-class TaskDescriptorProvider {
-
-  List<TaskDescriptor> descriptors = [
-    TaskDescriptor(title: 'Laundry', instructions: 'Instructions on how to do laundry...', category: 'Cleaning', icon: Icons.local_laundry_service),
-    TaskDescriptor(title: 'Cooking', instructions: 'Instructions on basic cooking...', category: 'Cooking',  icon: Icons.countertops),
-    TaskDescriptor(title: 'Gardening', instructions: 'Instructions on gardening...', category: 'Garden', icon: Icons.yard),
-  ];
-
-
-}    
+   
 Color categoryColor(String category){
   switch(category){
     case 'Cooking': return Colors.red;
-    case 'Garden': return Colors.green;
+    case 'Gardening': return Colors.green;
+    case 'Shopping': return Colors.amber[600]!;
+    case 'Planning': return const Color.fromARGB(255, 145, 74, 189);
+    case 'Care': return const Color.fromARGB(255, 255, 93, 212);
+    case 'Maintenance': return const Color.fromARGB(255, 100, 155, 159);
+    case 'Other': return const Color.fromARGB(255, 155, 144, 173);
   }
   //default Cleaning
   return Colors.blue;
@@ -38,11 +32,21 @@ Color categoryColor(String category){
 final categories = <String>[
   "Cooking",
   "Cleaning",
-  "Garden"
+  "Gardening",
+  "Shopping",
+  "Planning",
+  "Care",
+  "Maintenance",
+  "Other"
 ];
 final selectableCategories = <String>[
   "Cooking",
   "Cleaning",
-  "Garden",
-  "All"
+  "Gardening",
+  "Shopping",
+  "Planning",
+  "Care",
+  "Maintenance",
+  "Other",
+  "All Categories"
 ];
