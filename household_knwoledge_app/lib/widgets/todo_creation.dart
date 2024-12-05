@@ -540,7 +540,7 @@ class _ToDoFormState extends State<ToDoForm> {
                     padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
                     child: TextFormField(
                       decoration: InputDecoration(
-                        labelText: 'ToDO Title',
+                        labelText: 'ToDo Title',
                         border: OutlineInputBorder(),
                         hintText: 'Enter a title',
                       ),
