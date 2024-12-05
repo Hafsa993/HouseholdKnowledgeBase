@@ -24,7 +24,7 @@ class TaskProvider extends ChangeNotifier {
       assignedTo: 'JohnDoe',
     ),
     Task(
-      title: 'Prepare for trouble',
+      title: 'Prepare for guests',
       deadline: DateTime.now().add(const Duration(days: 1)),
       category: 'Cooking',
       difficulty: 'Easy',
@@ -53,7 +53,7 @@ class TaskProvider extends ChangeNotifier {
     Task(
       title: 'Do Laundry',
       deadline: DateTime.now().add(const Duration(days: 2)),
-      category: 'Household',
+      category: 'Cleaning',
       difficulty: 'Easy',
       description: 'Wash, dry, and fold clothes.',
       rewardPoints: 15,
