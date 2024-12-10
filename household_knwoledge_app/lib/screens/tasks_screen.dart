@@ -117,7 +117,7 @@ class _TasksScreenState extends State<TasksScreen> {
           // Task List
           Expanded(
             child: filteredDescriptors.isEmpty
-                ? Center(child: Text('No tasks found.'))
+                ? Center(child: Text('No instructions found.'))
                 : ListView.builder(
                     itemCount: filteredDescriptors.length,
                     itemBuilder: (context, index) {
