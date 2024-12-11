@@ -15,6 +15,7 @@ class RankingScreen extends StatelessWidget {
     final userProvider = Provider.of<UserProvider>(context);
     
     var currUsers = userProvider.currUsers;
+    User currentUser = Provider.of<UserProvider>(context).getCurrUser();
     
     currUsers.sort((a, b) {
       if (b.points == a.points) {
@@ -78,7 +79,7 @@ class RankingScreen extends StatelessWidget {
           Color medalColor = rankMedalColors[rank]!;
 
           return Card(
-            color: currUser.username == "JohnDoe"? Color.fromARGB(255, 170, 229, 240): Color.fromARGB(255, 255, 255, 255),
+            color: currUser.username == currentUser.username? Color.fromARGB(255, 170, 229, 240): Color.fromARGB(255, 255, 255, 255),
             elevation: 6,
             child: ListTile(
               minTileHeight: 80,
@@ -94,7 +95,7 @@ class RankingScreen extends StatelessWidget {
                 ),
               ),
               title: Text(currUser.username,style:TextStyle(fontWeight: FontWeight.bold, fontSize: 20,),),
-              subtitle: currUser.username == "JohnDoe"? Text("You",style: TextStyle(color: Colors.red),): null,
+              subtitle: currUser.username == currentUser.username? Text("You",style: TextStyle(color: Colors.red),): null,
               trailing: 
                 Text(
                 '${currUser.points} pts',
