@@ -12,15 +12,17 @@ import '../widgets/menu_drawer.dart';
 import 'package:household_knwoledge_app/widgets/todo_creator_button.dart';
 
 class HomeScreen extends StatelessWidget {
-  final User currentUser = User(username: 'JohnDoe'); // Example user
+  
 
   HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    List<User> currUsers = Provider.of<UserProvider>(context).currUsers;
+    User currentUser = Provider.of<UserProvider>(context).getCurrUser();
     TaskProvider taskProvider = Provider.of<TaskProvider>(context);
     List<Task> urgentTasks = taskProvider.pendingTasks(currentUser.username);
-    List<User> currUsers = Provider.of<UserProvider>(context).currUsers;
+    
   
     currUsers.sort((a, b) {
       if (b.points == a.points) {
@@ -236,7 +238,7 @@ class HomeScreen extends StatelessWidget {
                                                     ),
                                                   ),
                                                   onPressed: () =>
-                                                      _showAcceptDialog(context, task, taskProvider),
+                                                      _showAcceptDialog(context, task, taskProvider, currentUser),
                                                   child: const Text('Accept'),
                                                 ),
                                               ),
@@ -344,7 +346,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
   // Helper to show accept dialog
-  void _showAcceptDialog(BuildContext context, Task task, TaskProvider taskProvider) {
+  void _showAcceptDialog(BuildContext context, Task task, TaskProvider taskProvider, User currentUser) {
     showDialog(
       context: context,
       builder: (context) {
