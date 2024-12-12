@@ -370,7 +370,7 @@ class HomeScreen extends StatelessWidget {
               style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
                   backgroundColor: const Color.fromARGB(255, 6, 201, 64)),
-              child: const Text('Yes, really accept'),
+              child: const Text('Yes, accept'),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context),

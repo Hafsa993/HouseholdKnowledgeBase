@@ -64,7 +64,13 @@ class _TaskDescriptionScreenState extends State<TaskDescriptionScreen> {
                             ),
                             SizedBox(height:20,),
                             Divider(),
-                            Container(decoration: BoxDecoration(border: Border.symmetric()),child: Text(widget.task.instructions, style: TextStyle(fontSize: 18),),)
+                            Expanded(
+                              child: ListView(
+                                shrinkWrap: true,
+                                //decoration: BoxDecoration(border: Border.symmetric()),
+                                children: [Text(widget.task.instructions, style: TextStyle(fontSize: 18),)],
+                              ),
+                            ),
                             ]),
               ))),
           ],

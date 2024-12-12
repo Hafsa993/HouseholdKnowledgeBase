@@ -76,6 +76,12 @@ class TaskDescriptorProvider with ChangeNotifier{
       instructions: 'Instructions on mopping...', 
       category: 'Cleaning', 
       icon: Icons.cleaning_services_outlined),
+
+      TaskDescriptor(
+      title: 'Family cheese tarts recipe', 
+      instructions: "Ingredients:\n - 200g Appenzeller\n - 100g Gruyere\n - 1 dl full cream\n - 1,5 dl milk\n - 2 fresh eggs\n1. Mix all ingredients with 1/4 tbsp salt and a bit nutmeg\n2. Put puff pastry into a buttered round baking form of diameter 22cm\n3. Put mixture into this layered form\n4. Bake in the middle of the oven at 180°C for 30 min", 
+      category: 'Cooking', 
+      icon: Icons.dining),
   ];
 
   void addTaskDescriptor (TaskDescriptor descriptor) async {
