@@ -8,7 +8,7 @@ class UserProvider with ChangeNotifier {
   // Initialize currUsers with predefined users
   final List<User> _currUsers = [
     User(
-      username: 'JohnDoe',
+      username: 'Sarah',
       points: 100,
       role: 'Member',
       preferences: ['Cleaning', 'Cooking'],
@@ -53,7 +53,7 @@ class UserProvider with ChangeNotifier {
     }
   }
   User getCurrUser() {
-    return _currUsers.firstWhere((user) => user.username == 'JohnDoe');
+    return _currUsers.firstWhere((user) => user.username == 'Sarah');
   }
   
   ImageProvider<Object> getProfileOfCurrUser() {
