@@ -25,7 +25,8 @@ These instructions will help you download and run the project locally on your ma
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/Hafsa993/KnowHouseApp.git
+   git clone https://github.com/Hafsa993/HouseholdKnowledgeBase
+.git
 
 2. **Navigate into the Project Directory:**
     ```bash
