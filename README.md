@@ -13,13 +13,13 @@ These instructions will help you download and run the project locally on your ma
 
 - **Flutter SDK:**  
   Make sure you have the Flutter SDK installed. You can follow the official installation guide here:  
-  [Official Instructions for Intstallation](https://docs.flutter.dev/get-started/install)
+  [Official Instructions for Installation](https://docs.flutter.dev/get-started/install)
 
 - **Dart SDK:**  
   The Dart SDK is bundled with Flutter, so no separate action is required if you followed the Flutter installation steps.
   
 - **A suitable IDE for flutter as described in the official Guide**
-  [Official Instructions for Intstallation](https://docs.flutter.dev/get-started/install)
+  [Official Instructions for Installation](https://docs.flutter.dev/get-started/install)
   
 ## Downloading the Project
 
