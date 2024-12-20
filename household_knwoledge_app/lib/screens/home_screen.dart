@@ -14,7 +14,7 @@ import 'package:household_knwoledge_app/widgets/todo_creator_button.dart';
 class HomeScreen extends StatelessWidget {
   
 
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
